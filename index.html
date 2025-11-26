@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Vscooter</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=container-queries"></script>
+<script>
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              primary: "#1173d4",
+              "background-light": "#f6f7f8",
+              "background-dark": "#101922",
+            },
+            fontFamily: {
+              display: ["Space Grotesk"],
+            },
+            borderRadius: {
+              DEFAULT: "0.5rem",
+              lg: "1rem",
+              xl: "1.5rem",
+              full: "9999px",
+            },
+          },
+        },
+      };
+    </script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet"/>
+<style>
+      .material-symbols-outlined {
+        font-variation-settings: "FILL" 1, "wght" 400, "GRAD" 0, "opsz" 24;
+      }
+    </style>
+<script>
+      const translations = {
+        en: {
+          products: "Products",
+          features: "Features",
+          support: "Support",
+          buyNow: "Buy Now",
+          hero: {
+            title: "Vscooter",
+            subtitle: "The Future of Urban Mobility. Experience the thrill of electric scooters with our innovative designs. Eco-friendly, efficient, and fun.",
+            button: "Explore Models"
+          },
+          featuredModels: "Featured Models",
+          modelX: "Model X",
+          modelXDesc: "The ultimate urban commuter",
+          modelY: "Model Y",
+          modelYDesc: "Compact and agile for city navigation",
+          modelZ: "Model Z",
+          modelZDesc: "High-performance for longer rides",
+          whyChoose: "Why Choose Vscooter?",
+          whyChooseDesc: "Our electric scooters are packed with features designed for your convenience and safety.",
+          battery: "Long-Lasting Battery",
+          batteryDesc: "Ride further with our extended battery life, perfect for your daily adventures.",
+          performance: "High Performance",
+          performanceDesc: "Smooth acceleration and top speeds for an efficient and exhilarating commute.",
+          eco: "Eco-Friendly",
+          ecoDesc: "Reduce your carbon footprint and contribute to a greener planet with every ride.",
+          testimonials: "What Our Riders Say",
+          review1: "I love my Vscooter! It's perfect for my daily commute and saves me so much time and money.",
+          review2: "Great for city living. Easy to maneuver and park. The ride can be a bit bumpy on uneven surfaces.",
+          review3: "Exceeded my expectations. The performance is outstanding, and it's incredibly fun to ride.",
+          company: "Company",
+          aboutUs: "About Us",
+          careers: "Careers",
+          press: "Press",
+          contact: "Contact",
+          faq: "FAQ",
+          warranty: "Warranty",
+          legal: "Legal",
+          privacy: "Privacy",
+          terms: "Terms",
+          accessories: "Accessories",
+          footerTagline: "The future of urban mobility is here.",
+          copyright: "© 2023 Vscooter. All rights reserved."
+        },
+        de: {
+          products: "Produkte",
+          features: "Funktionen",
+          support: "Support",
+          buyNow: "Jetzt kaufen",
+          hero: {
+            title: "Vscooter",
+            subtitle: "Die Zukunft der urbanen Mobilität. Erleben Sie den Nervenkitzel von Elektrorollern mit unseren innovativen Designs. Umweltfreundlich, effizient und Spaß.",
+            button: "Modelle entdecken"
+          },
+          featuredModels: "Vorgestellte Modelle",
+          modelX: "Modell X",
+          modelXDesc: "Der ultimative urbane Pendler",
+          modelY: "Modell Y",
+          modelYDesc: "Kompakt und wendig für die Stadtnavigation",
+          modelZ: "Modell Z",
+          modelZDesc: "Hochleistung für längere Fahrten",
+          whyChoose: "Warum Vscooter wählen?",
+          whyChooseDesc: "Unsere Elektroroller sind voller Funktionen, die für Ihre Bequemlichkeit und Sicherheit entwickelt wurden.",
+          battery: "Langlebiger Akku",
+          batteryDesc: "Fahren Sie weiter mit unserer verlängerten Akkulaufzeit, perfekt für Ihre täglichen Abenteuer.",
+          performance: "Hohe Leistung",
+          performanceDesc: "Sanfte Beschleunigung und Höchstgeschwindigkeiten für einen effizienten und aufregenden Arbeitsweg.",
+          eco: "Umweltfreundlich",
+          ecoDesc: "Reduzieren Sie Ihren CO2-Fußabdruck und tragen Sie mit jeder Fahrt zu einem grüneren Planeten bei.",
+          testimonials: "Was unsere Fahrer sagen",
+          review1: "Ich liebe meinen Vscooter! Er ist perfekt für meinen täglichen Arbeitsweg und spart mir so viel Zeit und Geld.",
+          review2: "Großartig für das Stadtleben. Einfach zu manövrieren und zu parken. Die Fahrt kann auf unebenen Oberflächen etwas holprig sein.",
+          review3: "Hat meine Erwartungen übertroffen. Die Leistung ist hervorragend und es macht unglaublich viel Spaß zu fahren.",
+          company: "Unternehmen",
+          aboutUs: "Über uns",
+          careers: "Karriere",
+          press: "Presse",
+          contact: "Kontakt",
+          faq: "FAQ",
+          warranty: "Garantie",
+          legal: "Rechtliches",
+          privacy: "Datenschutz",
+          terms: "Bedingungen",
+          accessories: "Zubehör",
+          footerTagline: "Die Zukunft der urbanen Mobilität ist hier.",
+          copyright: "© 2023 Vscooter. Alle Rechte vorbehalten."
+        }
+      };
+
+      let currentLang = 'en';
+
+      function switchLanguage(lang) {
+        currentLang = lang;
+        document.documentElement.lang = lang;
+        updateContent();
+      }
+
+      function updateContent() {
+        const t = translations[currentLang];
+
+        document.querySelectorAll('[data-translate]').forEach(el => {
+          const key = el.getAttribute('data-translate');
+          const keys = key.split('.');
+          let value = t;
+          keys.forEach(k => value = value[k]);
+          el.textContent = value;
+        });
+
+        document.querySelectorAll('.lang-btn').forEach(btn => {
+          btn.classList.remove('bg-primary', 'text-white');
+          btn.classList.add('bg-gray-200', 'dark:bg-gray-700', 'text-gray-700', 'dark:text-gray-300');
+        });
+
+        document.querySelector(`[data-lang="${currentLang}"]`).classList.remove('bg-gray-200', 'dark:bg-gray-700', 'text-gray-700', 'dark:text-gray-300');
+        document.querySelector(`[data-lang="${currentLang}"]`).classList.add('bg-primary', 'text-white');
+      }
+
+      document.addEventListener('DOMContentLoaded', updateContent);
+    </script>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display text-gray-800 dark:text-gray-200">
+<div class="flex min-h-screen flex-col">
+<header class="sticky top-0 z-50 bg-background-light/80 dark:bg-background-dark/80 backdrop-blur-sm">
+<div class="container mx-auto px-4 sm:px-6 lg:px-8">
+<div class="flex h-16 items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-3xl">electric_scooter</span>
+<h2 class="text-2xl font-bold text-gray-900 dark:text-white">Vscooter</h2>
+</div>
+<nav class="hidden md:flex items-center gap-8">
+<a class="text-sm font-medium hover:text-primary transition-colors" href="products.html" data-translate="products">Products</a>
+<a class="text-sm font-medium hover:text-primary transition-colors" href="features.html" data-translate="features">Features</a>
+<a class="text-sm font-medium hover:text-primary transition-colors" href="support.html" data-translate="support">Support</a>
+</nav>
+<div class="flex items-center gap-4">
+<div class="flex items-center gap-2 mr-2">
+<button class="lang-btn px-3 py-1 rounded text-xs font-medium transition-all" data-lang="en" onclick="switchLanguage('en')">EN</button>
+<button class="lang-btn px-3 py-1 rounded text-xs font-medium transition-all" data-lang="de" onclick="switchLanguage('de')">DE</button>
+</div>
+<button class="bg-primary text-white px-4 py-2 rounded-lg text-sm font-bold hover:bg-primary/90 transition-all" data-translate="buyNow">
+                Buy Now
+              </button>
+<button class="md:hidden">
+<span class="material-symbols-outlined">menu</span>
+</button>
+</div>
+</div>
+</div>
+</header>
+<main class="flex-grow">
+<section class="relative min-h-[80vh] flex items-center justify-center bg-cover bg-center bg-no-repeat" style='background-image: linear-gradient(rgba(0, 0, 0, 0.2) 0%, rgba(0, 0, 0, 0.6) 100%), url("https://lh3.googleusercontent.com/aida-public/AB6AXuA6xofK664tJ_-HUWi0LfrgtGJTEtMccqodIq5kh9lYnGTWJhmkERVRx-A7UMmSIxIc5_sGQdjUVJ2ertx8rrmbzFh58PooaKwtSRTvWqDHCndCvky1mvwnrjuXxWvRF90-REsHvRbMYYbnOx10p60tztsyJX3sHNiFWB1LiKctHY6YXHcC0w2jq6oZFdZ88KAUd2ka77DWUJm6MWt_udX5ousmock6sGRhZXDsDnWY9HxT_Nm-Dd-XpVquN4h31Rp90j2WrYFkjn0u");'>
+<div class="container mx-auto px-4 sm:px-6 lg:px-8 text-white text-center">
+<h1 class="text-6xl md:text-8xl font-bold tracking-tighter text-white drop-shadow-2xl" data-translate="hero.title">
+                Vscooter
+              </h1>
+<p class="mt-4 text-lg md:text-xl text-gray-200 max-w-2xl mx-auto" data-translate="hero.subtitle">
+                The Future of Urban Mobility. Experience the thrill of electric scooters with our innovative designs. Eco-friendly, efficient, and fun.
+              </p>
+<button class="mt-8 bg-primary text-white px-6 py-3 rounded-lg text-base font-bold hover:bg-primary/90 transition-all" data-translate="hero.button">
+                Explore Models
+              </button>
+</div>
+</section>
+<section class="py-16 md:py-24 bg-background-light dark:bg-background-dark">
+<div class="container mx-auto px-4 sm:px-6 lg:px-8">
+<h2 class="text-3xl font-bold text-center text-gray-900 dark:text-white" data-translate="featuredModels">Featured Models</h2>
+<div class="mt-12 grid gap-8 md:grid-cols-3">
+<div class="bg-white dark:bg-gray-900/50 rounded-xl overflow-hidden shadow-lg hover:shadow-2xl transition-shadow duration-300">
+<div class="aspect-w-16 aspect-h-9">
+<img alt="Scooter Model X" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAFShQqHxnQlWyuYfDA26QQjZZmR6QbkkYIZaqMSzU8QybXMmqCSvB3bbY_VFohKM3c-8cijaymm51PA-3QQ_c3UElqFAgmkLBKpl2D98a7MBEoTOZpbq9mPPMoRFGgFXwMjpmvc2eDGrfFt8P7qWKGp-PlJv3IRV2SkFXsbZAzK4JN9-h3mXKiRySDpTQWJZedNTbm8b6uvSodJW1pREu1n7GiYSr56eL-Cs8eLqG8rKUG06bNycgR3RzC_6UqG2mi_9zxGXFhBB5A"/>
+</div>
+<div class="p-6">
+<h3 class="text-xl font-bold text-gray-900 dark:text-white" data-translate="modelX">Model X</h3>
+<p class="mt-2 text-gray-600 dark:text-gray-400" data-translate="modelXDesc">The ultimate urban commuter</p>
+</div>
+</div>
+<div class="bg-white dark:bg-gray-900/50 rounded-xl overflow-hidden shadow-lg hover:shadow-2xl transition-shadow duration-300">
+<div class="aspect-w-16 aspect-h-9">
+<img alt="Scooter Model Y" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDsryx5Gn53rWz0G9ddxE7Em2tBs649bV4jH6x5oZ3lK9K3nzm3t9PIPtzWo1hnxzswo4b9fv5pytNyPE4mse9KbzRZTnV4KLe9rDXUqezbPrVWgZr6BeZfJIRXdUx1I-irfHZjCBm9tKH3SkapvSTCDaIZ3YDjLQ6Km3_4fjs6D-aL_fiuQmPxyGOOpTwBA42bCh64NNGChlyZU89q4vTg-YfnGsg8Qxtl2kMqCV89jeY6KSfXaRULJsiwOx-EE9FhXO4K14YJZwdc"/>
+</div>
+<div class="p-6">
+<h3 class="text-xl font-bold text-gray-900 dark:text-white" data-translate="modelY">Model Y</h3>
+<p class="mt-2 text-gray-600 dark:text-gray-400" data-translate="modelYDesc">Compact and agile for city navigation</p>
+</div>
+</div>
+<div class="bg-white dark:bg-gray-900/50 rounded-xl overflow-hidden shadow-lg hover:shadow-2xl transition-shadow duration-300">
+<div class="aspect-w-16 aspect-h-9">
+<img alt="Scooter Model Z" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD-EZBX2QPPowvzdnYcFgo_KXTq45Gn8t1wFPx3dGp07AbUy0yFek1qoEwQJJTSJLNfnp_daRJuZBgryL4aGEiFhI5EqIVvyl0Q1SLMZVGzRHYDuqW7DBFH2hmMGKeCuUMm4kbDX78lJonbDajKVrfIEc2HmTukoZxDxtqSiJT9GVOhR3__1m_sE93QHiHarva6ATWuQEpfAggEPG90QH8erZqLOIrOn2jJHFV-EYU3dFpibImGDkExjg8ZYmWsgpKnSA7-MBSbFyYG"/>
+</div>
+<div class="p-6">
+<h3 class="text-xl font-bold text-gray-900 dark:text-white" data-translate="modelZ">Model Z</h3>
+<p class="mt-2 text-gray-600 dark:text-gray-400" data-translate="modelZDesc">High-performance for longer rides</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section class="py-16 md:py-24 bg-background-light dark:bg-gray-900/20">
+<div class="container mx-auto px-4 sm:px-6 lg:px-8">
+<div class="text-center">
+<h2 class="text-3xl font-bold text-gray-900 dark:text-white" data-translate="whyChoose">Why Choose Vscooter?</h2>
+<p class="mt-4 max-w-2xl mx-auto text-lg text-gray-600 dark:text-gray-400" data-translate="whyChooseDesc">Our electric scooters are packed with features designed for your convenience and safety.</p>
+</div>
+<div class="mt-16 grid gap-10 md:grid-cols-3">
+<div class="text-center">
+<div class="flex items-center justify-center size-12 mx-auto bg-primary/20 dark:bg-primary/30 rounded-full text-primary">
+<span class="material-symbols-outlined">battery_horiz_075</span>
+</div>
+<h3 class="mt-6 text-xl font-bold text-gray-900 dark:text-white" data-translate="battery">Long-Lasting Battery</h3>
+<p class="mt-2 text-gray-600 dark:text-gray-400" data-translate="batteryDesc">Ride further with our extended battery life, perfect for your daily adventures.</p>
+</div>
+<div class="text-center">
+<div class="flex items-center justify-center size-12 mx-auto bg-primary/20 dark:bg-primary/30 rounded-full text-primary">
+<span class="material-symbols-outlined">speed</span>
+</div>
+<h3 class="mt-6 text-xl font-bold text-gray-900 dark:text-white" data-translate="performance">High Performance</h3>
+<p class="mt-2 text-gray-600 dark:text-gray-400" data-translate="performanceDesc">Smooth acceleration and top speeds for an efficient and exhilarating commute.</p>
+</div>
+<div class="text-center">
+<div class="flex items-center justify-center size-12 mx-auto bg-primary/20 dark:bg-primary/30 rounded-full text-primary">
+<span class="material-symbols-outlined">eco</span>
+</div>
+<h3 class="mt-6 text-xl font-bold text-gray-900 dark:text-white" data-translate="eco">Eco-Friendly</h3>
+<p class="mt-2 text-gray-600 dark:text-gray-400" data-translate="ecoDesc">Reduce your carbon footprint and contribute to a greener planet with every ride.</p>
+</div>
+</div>
+</div>
+</section>
+<section class="py-16 md:py-24 bg-background-light dark:bg-background-dark">
+<div class="container mx-auto px-4 sm:px-6 lg:px-8">
+<h2 class="text-3xl font-bold text-center text-gray-900 dark:text-white" data-translate="testimonials">What Our Riders Say</h2>
+<div class="mt-12 grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+<div class="bg-white dark:bg-gray-900/50 rounded-xl p-6 shadow-md">
+<div class="flex items-center gap-4">
+<img alt="Ethan Carter" class="size-12 rounded-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBfCyJnibJRoybyNUuJ6z8qkaBFaUNDV2c6K5w0mhKd5c5EMySXPBmweaQKt5T2wL3VUg9TWPK3OZeTKyU_mRpcRfZ1d1BurZwaxXWbpG2ei0ui3oml21H_Xd5JFe2Cmw0_ruQsJN_PlkELdjdS-kZtPJfV6lLHeYLWhy0gstZ6DaHyHLeYvRTTlLX60MoKrvtVjR8jMEEtlnBSuDQuNSiBZ9-xZV5vKCBDDLu05usm1HnotKHtJ-354jeHELM6DVG-9yDbkP8eLgE6"/>
+<div>
+<p class="font-bold text-gray-900 dark:text-white">Ethan Carter</p>
+<p class="text-sm text-gray-500 dark:text-gray-400">2 months ago</p>
+</div>
+</div>
+<div class="flex mt-3">
+<span class="material-symbols-outlined text-primary text-lg">star</span>
+<span class="material-symbols-outlined text-primary text-lg">star</span>
+<span class="material-symbols-outlined text-primary text-lg">star</span>
+<span class="material-symbols-outlined text-primary text-lg">star</span>
+<span class="material-symbols-outlined text-primary text-lg">star</span>
+</div>
+<p class="mt-4 text-gray-600 dark:text-gray-300" data-translate="review1">"I love my Vscooter! It's perfect for my daily commute and saves me so much time and money."</p>
+</div>
+<div class="bg-white dark:bg-gray-900/50 rounded-xl p-6 shadow-md">
+<div class="flex items-center gap-4">
+<img alt="Olivia Bennett" class="size-12 rounded-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA83Bzx4n_92X3mKUkXvkGOTWzN7RjgVSQy38_k-g4RRZc6roDyyoUZ8mnWr5gtAFiskl6AixthGSCJznykL9ZGdjJoh9btg0cNm8F57YsIMp29kcw0rIWrXUyWDOEulTtoYvyRvG7fmDpvd5odfnasJoUw_NzLJk9DD53V2x9YVK0mA5t34U6Yp6Lg9v0lg6cR1g9hli2QCFpq_flpfje3RitNNS1CT6Oxl_lRBriZU6ejtT6DrLmycLONdpD1M-hXDMzAbAU4JSA0"/>
+<div>
+<p class="font-bold text-gray-900 dark:text-white">Olivia Bennett</p>
+<p class="text-sm text-gray-500 dark:text-gray-400">3 months ago</p>
+</div>
+</div>
+<div class="flex mt-3">
+<span class="material-symbols-outlined text-primary text-lg">star</span>
+<span class="material-symbols-outlined text-primary text-lg">star</span>
+<span class="material-symbols-outlined text-primary text-lg">star</span>
+<span class="material-symbols-outlined text-primary text-lg">star</span>
+<span class="material-symbols-outlined text-gray-400 dark:text-gray-600 text-lg">star</span>
+</div>
+<p class="mt-4 text-gray-600 dark:text-gray-300" data-translate="review2">"Great for city living. Easy to maneuver and park. The ride can be a bit bumpy on uneven surfaces."</p>
+</div>
+<div class="bg-white dark:bg-gray-900/50 rounded-xl p-6 shadow-md">
+<div class="flex items-center gap-4">
+<img alt="Noah Thompson" class="size-12 rounded-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAMkKqA5887PyEvMoAoMGbHHQk-Rh_q2cRtzfXC0qx-aTsH5YTspd7j5aYqFbdgaN6R5T1fVrp9MmpUPpYOUSN-IfVcNDarmQb9_fTjeBiGDONL6h16LRJjS1L9iaVPhoZCPH29tDsqpXs4tLslrkG9Jn_L_d8NyBGt49IbljYSjy-gwLtrjleFDcrdUvV71tCnkGEHrA7Eh1xj9e3tYHrks_9-IUuh4lLy9Sj-OF0rGZ5DD8nHxNm12eq-5mZCHd4Ns5BZnyaIpZE_"/>
+<div>
+<p class="font-bold text-gray-900 dark:text-white">Noah Thompson</p>
+<p class="text-sm text-gray-500 dark:text-gray-400">4 months ago</p>
+</div>
+</div>
+<div class="flex mt-3">
+<span class="material-symbols-outlined text-primary text-lg">star</span>
+<span class="material-symbols-outlined text-primary text-lg">star</span>
+<span class="material-symbols-outlined text-primary text-lg">star</span>
+<span class="material-symbols-outlined text-primary text-lg">star</span>
+<span class="material-symbols-outlined text-primary text-lg">star</span>
+</div>
+<p class="mt-4 text-gray-600 dark:text-gray-300" data-translate="review3">"Exceeded my expectations. The performance is outstanding, and it's incredibly fun to ride."</p>
+</div>
+</div>
+</div>
+</section>
+</main>
+<footer class="bg-background-light dark:bg-gray-900/50 border-t border-gray-200 dark:border-gray-800">
+<div class="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
+<div class="grid md:grid-cols-3 gap-8">
+<div>
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-2xl">electric_scooter</span>
+<h2 class="text-xl font-bold text-gray-900 dark:text-white">Vscooter</h2>
+</div>
+<p class="mt-2 text-gray-500 dark:text-gray-400 text-sm" data-translate="footerTagline">The future of urban mobility is here.</p>
+</div>
+<div class="md:col-span-2 grid grid-cols-2 sm:grid-cols-4 gap-8">
+<div>
+<h3 class="font-semibold text-gray-900 dark:text-white" data-translate="products">Products</h3>
+<ul class="mt-4 space-y-2">
+<li><a class="text-sm text-gray-500 dark:text-gray-400 hover:text-primary" href="products.html" data-translate="modelX">Model X</a></li>
+<li><a class="text-sm text-gray-500 dark:text-gray-400 hover:text-primary" href="products.html" data-translate="modelY">Model Y</a></li>
+<li><a class="text-sm text-gray-500 dark:text-gray-400 hover:text-primary" href="products.html" data-translate="modelZ">Model Z</a></li>
+<li><a class="text-sm text-gray-500 dark:text-gray-400 hover:text-primary" href="products.html" data-translate="accessories">Accessories</a></li>
+</ul>
+</div>
+<div>
+<h3 class="font-semibold text-gray-900 dark:text-white" data-translate="company">Company</h3>
+<ul class="mt-4 space-y-2">
+<li><a class="text-sm text-gray-500 dark:text-gray-400 hover:text-primary" href="index.html" data-translate="aboutUs">About Us</a></li>
+<li><a class="text-sm text-gray-500 dark:text-gray-400 hover:text-primary" href="index.html" data-translate="careers">Careers</a></li>
+<li><a class="text-sm text-gray-500 dark:text-gray-400 hover:text-primary" href="index.html" data-translate="press">Press</a></li>
+</ul>
+</div>
+<div>
+<h3 class="font-semibold text-gray-900 dark:text-white" data-translate="support">Support</h3>
+<ul class="mt-4 space-y-2">
+<li><a class="text-sm text-gray-500 dark:text-gray-400 hover:text-primary" href="support.html" data-translate="contact">Contact</a></li>
+<li><a class="text-sm text-gray-500 dark:text-gray-400 hover:text-primary" href="support.html" data-translate="faq">FAQ</a></li>
+<li><a class="text-sm text-gray-500 dark:text-gray-400 hover:text-primary" href="support.html" data-translate="warranty">Warranty</a></li>
+</ul>
+</div>
+<div>
+<h3 class="font-semibold text-gray-900 dark:text-white" data-translate="legal">Legal</h3>
+<ul class="mt-4 space-y-2">
+<li><a class="text-sm text-gray-500 dark:text-gray-400 hover:text-primary" href="support.html" data-translate="privacy">Privacy</a></li>
+<li><a class="text-sm text-gray-500 dark:text-gray-400 hover:text-primary" href="support.html" data-translate="terms">Terms</a></li>
+</ul>
+</div>
+</div>
+</div>
+<div class="mt-8 pt-8 border-t border-gray-200 dark:border-gray-800 flex flex-col sm:flex-row justify-between items-center">
+<p class="text-sm text-gray-500 dark:text-gray-400" data-translate="copyright">© 2023 Vscooter. All rights reserved.</p>
+<div class="flex gap-4 mt-4 sm:mt-0">
+<a class="text-gray-500 dark:text-gray-400 hover:text-primary" href="#"><svg class="size-5" fill="currentColor" viewBox="0 0 24 24"><path d="M22.46,6.56 C21.76,6.86 21.01,7.06 20.24,7.16 C21.06,6.66 21.68,5.86 22,4.96 C21.24,5.46 20.4,5.86 19.5,6.06 C18.79,5.29 17.74,4.79 16.58,4.79 C14.38,4.79 12.58,6.59 12.58,8.79 C12.58,9.09 12.61,9.39 12.68,9.69 C9.17,9.52 6.11,7.88 4.01,5.43 C3.64,6.04 3.42,6.77 3.42,7.56 C3.42,8.96 4.15,10.18 5.22,10.87 C4.56,10.85 3.95,10.68 3.41,10.39 L3.41,10.45 C3.41,12.44 4.82,14.1 6.74,14.48 C6.4,14.57 6.04,14.62 5.68,14.62 C5.42,14.62 5.16,14.6 4.92,14.55 C5.46,16.17 6.95,17.3 8.75,17.34 C7.35,18.42 5.61,19.09 3.72,19.09 C3.4,19.09 3.08,19.07 2.76,19.04 C4.58,20.18 6.72,20.79 9,20.79 C16.57,20.79 20.38,14.52 20.38,9.15 C20.38,8.95 20.37,8.75 20.36,8.55 C21.17,7.99 21.88,7.31 22.46,6.56 Z"></path></svg></a>
+<a class="text-gray-500 dark:text-gray-400 hover:text-primary" href="#"><svg class="size-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12,2.163 C7.691,2.163 7.333,2.176 6.32,2.22 C5.307,2.264 4.561,2.417 3.882,2.68 C3.167,2.956 2.584,3.315 1.998,3.902 C1.411,4.488 1.053,5.071 0.776,5.786 C0.5,6.465 0.35,7.211 0.304,8.224 C0.258,9.237 0.245,9.595 0.245,12 C0.245,14.405 0.258,14.763 0.304,15.776 C0.35,16.789 0.5,17.535 0.776,18.214 C1.053,18.929 1.411,19.512 1.998,20.098 C2.584,20.685 3.167,21.043 3.882,21.32 C4.561,21.583 5.307,21.737 6.32,21.78 C7.333,21.824 7.691,21.837 12,21.837 C16.309,21.837 16.667,21.824 17.68,21.78 C18.693,21.737 19.439,21.583 20.118,21.32 C20.833,21.043 21.416,20.685 22.002,20.098 C22.589,19.512 22.947,18.929 23.224,18.214 C23.5,17.535 23.65,16.789 23.696,15.776 C23.742,14.763 23.755,14.405 23.755,12 C23.755,9.595 23.742,9.237 23.696,8.224 C23.65,7.211 23.5,6.465 23.224,5.786 C22.947,5.071 22.589,4.488 22.002,3.902 C21.416,3.315 20.833,2.956 20.118,2.68 C19.439,2.417 18.693,2.264 17.68,2.22 C16.667,2.176 16.309,2.163 12,2.163 M12,0 C16.393,0 16.762,0.015 17.765,0.063 C18.78,0.11 19.673,0.27 20.48,0.574 C21.305,0.887 22.012,1.29 22.61,1.887 C23.208,2.485 23.611,3.192 23.924,4.017 C24.228,4.825 24.388,5.717 24.436,6.732 C24.485,7.735 24.5,8.104 24.5,12 C24.5,15.897 24.485,16.265 24.436,17.268 C24.388,18.283 24.228,19.175 23.924,19.983 C23.611,20.808 23.208,21.515 22.61,22.113 C22.012,22.71 21.305,23.113 20.48,23.426 C19.673,23.73 18.78,23.89 17.765,23.938 C16.762,23.985 16.393,24 12,24 C7.607,24 7.238,23.985 6.235,23.938 C5.22,23.89 4.327,23.73 3.52,23.426 C2.695,23.113 1.988,22.71 1.39,22.113 C0.792,21.515 0.389,20.808 0.076,19.983 C-0.228,19.175 -0.388,18.283 -0.436,17.268 C-0.485,16.265 -0.5,15.897 -0.5,12 C-0.5,8.104 -0.485,7.735 -0.436,6.732 C-0.388,5.717 -0.228,4.825 0.076,4.017 C0.389,3.192 0.792,2.485 1.39,1.887 C1.988,1.29 2.695,0.887 3.52,0.574 C4.327,0.27 5.22,0.11 6.235,0.063 C7.238,0.015 7.607,0 12,0 M12,5.838 C8.601,5.838 5.838,8.601 5.838,12 C5.838,15.399 8.601,18.162 12,18.162 C15.399,18.162 18.162,15.399 18.162,12 C18.162,8.601 15.399,5.838 12,5.838 M12,16.317 C9.624,16.317 7.683,14.376 7.683,12 C7.683,9.624 9.624,7.683 12,7.683 C14.376,7.683 16.317,9.624 16.317,12 C16.317,14.376 14.376,16.317 12,16.317 M19.404,5.92 C18.665,5.92 18.056,6.529 18.056,7.268 C18.056,8.006 18.665,8.615 19.404,8.615 C20.142,8.615 20.751,8.006 20.751,7.268 C20.751,6.529 20.142,5.92 19.404,5.92"></path></svg></a>
+<a class="text-gray-500 dark:text-gray-400 hover:text-primary" href="#"><svg class="size-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12,2 C6.477,2 2,6.477 2,12 C2,17.523 6.477,22 12,22 C17.523,22 22,17.523 22,12 C22,6.477 17.523,2 12,2 M17,17 L17,14 C17,12.343 15.657,11 14,11 C12.343,11 11,12.343 11,14 L11,17 L9,17 L9,9 L11,9 L11,10.5 C11.583,9.556 12.723,9 14,9 C16.209,9 17,10.336 17,12 L17,17 M7,17 L7,9 L9,9 L9,17 L7,17 M8,7 C7.448,7 7,7.448 7,8 C7,8.552 7.448,9 8,9 C8.552,9 9,8.552 9,8 C9,7.448 8.552,7 8,7"></path></svg></a>
+</div>
+</div>
+</div>
+</footer>
+</div>
+
+</body></html>

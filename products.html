@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Products - Vscooter</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=container-queries"></script>
+<script>
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              primary: "#1173d4",
+              "background-light": "#f6f7f8",
+              "background-dark": "#101922",
+            },
+            fontFamily: {
+              display: ["Space Grotesk"],
+            },
+            borderRadius: {
+              DEFAULT: "0.5rem",
+              lg: "1rem",
+              xl: "1.5rem",
+              full: "9999px",
+            },
+          },
+        },
+      };
+    </script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet"/>
+<style>
+      .material-symbols-outlined {
+        font-variation-settings: "FILL" 1, "wght" 400, "GRAD" 0, "opsz" 24;
+      }
+    </style>
+<script>
+      const translations = {
+        en: {
+          products: "Products",
+          features: "Features",
+          support: "Support",
+          buyNow: "Buy Now",
+          home: "Home",
+          productsPage: {
+            title: "Our Electric Scooters",
+            subtitle: "Choose the perfect scooter for your urban adventures",
+            compareBtn: "Compare Models",
+            orderBtn: "Order Now"
+          },
+          modelX: "Model X",
+          modelXPrice: "$899",
+          modelXSpecs: {
+            range: "35 miles",
+            speed: "25 mph",
+            weight: "26 lbs",
+            charge: "4 hours"
+          },
+          modelXFeatures: ["Premium LED Display", "Dual Braking System", "Shock Absorption", "Mobile App Integration"],
+          modelY: "Model Y",
+          modelYPrice: "$699",
+          modelYSpecs: {
+            range: "28 miles",
+            speed: "20 mph",
+            weight: "24 lbs",
+            charge: "3.5 hours"
+          },
+          modelYFeatures: ["Compact Design", "Quick Fold Mechanism", "LED Headlight", "Anti-theft Lock"],
+          modelZ: "Model Z",
+          modelZPrice: "$1199",
+          modelZSpecs: {
+            range: "45 miles",
+            speed: "30 mph",
+            weight: "32 lbs",
+            charge: "5 hours"
+          },
+          modelZFeatures: ["Long Range Battery", "High Performance Motor", "All-terrain Tires", "Advanced Suspension"],
+          specs: "Specifications",
+          range: "Range",
+          maxSpeed: "Max Speed",
+          weight: "Weight",
+          chargingTime: "Charging Time",
+          keyFeatures: "Key Features",
+          accessories: "Accessories",
+          helmet: "Safety Helmet",
+          helmetDesc: "Professional grade helmet with LED indicators",
+          helmetPrice: "$89",
+          lock: "Security Lock",
+          lockDesc: "Smart Bluetooth lock with mobile app control",
+          lockPrice: "$45",
+          charger: "Fast Charger",
+          chargerDesc: "Rapid charging dock for all models",
+          chargerPrice: "$129",
+          bag: "Storage Bag",
+          bagDesc: "Waterproof carrying bag with extra compartments",
+          bagPrice: "$69"
+        },
+        de: {
+          products: "Produkte",
+          features: "Funktionen",
+          support: "Support",
+          buyNow: "Jetzt kaufen",
+          home: "Startseite",
+          productsPage: {
+            title: "Unsere Elektroroller",
+            subtitle: "Wählen Sie den perfekten Roller für Ihre urbanen Abenteuer",
+            compareBtn: "Modelle vergleichen",
+            orderBtn: "Jetzt bestellen"
+          },
+          modelX: "Modell X",
+          modelXPrice: "899€",
+          modelXSpecs: {
+            range: "56 km",
+            speed: "40 km/h",
+            weight: "12 kg",
+            charge: "4 Stunden"
+          },
+          modelXFeatures: ["Premium LED Display", "Duales Bremssystem", "Stoßdämpfung", "Mobile App Integration"],
+          modelY: "Modell Y",
+          modelYPrice: "699€",
+          modelYSpecs: {
+            range: "45 km",
+            speed: "32 km/h",
+            weight: "11 kg",
+            charge: "3,5 Stunden"
+          },
+          modelYFeatures: ["Kompaktes Design", "Schnell-Faltmechanismus", "LED Scheinwerfer", "Diebstahlsicherung"],
+          modelZ: "Modell Z",
+          modelZPrice: "1199€",
+          modelZSpecs: {
+            range: "72 km",
+            speed: "48 km/h",
+            weight: "15 kg",
+            charge: "5 Stunden"
+          },
+          modelZFeatures: ["Langstrecken Akku", "Hochleistungsmotor", "All-Terrain Reifen", "Erweiterte Federung"],
+          specs: "Spezifikationen",
+          range: "Reichweite",
+          maxSpeed: "Höchstgeschwindigkeit",
+          weight: "Gewicht",
+          chargingTime: "Ladezeit",
+          keyFeatures: "Hauptfunktionen",
+          accessories: "Zubehör",
+          helmet: "Sicherheitshelm",
+          helmetDesc: "Professioneller Helm mit LED-Anzeigen",
+          helmetPrice: "89€",
+          lock: "Sicherheitsschloss",
+          lockDesc: "Smart Bluetooth Schloss mit App-Steuerung",
+          lockPrice: "45€",
+          charger: "Schnellladegerät",
+          chargerDesc: "Schnelles Ladedock für alle Modelle",
+          chargerPrice: "129€",
+          bag: "Tragetasche",
+          bagDesc: "Wasserdichte Tasche mit zusätzlichen Fächern",
+          bagPrice: "69€"
+        }
+      };
+
+      let currentLang = 'en';
+
+      function switchLanguage(lang) {
+        currentLang = lang;
+        document.documentElement.lang = lang;
+        updateContent();
+      }
+
+      function updateContent() {
+        const t = translations[currentLang];
+
+        document.querySelectorAll('[data-translate]').forEach(el => {
+          const key = el.getAttribute('data-translate');
+          const keys = key.split('.');
+          let value = t;
+          keys.forEach(k => value = value[k]);
+          if (Array.isArray(value)) {
+            el.innerHTML = value.map(item => `<li class="text-gray-600 dark:text-gray-400">${item}</li>`).join('');
+          } else {
+            el.textContent = value;
+          }
+        });
+
+        document.querySelectorAll('.lang-btn').forEach(btn => {
+          btn.classList.remove('bg-primary', 'text-white');
+          btn.classList.add('bg-gray-200', 'dark:bg-gray-700', 'text-gray-700', 'dark:text-gray-300');
+        });
+
+        document.querySelector(`[data-lang="${currentLang}"]`).classList.remove('bg-gray-200', 'dark:bg-gray-700', 'text-gray-700', 'dark:text-gray-300');
+        document.querySelector(`[data-lang="${currentLang}"]`).classList.add('bg-primary', 'text-white');
+      }
+
+      document.addEventListener('DOMContentLoaded', updateContent);
+    </script>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display text-gray-800 dark:text-gray-200">
+<div class="flex min-h-screen flex-col">
+<header class="sticky top-0 z-50 bg-background-light/80 dark:bg-background-dark/80 backdrop-blur-sm">
+<div class="container mx-auto px-4 sm:px-6 lg:px-8">
+<div class="flex h-16 items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-3xl">electric_scooter</span>
+<h2 class="text-2xl font-bold text-gray-900 dark:text-white">
+<a href="index.html">Vscooter</a>
+</h2>
+</div>
+<nav class="hidden md:flex items-center gap-8">
+<a class="text-sm font-medium hover:text-primary transition-colors" href="index.html" data-translate="home">Home</a>
+<a class="text-sm font-medium text-primary" href="products.html" data-translate="products">Products</a>
+<a class="text-sm font-medium hover:text-primary transition-colors" href="features.html" data-translate="features">Features</a>
+<a class="text-sm font-medium hover:text-primary transition-colors" href="support.html" data-translate="support">Support</a>
+</nav>
+<div class="flex items-center gap-4">
+<div class="flex items-center gap-2 mr-2">
+<button class="lang-btn px-3 py-1 rounded text-xs font-medium transition-all" data-lang="en" onclick="switchLanguage('en')">EN</button>
+<button class="lang-btn px-3 py-1 rounded text-xs font-medium transition-all" data-lang="de" onclick="switchLanguage('de')">DE</button>
+</div>
+<button class="bg-primary text-white px-4 py-2 rounded-lg text-sm font-bold hover:bg-primary/90 transition-all" data-translate="buyNow">
+Buy Now
+</button>
+<button class="md:hidden">
+<span class="material-symbols-outlined">menu</span>
+</button>
+</div>
+</div>
+</div>
+</header>
+
+<main class="flex-grow">
+<section class="py-16 md:py-24 bg-background-light dark:bg-background-dark">
+<div class="container mx-auto px-4 sm:px-6 lg:px-8">
+<div class="text-center mb-16">
+<h1 class="text-4xl md:text-6xl font-bold text-gray-900 dark:text-white" data-translate="productsPage.title">Our Electric Scooters</h1>
+<p class="mt-4 text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto" data-translate="productsPage.subtitle">Choose the perfect scooter for your urban adventures</p>
+</div>
+
+<div class="grid gap-12 lg:grid-cols-3 mb-16">
+<!-- Model X -->
+<div class="bg-white dark:bg-gray-900/50 rounded-xl overflow-hidden shadow-xl hover:shadow-2xl transition-shadow duration-300">
+<div class="aspect-w-16 aspect-h-9 bg-gradient-to-br from-primary/10 to-primary/30 p-8">
+<img alt="Scooter Model X" class="w-full h-64 object-cover rounded-lg" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAFShQqHxnQlWyuYfDA26QQjZZmR6QbkkYIZaqMSzU8QybXMmqCSvB3bbY_VFohKM3c-8cijaymm51PA-3QQ_c3UElqFAgmkLBKpl2D98a7MBEoTOZpbq9mPPMoRFGgFXwMjpmvc2eDGrfFt8P7qWKGp-PlJv3IRV2SkFXsbZAzK4JN9-h3mXKiRySDpTQWJZedNTbm8b6uvSodJW1pREu1n7GiYSr56eL-Cs8eLqG8rKUG06bNycgR3RzC_6UqG2mi_9zxGXFhBB5A"/>
+</div>
+<div class="p-8">
+<div class="flex justify-between items-center mb-6">
+<h3 class="text-2xl font-bold text-gray-900 dark:text-white" data-translate="modelX">Model X</h3>
+<span class="text-2xl font-bold text-primary" data-translate="modelXPrice">$899</span>
+</div>
+<div class="mb-6">
+<h4 class="font-semibold text-gray-900 dark:text-white mb-4" data-translate="specs">Specifications</h4>
+<div class="grid grid-cols-2 gap-4 text-sm">
+<div>
+<span class="text-gray-500 dark:text-gray-400" data-translate="range">Range</span>
+<p class="font-semibold" data-translate="modelXSpecs.range">35 miles</p>
+</div>
+<div>
+<span class="text-gray-500 dark:text-gray-400" data-translate="maxSpeed">Max Speed</span>
+<p class="font-semibold" data-translate="modelXSpecs.speed">25 mph</p>
+</div>
+<div>
+<span class="text-gray-500 dark:text-gray-400" data-translate="weight">Weight</span>
+<p class="font-semibold" data-translate="modelXSpecs.weight">26 lbs</p>
+</div>
+<div>
+<span class="text-gray-500 dark:text-gray-400" data-translate="chargingTime">Charging Time</span>
+<p class="font-semibold" data-translate="modelXSpecs.charge">4 hours</p>
+</div>
+</div>
+</div>
+<div class="mb-6">
+<h4 class="font-semibold text-gray-900 dark:text-white mb-4" data-translate="keyFeatures">Key Features</h4>
+<ul class="space-y-2" data-translate="modelXFeatures">
+<li class="text-gray-600 dark:text-gray-400">Premium LED Display</li>
+<li class="text-gray-600 dark:text-gray-400">Dual Braking System</li>
+<li class="text-gray-600 dark:text-gray-400">Shock Absorption</li>
+<li class="text-gray-600 dark:text-gray-400">Mobile App Integration</li>
+</ul>
+</div>
+<button class="w-full bg-primary text-white py-3 rounded-lg font-bold hover:bg-primary/90 transition-all" data-translate="productsPage.orderBtn">Order Now</button>
+</div>
+</div>
+
+<!-- Model Y -->
+<div class="bg-white dark:bg-gray-900/50 rounded-xl overflow-hidden shadow-xl hover:shadow-2xl transition-shadow duration-300">
+<div class="aspect-w-16 aspect-h-9 bg-gradient-to-br from-primary/10 to-primary/30 p-8">
+<img alt="Scooter Model Y" class="w-full h-64 object-cover rounded-lg" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDsryx5Gn53rWz0G9ddxE7Em2tBs649bV4jH6x5oZ3lK9K3nzm3t9PIPtzWo1hnxzswo4b9fv5pytNyPE4mse9KbzRZTnV4KLe9rDXUqezbPrVWgZr6BeZfJIRXdUx1I-irfHZjCBm9tKH3SkapvSTCDaIZ3YDjLQ6Km3_4fjs6D-aL_fiuQmPxyGOOpTwBA42bCh64NNGChlyZU89q4vTg-YfnGsg8Qxtl2kMqCV89jeY6KSfXaRULJsiwOx-EE9FhXO4K14YJZwdc"/>
+</div>
+<div class="p-8">
+<div class="flex justify-between items-center mb-6">
+<h3 class="text-2xl font-bold text-gray-900 dark:text-white" data-translate="modelY">Model Y</h3>
+<span class="text-2xl font-bold text-primary" data-translate="modelYPrice">$699</span>
+</div>
+<div class="mb-6">
+<h4 class="font-semibold text-gray-900 dark:text-white mb-4" data-translate="specs">Specifications</h4>
+<div class="grid grid-cols-2 gap-4 text-sm">
+<div>
+<span class="text-gray-500 dark:text-gray-400" data-translate="range">Range</span>
+<p class="font-semibold" data-translate="modelYSpecs.range">28 miles</p>
+</div>
+<div>
+<span class="text-gray-500 dark:text-gray-400" data-translate="maxSpeed">Max Speed</span>
+<p class="font-semibold" data-translate="modelYSpecs.speed">20 mph</p>
+</div>
+<div>
+<span class="text-gray-500 dark:text-gray-400" data-translate="weight">Weight</span>
+<p class="font-semibold" data-translate="modelYSpecs.weight">24 lbs</p>
+</div>
+<div>
+<span class="text-gray-500 dark:text-gray-400" data-translate="chargingTime">Charging Time</span>
+<p class="font-semibold" data-translate="modelYSpecs.charge">3.5 hours</p>
+</div>
+</div>
+</div>
+<div class="mb-6">
+<h4 class="font-semibold text-gray-900 dark:text-white mb-4" data-translate="keyFeatures">Key Features</h4>
+<ul class="space-y-2" data-translate="modelYFeatures">
+<li class="text-gray-600 dark:text-gray-400">Compact Design</li>
+<li class="text-gray-600 dark:text-gray-400">Quick Fold Mechanism</li>
+<li class="text-gray-600 dark:text-gray-400">LED Headlight</li>
+<li class="text-gray-600 dark:text-gray-400">Anti-theft Lock</li>
+</ul>
+</div>
+<button class="w-full bg-primary text-white py-3 rounded-lg font-bold hover:bg-primary/90 transition-all" data-translate="productsPage.orderBtn">Order Now</button>
+</div>
+</div>
+
+<!-- Model Z -->
+<div class="bg-white dark:bg-gray-900/50 rounded-xl overflow-hidden shadow-xl hover:shadow-2xl transition-shadow duration-300 border-2 border-primary">
+<div class="bg-primary text-white text-center py-2 text-sm font-bold">PREMIUM MODEL</div>
+<div class="aspect-w-16 aspect-h-9 bg-gradient-to-br from-primary/10 to-primary/30 p-8">
+<img alt="Scooter Model Z" class="w-full h-64 object-cover rounded-lg" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD-EZBX2QPPowvzdnYcFgo_KXTq45Gn8t1wFPx3dGp07AbUy0yFek1qoEwQJJTSJLNfnp_daRJuZBgryL4aGEiFhI5EqIVvyl0Q1SLMZVGzRHYDuqW7DBFH2hmMGKeCuUMm4kbDX78lJonbDajKVrfIEc2HmTukoZxDxtqSiJT9GVOhR3__1m_sE93QHiHarva6ATWuQEpfAggEPG90QH8erZqLOIrOn2jJHFV-EYU3dFpibImGDkExjg8ZYmWsgpKnSA7-MBSbFyYG"/>
+</div>
+<div class="p-8">
+<div class="flex justify-between items-center mb-6">
+<h3 class="text-2xl font-bold text-gray-900 dark:text-white" data-translate="modelZ">Model Z</h3>
+<span class="text-2xl font-bold text-primary" data-translate="modelZPrice">$1199</span>
+</div>
+<div class="mb-6">
+<h4 class="font-semibold text-gray-900 dark:text-white mb-4" data-translate="specs">Specifications</h4>
+<div class="grid grid-cols-2 gap-4 text-sm">
+<div>
+<span class="text-gray-500 dark:text-gray-400" data-translate="range">Range</span>
+<p class="font-semibold" data-translate="modelZSpecs.range">45 miles</p>
+</div>
+<div>
+<span class="text-gray-500 dark:text-gray-400" data-translate="maxSpeed">Max Speed</span>
+<p class="font-semibold" data-translate="modelZSpecs.speed">30 mph</p>
+</div>
+<div>
+<span class="text-gray-500 dark:text-gray-400" data-translate="weight">Weight</span>
+<p class="font-semibold" data-translate="modelZSpecs.weight">32 lbs</p>
+</div>
+<div>
+<span class="text-gray-500 dark:text-gray-400" data-translate="chargingTime">Charging Time</span>
+<p class="font-semibold" data-translate="modelZSpecs.charge">5 hours</p>
+</div>
+</div>
+</div>
+<div class="mb-6">
+<h4 class="font-semibold text-gray-900 dark:text-white mb-4" data-translate="keyFeatures">Key Features</h4>
+<ul class="space-y-2" data-translate="modelZFeatures">
+<li class="text-gray-600 dark:text-gray-400">Long Range Battery</li>
+<li class="text-gray-600 dark:text-gray-400">High Performance Motor</li>
+<li class="text-gray-600 dark:text-gray-400">All-terrain Tires</li>
+<li class="text-gray-600 dark:text-gray-400">Advanced Suspension</li>
+</ul>
+</div>
+<button class="w-full bg-primary text-white py-3 rounded-lg font-bold hover:bg-primary/90 transition-all" data-translate="productsPage.orderBtn">Order Now</button>
+</div>
+</div>
+</div>
+
+<!-- Accessories Section -->
+<div class="bg-gray-50 dark:bg-gray-900/30 rounded-xl p-8">
+<h2 class="text-3xl font-bold text-center text-gray-900 dark:text-white mb-12" data-translate="accessories">Accessories</h2>
+<div class="grid gap-8 md:grid-cols-2 lg:grid-cols-4">
+<div class="text-center">
+<div class="bg-white dark:bg-gray-800 rounded-lg p-6 shadow-lg">
+<div class="w-16 h-16 mx-auto mb-4 bg-primary/10 rounded-full flex items-center justify-center">
+<span class="material-symbols-outlined text-primary text-2xl">sports_motorsports</span>
+</div>
+<h3 class="font-bold text-gray-900 dark:text-white" data-translate="helmet">Safety Helmet</h3>
+<p class="text-sm text-gray-600 dark:text-gray-400 mt-2" data-translate="helmetDesc">Professional grade helmet with LED indicators</p>
+<p class="text-xl font-bold text-primary mt-4" data-translate="helmetPrice">$89</p>
+</div>
+</div>
+<div class="text-center">
+<div class="bg-white dark:bg-gray-800 rounded-lg p-6 shadow-lg">
+<div class="w-16 h-16 mx-auto mb-4 bg-primary/10 rounded-full flex items-center justify-center">
+<span class="material-symbols-outlined text-primary text-2xl">lock</span>
+</div>
+<h3 class="font-bold text-gray-900 dark:text-white" data-translate="lock">Security Lock</h3>
+<p class="text-sm text-gray-600 dark:text-gray-400 mt-2" data-translate="lockDesc">Smart Bluetooth lock with mobile app control</p>
+<p class="text-xl font-bold text-primary mt-4" data-translate="lockPrice">$45</p>
+</div>
+</div>
+<div class="text-center">
+<div class="bg-white dark:bg-gray-800 rounded-lg p-6 shadow-lg">
+<div class="w-16 h-16 mx-auto mb-4 bg-primary/10 rounded-full flex items-center justify-center">
+<span class="material-symbols-outlined text-primary text-2xl">battery_charging_full</span>
+</div>
+<h3 class="font-bold text-gray-900 dark:text-white" data-translate="charger">Fast Charger</h3>
+<p class="text-sm text-gray-600 dark:text-gray-400 mt-2" data-translate="chargerDesc">Rapid charging dock for all models</p>
+<p class="text-xl font-bold text-primary mt-4" data-translate="chargerPrice">$129</p>
+</div>
+</div>
+<div class="text-center">
+<div class="bg-white dark:bg-gray-800 rounded-lg p-6 shadow-lg">
+<div class="w-16 h-16 mx-auto mb-4 bg-primary/10 rounded-full flex items-center justify-center">
+<span class="material-symbols-outlined text-primary text-2xl">shopping_bag</span>
+</div>
+<h3 class="font-bold text-gray-900 dark:text-white" data-translate="bag">Storage Bag</h3>
+<p class="text-sm text-gray-600 dark:text-gray-400 mt-2" data-translate="bagDesc">Waterproof carrying bag with extra compartments</p>
+<p class="text-xl font-bold text-primary mt-4" data-translate="bagPrice">$69</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+</main>
+
+<footer class="bg-background-light dark:bg-gray-900/50 border-t border-gray-200 dark:border-gray-800">
+<div class="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
+<div class="text-center">
+<div class="flex items-center justify-center gap-2 mb-4">
+<span class="material-symbols-outlined text-primary text-2xl">electric_scooter</span>
+<h2 class="text-xl font-bold text-gray-900 dark:text-white">Vscooter</h2>
+</div>
+<p class="text-gray-500 dark:text-gray-400 text-sm">The future of urban mobility is here.</p>
+<p class="text-sm text-gray-500 dark:text-gray-400 mt-4">© 2023 Vscooter. All rights reserved.</p>
+</div>
+</div>
+</footer>
+</div>
+</body></html>

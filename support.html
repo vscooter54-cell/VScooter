@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Support - Vscooter</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=container-queries"></script>
+<script>
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              primary: "#1173d4",
+              "background-light": "#f6f7f8",
+              "background-dark": "#101922",
+            },
+            fontFamily: {
+              display: ["Space Grotesk"],
+            },
+            borderRadius: {
+              DEFAULT: "0.5rem",
+              lg: "1rem",
+              xl: "1.5rem",
+              full: "9999px",
+            },
+          },
+        },
+      };
+    </script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet"/>
+<style>
+      .material-symbols-outlined {
+        font-variation-settings: "FILL" 1, "wght" 400, "GRAD" 0, "opsz" 24;
+      }
+    </style>
+<script>
+      const translations = {
+        en: {
+          products: "Products",
+          features: "Features",
+          support: "Support",
+          buyNow: "Buy Now",
+          home: "Home",
+          supportPage: {
+            title: "Customer Support",
+            subtitle: "We're here to help with all your Vscooter needs",
+            contactTitle: "Get in Touch",
+            contactSubtitle: "Send us a message and we'll respond within 24 hours"
+          },
+          contact: {
+            name: "Full Name",
+            email: "Email Address",
+            subject: "Subject",
+            message: "Message",
+            send: "Send Message",
+            phone: "+1 (555) 123-4567",
+            emailAddress: "support@vscooter.com",
+            address: "123 Electric Avenue, Tech City, TC 12345",
+            hours: "Mon-Fri: 9AM-6PM PST"
+          },
+          faq: {
+            title: "Frequently Asked Questions",
+            q1: "What is the maximum range of Vscooter models?",
+            a1: "Our Model Z offers the longest range at 45 miles on a single charge. Model X provides 35 miles, and Model Y offers 28 miles of range.",
+            q2: "How long does it take to fully charge the battery?",
+            a2: "Charging times vary by model: Model Y takes 3.5 hours, Model X takes 4 hours, and Model Z takes 5 hours for a full charge.",
+            q3: "Are Vscooters waterproof?",
+            a3: "All our scooters have IPX4 water resistance rating, meaning they can handle light rain and splashes but should not be submerged in water.",
+            q4: "What is the maximum weight capacity?",
+            a4: "All Vscooter models can safely support riders up to 220 lbs (100 kg) while maintaining optimal performance.",
+            q5: "Do you offer international shipping?",
+            a5: "Currently, we ship to the US, Canada, and most European countries. Contact support for specific international shipping options.",
+            q6: "What's included in the warranty?",
+            a6: "We offer a 2-year limited warranty covering manufacturing defects, battery, and motor. Normal wear and tear is not covered."
+          },
+          quickHelp: {
+            title: "Quick Help",
+            userManual: "User Manual",
+            userManualDesc: "Complete guide for setup, operation, and maintenance",
+            warranty: "Warranty Registration",
+            warrantyDesc: "Register your scooter for warranty coverage",
+            troubleshooting: "Troubleshooting",
+            troubleshootingDesc: "Common issues and solutions",
+            parts: "Replacement Parts",
+            partsDesc: "Order genuine Vscooter replacement parts"
+          }
+        },
+        de: {
+          products: "Produkte",
+          features: "Funktionen",
+          support: "Support",
+          buyNow: "Jetzt kaufen",
+          home: "Startseite",
+          supportPage: {
+            title: "Kundensupport",
+            subtitle: "Wir sind hier, um bei all Ihren Vscooter-Bedürfnissen zu helfen",
+            contactTitle: "Kontakt aufnehmen",
+            contactSubtitle: "Senden Sie uns eine Nachricht und wir antworten innerhalb von 24 Stunden"
+          },
+          contact: {
+            name: "Vollständiger Name",
+            email: "E-Mail-Adresse",
+            subject: "Betreff",
+            message: "Nachricht",
+            send: "Nachricht senden",
+            phone: "+49 (0) 30 123-4567",
+            emailAddress: "support@vscooter.de",
+            address: "Elektrische Straße 123, Tech City, 12345 Berlin",
+            hours: "Mo-Fr: 9-18 Uhr MEZ"
+          },
+          faq: {
+            title: "Häufig gestellte Fragen",
+            q1: "Was ist die maximale Reichweite der Vscooter-Modelle?",
+            a1: "Unser Modell Z bietet die längste Reichweite mit 72 km bei einer einzigen Ladung. Modell X bietet 56 km und Modell Y bietet 45 km Reichweite.",
+            q2: "Wie lange dauert es, die Batterie vollständig zu laden?",
+            a2: "Die Ladezeiten variieren je nach Modell: Modell Y dauert 3,5 Stunden, Modell X dauert 4 Stunden und Modell Z dauert 5 Stunden für eine vollständige Ladung.",
+            q3: "Sind Vscooter wasserdicht?",
+            a3: "Alle unsere Roller haben eine IPX4-Wasserdichtigkeitsbewertung, das bedeutet, sie können leichten Regen und Spritzer verarbeiten, sollten aber nicht in Wasser getaucht werden.",
+            q4: "Was ist die maximale Gewichtskapazität?",
+            a4: "Alle Vscooter-Modelle können Fahrer bis zu 100 kg sicher tragen und dabei optimale Leistung beibehalten.",
+            q5: "Bieten Sie internationalen Versand an?",
+            a5: "Derzeit versenden wir in die USA, Kanada und die meisten europäischen Länder. Kontaktieren Sie den Support für spezifische internationale Versandoptionen.",
+            q6: "Was ist in der Garantie enthalten?",
+            a6: "Wir bieten eine 2-jährige eingeschränkte Garantie, die Herstellungsfehler, Batterie und Motor abdeckt. Normaler Verschleiß ist nicht abgedeckt."
+          },
+          quickHelp: {
+            title: "Schnelle Hilfe",
+            userManual: "Benutzerhandbuch",
+            userManualDesc: "Vollständige Anleitung für Setup, Betrieb und Wartung",
+            warranty: "Garantieregistrierung",
+            warrantyDesc: "Registrieren Sie Ihren Roller für Garantieabdeckung",
+            troubleshooting: "Fehlerbehebung",
+            troubleshootingDesc: "Häufige Probleme und Lösungen",
+            parts: "Ersatzteile",
+            partsDesc: "Bestellen Sie echte Vscooter-Ersatzteile"
+          }
+        }
+      };
+
+      let currentLang = 'en';
+
+      function switchLanguage(lang) {
+        currentLang = lang;
+        document.documentElement.lang = lang;
+        updateContent();
+      }
+
+      function updateContent() {
+        const t = translations[currentLang];
+
+        document.querySelectorAll('[data-translate]').forEach(el => {
+          const key = el.getAttribute('data-translate');
+          const keys = key.split('.');
+          let value = t;
+          keys.forEach(k => value = value[k]);
+          if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') {
+            el.placeholder = value;
+          } else {
+            el.textContent = value;
+          }
+        });
+
+        document.querySelectorAll('.lang-btn').forEach(btn => {
+          btn.classList.remove('bg-primary', 'text-white');
+          btn.classList.add('bg-gray-200', 'dark:bg-gray-700', 'text-gray-700', 'dark:text-gray-300');
+        });
+
+        document.querySelector(`[data-lang="${currentLang}"]`).classList.remove('bg-gray-200', 'dark:bg-gray-700', 'text-gray-700', 'dark:text-gray-300');
+        document.querySelector(`[data-lang="${currentLang}"]`).classList.add('bg-primary', 'text-white');
+      }
+
+      function toggleFAQ(element) {
+        const answer = element.nextElementSibling;
+        const icon = element.querySelector('.faq-icon');
+
+        if (answer.style.display === 'none' || answer.style.display === '') {
+          answer.style.display = 'block';
+          icon.textContent = 'remove';
+        } else {
+          answer.style.display = 'none';
+          icon.textContent = 'add';
+        }
+      }
+
+      document.addEventListener('DOMContentLoaded', function() {
+        updateContent();
+
+        // Initialize FAQ answers as hidden
+        document.querySelectorAll('.faq-answer').forEach(answer => {
+          answer.style.display = 'none';
+        });
+      });
+    </script>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display text-gray-800 dark:text-gray-200">
+<div class="flex min-h-screen flex-col">
+<header class="sticky top-0 z-50 bg-background-light/80 dark:bg-background-dark/80 backdrop-blur-sm">
+<div class="container mx-auto px-4 sm:px-6 lg:px-8">
+<div class="flex h-16 items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-3xl">electric_scooter</span>
+<h2 class="text-2xl font-bold text-gray-900 dark:text-white">
+<a href="index.html">Vscooter</a>
+</h2>
+</div>
+<nav class="hidden md:flex items-center gap-8">
+<a class="text-sm font-medium hover:text-primary transition-colors" href="index.html" data-translate="home">Home</a>
+<a class="text-sm font-medium hover:text-primary transition-colors" href="products.html" data-translate="products">Products</a>
+<a class="text-sm font-medium hover:text-primary transition-colors" href="features.html" data-translate="features">Features</a>
+<a class="text-sm font-medium text-primary" href="support.html" data-translate="support">Support</a>
+</nav>
+<div class="flex items-center gap-4">
+<div class="flex items-center gap-2 mr-2">
+<button class="lang-btn px-3 py-1 rounded text-xs font-medium transition-all" data-lang="en" onclick="switchLanguage('en')">EN</button>
+<button class="lang-btn px-3 py-1 rounded text-xs font-medium transition-all" data-lang="de" onclick="switchLanguage('de')">DE</button>
+</div>
+<button class="bg-primary text-white px-4 py-2 rounded-lg text-sm font-bold hover:bg-primary/90 transition-all" data-translate="buyNow">
+Buy Now
+</button>
+<button class="md:hidden">
+<span class="material-symbols-outlined">menu</span>
+</button>
+</div>
+</div>
+</div>
+</header>
+
+<main class="flex-grow">
+<!-- Hero Section -->
+<section class="py-16 md:py-24 bg-gradient-to-br from-primary/10 via-background-light to-primary/5 dark:from-primary/20 dark:via-background-dark dark:to-primary/10">
+<div class="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
+<h1 class="text-4xl md:text-6xl font-bold text-gray-900 dark:text-white mb-6" data-translate="supportPage.title">Customer Support</h1>
+<p class="text-lg md:text-xl text-gray-600 dark:text-gray-400 max-w-3xl mx-auto" data-translate="supportPage.subtitle">We're here to help with all your Vscooter needs</p>
+</div>
+</section>
+
+<!-- Quick Help Section -->
+<section class="py-16 bg-background-light dark:bg-background-dark">
+<div class="container mx-auto px-4 sm:px-6 lg:px-8">
+<h2 class="text-3xl font-bold text-center text-gray-900 dark:text-white mb-12" data-translate="quickHelp.title">Quick Help</h2>
+<div class="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+<div class="bg-white dark:bg-gray-800/50 rounded-xl p-6 shadow-lg hover:shadow-xl transition-shadow cursor-pointer">
+<div class="w-12 h-12 bg-primary/10 dark:bg-primary/20 rounded-lg flex items-center justify-center mb-4">
+<span class="material-symbols-outlined text-primary text-2xl">description</span>
+</div>
+<h3 class="font-bold text-gray-900 dark:text-white mb-2" data-translate="quickHelp.userManual">User Manual</h3>
+<p class="text-sm text-gray-600 dark:text-gray-400" data-translate="quickHelp.userManualDesc">Complete guide for setup, operation, and maintenance</p>
+</div>
+<div class="bg-white dark:bg-gray-800/50 rounded-xl p-6 shadow-lg hover:shadow-xl transition-shadow cursor-pointer">
+<div class="w-12 h-12 bg-primary/10 dark:bg-primary/20 rounded-lg flex items-center justify-center mb-4">
+<span class="material-symbols-outlined text-primary text-2xl">verified_user</span>
+</div>
+<h3 class="font-bold text-gray-900 dark:text-white mb-2" data-translate="quickHelp.warranty">Warranty Registration</h3>
+<p class="text-sm text-gray-600 dark:text-gray-400" data-translate="quickHelp.warrantyDesc">Register your scooter for warranty coverage</p>
+</div>
+<div class="bg-white dark:bg-gray-800/50 rounded-xl p-6 shadow-lg hover:shadow-xl transition-shadow cursor-pointer">
+<div class="w-12 h-12 bg-primary/10 dark:bg-primary/20 rounded-lg flex items-center justify-center mb-4">
+<span class="material-symbols-outlined text-primary text-2xl">build</span>
+</div>
+<h3 class="font-bold text-gray-900 dark:text-white mb-2" data-translate="quickHelp.troubleshooting">Troubleshooting</h3>
+<p class="text-sm text-gray-600 dark:text-gray-400" data-translate="quickHelp.troubleshootingDesc">Common issues and solutions</p>
+</div>
+<div class="bg-white dark:bg-gray-800/50 rounded-xl p-6 shadow-lg hover:shadow-xl transition-shadow cursor-pointer">
+<div class="w-12 h-12 bg-primary/10 dark:bg-primary/20 rounded-lg flex items-center justify-center mb-4">
+<span class="material-symbols-outlined text-primary text-2xl">settings</span>
+</div>
+<h3 class="font-bold text-gray-900 dark:text-white mb-2" data-translate="quickHelp.parts">Replacement Parts</h3>
+<p class="text-sm text-gray-600 dark:text-gray-400" data-translate="quickHelp.partsDesc">Order genuine Vscooter replacement parts</p>
+</div>
+</div>
+</div>
+</section>
+
+<!-- Contact Section -->
+<section class="py-16 md:py-24 bg-gray-50 dark:bg-gray-900/30">
+<div class="container mx-auto px-4 sm:px-6 lg:px-8">
+<div class="grid gap-12 lg:grid-cols-2">
+<div>
+<h2 class="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-6" data-translate="supportPage.contactTitle">Get in Touch</h2>
+<p class="text-lg text-gray-600 dark:text-gray-400 mb-8" data-translate="supportPage.contactSubtitle">Send us a message and we'll respond within 24 hours</p>
+<div class="space-y-6">
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 bg-primary/10 dark:bg-primary/20 rounded-lg flex items-center justify-center">
+<span class="material-symbols-outlined text-primary">phone</span>
+</div>
+<div>
+<p class="font-semibold text-gray-900 dark:text-white" data-translate="contact.phone">+1 (555) 123-4567</p>
+<p class="text-sm text-gray-600 dark:text-gray-400" data-translate="contact.hours">Mon-Fri: 9AM-6PM PST</p>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 bg-primary/10 dark:bg-primary/20 rounded-lg flex items-center justify-center">
+<span class="material-symbols-outlined text-primary">email</span>
+</div>
+<div>
+<p class="font-semibold text-gray-900 dark:text-white" data-translate="contact.emailAddress">support@vscooter.com</p>
+<p class="text-sm text-gray-600 dark:text-gray-400">24/7 Email Support</p>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 bg-primary/10 dark:bg-primary/20 rounded-lg flex items-center justify-center">
+<span class="material-symbols-outlined text-primary">location_on</span>
+</div>
+<div>
+<p class="font-semibold text-gray-900 dark:text-white" data-translate="contact.address">123 Electric Avenue, Tech City, TC 12345</p>
+<p class="text-sm text-gray-600 dark:text-gray-400">Headquarters</p>
+</div>
+</div>
+</div>
+</div>
+<div class="bg-white dark:bg-gray-800/50 rounded-xl p-8 shadow-lg">
+<form class="space-y-6">
+<div>
+<input type="text" placeholder="Full Name" class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary focus:border-transparent" data-translate="contact.name">
+</div>
+<div>
+<input type="email" placeholder="Email Address" class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary focus:border-transparent" data-translate="contact.email">
+</div>
+<div>
+<input type="text" placeholder="Subject" class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary focus:border-transparent" data-translate="contact.subject">
+</div>
+<div>
+<textarea rows="5" placeholder="Message" class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary focus:border-transparent resize-none" data-translate="contact.message"></textarea>
+</div>
+<button type="submit" class="w-full bg-primary text-white py-3 rounded-lg font-bold hover:bg-primary/90 transition-all" data-translate="contact.send">Send Message</button>
+</form>
+</div>
+</div>
+</div>
+</section>
+
+<!-- FAQ Section -->
+<section class="py-16 md:py-24 bg-background-light dark:bg-background-dark">
+<div class="container mx-auto px-4 sm:px-6 lg:px-8">
+<h2 class="text-3xl md:text-4xl font-bold text-center text-gray-900 dark:text-white mb-16" data-translate="faq.title">Frequently Asked Questions</h2>
+<div class="max-w-4xl mx-auto space-y-4">
+<div class="bg-white dark:bg-gray-800/50 rounded-xl overflow-hidden shadow-lg">
+<button class="w-full p-6 text-left flex items-center justify-between hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors" onclick="toggleFAQ(this)">
+<span class="font-semibold text-gray-900 dark:text-white" data-translate="faq.q1">What is the maximum range of Vscooter models?</span>
+<span class="material-symbols-outlined text-primary faq-icon">add</span>
+</button>
+<div class="faq-answer px-6 pb-6">
+<p class="text-gray-600 dark:text-gray-400" data-translate="faq.a1">Our Model Z offers the longest range at 45 miles on a single charge. Model X provides 35 miles, and Model Y offers 28 miles of range.</p>
+</div>
+</div>
+
+<div class="bg-white dark:bg-gray-800/50 rounded-xl overflow-hidden shadow-lg">
+<button class="w-full p-6 text-left flex items-center justify-between hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors" onclick="toggleFAQ(this)">
+<span class="font-semibold text-gray-900 dark:text-white" data-translate="faq.q2">How long does it take to fully charge the battery?</span>
+<span class="material-symbols-outlined text-primary faq-icon">add</span>
+</button>
+<div class="faq-answer px-6 pb-6">
+<p class="text-gray-600 dark:text-gray-400" data-translate="faq.a2">Charging times vary by model: Model Y takes 3.5 hours, Model X takes 4 hours, and Model Z takes 5 hours for a full charge.</p>
+</div>
+</div>
+
+<div class="bg-white dark:bg-gray-800/50 rounded-xl overflow-hidden shadow-lg">
+<button class="w-full p-6 text-left flex items-center justify-between hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors" onclick="toggleFAQ(this)">
+<span class="font-semibold text-gray-900 dark:text-white" data-translate="faq.q3">Are Vscooters waterproof?</span>
+<span class="material-symbols-outlined text-primary faq-icon">add</span>
+</button>
+<div class="faq-answer px-6 pb-6">
+<p class="text-gray-600 dark:text-gray-400" data-translate="faq.a3">All our scooters have IPX4 water resistance rating, meaning they can handle light rain and splashes but should not be submerged in water.</p>
+</div>
+</div>
+
+<div class="bg-white dark:bg-gray-800/50 rounded-xl overflow-hidden shadow-lg">
+<button class="w-full p-6 text-left flex items-center justify-between hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors" onclick="toggleFAQ(this)">
+<span class="font-semibold text-gray-900 dark:text-white" data-translate="faq.q4">What is the maximum weight capacity?</span>
+<span class="material-symbols-outlined text-primary faq-icon">add</span>
+</button>
+<div class="faq-answer px-6 pb-6">
+<p class="text-gray-600 dark:text-gray-400" data-translate="faq.a4">All Vscooter models can safely support riders up to 220 lbs (100 kg) while maintaining optimal performance.</p>
+</div>
+</div>
+
+<div class="bg-white dark:bg-gray-800/50 rounded-xl overflow-hidden shadow-lg">
+<button class="w-full p-6 text-left flex items-center justify-between hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors" onclick="toggleFAQ(this)">
+<span class="font-semibold text-gray-900 dark:text-white" data-translate="faq.q5">Do you offer international shipping?</span>
+<span class="material-symbols-outlined text-primary faq-icon">add</span>
+</button>
+<div class="faq-answer px-6 pb-6">
+<p class="text-gray-600 dark:text-gray-400" data-translate="faq.a5">Currently, we ship to the US, Canada, and most European countries. Contact support for specific international shipping options.</p>
+</div>
+</div>
+
+<div class="bg-white dark:bg-gray-800/50 rounded-xl overflow-hidden shadow-lg">
+<button class="w-full p-6 text-left flex items-center justify-between hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors" onclick="toggleFAQ(this)">
+<span class="font-semibold text-gray-900 dark:text-white" data-translate="faq.q6">What's included in the warranty?</span>
+<span class="material-symbols-outlined text-primary faq-icon">add</span>
+</button>
+<div class="faq-answer px-6 pb-6">
+<p class="text-gray-600 dark:text-gray-400" data-translate="faq.a6">We offer a 2-year limited warranty covering manufacturing defects, battery, and motor. Normal wear and tear is not covered.</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+</main>
+
+<footer class="bg-background-light dark:bg-gray-900/50 border-t border-gray-200 dark:border-gray-800">
+<div class="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
+<div class="text-center">
+<div class="flex items-center justify-center gap-2 mb-4">
+<span class="material-symbols-outlined text-primary text-2xl">electric_scooter</span>
+<h2 class="text-xl font-bold text-gray-900 dark:text-white">Vscooter</h2>
+</div>
+<p class="text-gray-500 dark:text-gray-400 text-sm">The future of urban mobility is here.</p>
+<p class="text-sm text-gray-500 dark:text-gray-400 mt-4">© 2023 Vscooter. All rights reserved.</p>
+</div>
+</div>
+</footer>
+</div>
+</body></html>

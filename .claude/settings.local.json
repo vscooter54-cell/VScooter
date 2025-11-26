@@ -1,0 +1,33 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm create vite@latest:*)",
+      "Bash(npm install)",
+      "Bash(npm install:*)",
+      "Bash(npx tailwindcss init:*)",
+      "Bash(npm run dev)",
+      "Bash(cat:*)",
+      "Bash(npm run build)",
+      "Bash(cp \"d:\\WorkSpace\\VScooter.ch\\E-Roller Falcon 500.webp\" \"d:\\WorkSpace\\VScooter.ch\\vscooter-react\\public\\falcon-500.webp\")",
+      "Bash(cp \"d:\\WorkSpace\\VScooter.ch\\E-Roller Mars.webp\" \"d:\\WorkSpace\\VScooter.ch\\vscooter-react\\public\\mars.webp\")",
+      "Bash(cp \"d:\\WorkSpace\\VScooter.ch\\E-Roller Pit.webp\" \"d:\\WorkSpace\\VScooter.ch\\vscooter-react\\public\\pit.webp\")",
+      "Bash(cp:*)",
+      "Bash(dir:*)",
+      "Bash(node testConnection.js:*)",
+      "Bash(node -e:*)",
+      "Bash(node -c:*)",
+      "Bash(node:*)",
+      "Bash(find:*)",
+      "Bash(python -c:*)",
+      "Bash(unzip:*)",
+      "Bash(mkdir:*)",
+      "Bash(curl:*)",
+      "Bash(npm start)",
+      "Bash(git init:*)",
+      "Bash(git add:*)",
+      "Bash(del nul)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}
