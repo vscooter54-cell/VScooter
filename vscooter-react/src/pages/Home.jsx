@@ -11,30 +11,10 @@ export default function Home() {
   const { addToCart } = useCart();
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [currentSlide, setCurrentSlide] = useState(0);
-
-  // Slideshow images
-  const heroImages = [
-    '/banner2.webp',  // First slide
-    '/banner1.webp',  // Second slide
-    'https://placehold.co/1920x1080/d62828/ffffff?text=VScooter+Hero+3'  // Third slide (placeholder)
-  ];
 
   useEffect(() => {
     fetchFeaturedProducts();
   }, []);
-
-  // Auto-advance slideshow every 5 seconds
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentSlide((prev) => (prev + 1) % heroImages.length);
-    }, 5000);
-    return () => clearInterval(interval);
-  }, [heroImages.length]);
-
-  const goToSlide = (index) => {
-    setCurrentSlide(index);
-  };
 
   const fetchFeaturedProducts = async () => {
     try {
@@ -70,41 +50,15 @@ export default function Home() {
 
   return (
     <main className="flex-grow">
-      {/* Hero Section - Slideshow */}
+      {/* Hero Section - Single Banner */}
       <section className="relative h-[80vh] flex items-center justify-center overflow-hidden">
-        {/* Slideshow Background */}
+        {/* Banner Background */}
         <div className="absolute inset-0 w-full h-full">
-          {heroImages.map((image, index) => (
-            <div
-              key={index}
-              className={`absolute inset-0 w-full h-full transition-opacity duration-1000 ${
-                index === currentSlide ? 'opacity-100' : 'opacity-0'
-              }`}
-            >
-              <img
-                src={image}
-                alt={`Hero ${index + 1}`}
-                className="w-full h-full object-cover object-center"
-              />
-            </div>
-          ))}
-        </div>
-
-
-        {/* Slideshow Navigation Dots */}
-        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex gap-3 z-20">
-          {heroImages.map((_, index) => (
-            <button
-              key={index}
-              onClick={() => goToSlide(index)}
-              className={`w-3 h-3 rounded-full transition-all duration-300 ${
-                index === currentSlide
-                  ? 'bg-white w-8'
-                  : 'bg-white/50 hover:bg-white/75'
-              }`}
-              aria-label={`Go to slide ${index + 1}`}
-            />
-          ))}
+          <img
+            src="/banner2.webp"
+            alt="VScooter Hero Banner"
+            className="w-full h-full object-cover object-center"
+          />
         </div>
       </section>
 
@@ -235,13 +189,24 @@ export default function Home() {
       </section>
 
       {/* Testimonials */}
-      <section className="py-16 md:py-24 bg-gradient-to-t from-red-50 to-orange-50 dark:from-gray-950 dark:to-gray-900">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-3xl font-bold text-center text-gray-900 dark:text-white">
+      <section className="relative py-16 md:py-24 overflow-hidden">
+        {/* Banner1 Background */}
+        <div className="absolute inset-0 w-full h-full">
+          <img
+            src="/banner1.webp"
+            alt="Customer testimonials background"
+            className="w-full h-full object-cover object-center"
+          />
+          {/* Dark overlay for better text readability */}
+          <div className="absolute inset-0 bg-black/40"></div>
+        </div>
+
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+          <h2 className="text-3xl font-bold text-center text-white drop-shadow-lg">
             {currentLang === 'en' ? 'What Our Customers Say' : 'Was unsere Kunden sagen'}
           </h2>
           <div className="mt-12 grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-            <div className="bg-white dark:bg-gray-900/50 rounded-xl p-6 shadow-md">
+            <div className="backdrop-blur-md bg-white/20 dark:bg-white/10 rounded-xl p-6 shadow-lg border border-white/30">
               <div className="flex items-center gap-4">
                 <img
                   alt="Ethan Carter"
@@ -249,8 +214,8 @@ export default function Home() {
                   src="https://lh3.googleusercontent.com/aida-public/AB6AXuBfCyJnibJRoybyNUuJ6z8qkaBFaUNDV2c6K5w0mhKd5c5EMySXPBmweaQKt5T2wL3VUg9TWPK3OZeTKyU_mRpcRfZ1d1BurZwaxXWbpG2ei0ui3oml21H_Xd5JFe2Cmw0_ruQsJN_PlkELdjdS-kZtPJfV6lLHeYLWhy0gstZ6DaHyHLeYvRTTlLX60MoKrvtVjR8jMEEtlnBSuDQuNSiBZ9-xZV5vKCBDDLu05usm1HnotKHtJ-354jeHELM6DVG-9yDbkP8eLgE6"
                 />
                 <div>
-                  <p className="font-bold text-gray-900 dark:text-white">Ethan Carter</p>
-                  <p className="text-sm text-gray-500 dark:text-gray-400">
+                  <p className="font-bold text-white drop-shadow">Ethan Carter</p>
+                  <p className="text-sm text-white/80 drop-shadow">
                     {currentLang === 'en' ? '2 months ago' : 'Vor 2 Monaten'}
                   </p>
                 </div>
@@ -260,13 +225,13 @@ export default function Home() {
                   <span key={i} className="material-symbols-outlined text-primary text-lg">star</span>
                 ))}
               </div>
-              <p className="mt-4 text-gray-600 dark:text-gray-300">
+              <p className="mt-4 text-white drop-shadow">
                 {currentLang === 'en'
                   ? 'Best purchase I\'ve made this year! The Falcon 500 is incredibly smooth and the battery life exceeds expectations.'
                   : 'Bester Kauf, den ich dieses Jahr getätigt habe! Der Falcon 500 ist unglaublich geschmeidig und die Akkulaufzeit übertrifft die Erwartungen.'}
               </p>
             </div>
-            <div className="bg-white dark:bg-gray-900/50 rounded-xl p-6 shadow-md">
+            <div className="backdrop-blur-md bg-white/20 dark:bg-white/10 rounded-xl p-6 shadow-lg border border-white/30">
               <div className="flex items-center gap-4">
                 <img
                   alt="Olivia Bennett"
@@ -274,8 +239,8 @@ export default function Home() {
                   src="https://lh3.googleusercontent.com/aida-public/AB6AXuA83Bzx4n_92X3mKUkXvkGOTWzN7RjgVSQy38_k-g4RRZc6roDyyoUZ8mnWr5gtAFiskl6AixthGSCJznykL9ZGdjJoh9btg0cNm8F57YsIMp29kcw0rIWrXUyWDOEulTtoYvyRvG7fmDpvd5odfnasJoUw_NzLJk9DD53V2x9YVK0mA5t34U6Yp6Lg9v0lg6cR1g9hli2QCFpq_flpfje3RitNNS1CT6Oxl_lRBriZU6ejtT6DrLmycLONdpD1M-hXDMzAbAU4JSA0"
                 />
                 <div>
-                  <p className="font-bold text-gray-900 dark:text-white">Olivia Bennett</p>
-                  <p className="text-sm text-gray-500 dark:text-gray-400">
+                  <p className="font-bold text-white drop-shadow">Olivia Bennett</p>
+                  <p className="text-sm text-white/80 drop-shadow">
                     {currentLang === 'en' ? '3 months ago' : 'Vor 3 Monaten'}
                   </p>
                 </div>
@@ -286,13 +251,13 @@ export default function Home() {
                 ))}
                 <span className="material-symbols-outlined text-gray-400 dark:text-gray-600 text-lg">star</span>
               </div>
-              <p className="mt-4 text-gray-600 dark:text-gray-300">
+              <p className="mt-4 text-white drop-shadow">
                 {currentLang === 'en'
                   ? 'Great scooter for daily commuting. Very reliable and the customer service was excellent.'
                   : 'Toller Roller für den täglichen Pendelverkehr. Sehr zuverlässig und der Kundenservice war ausgezeichnet.'}
               </p>
             </div>
-            <div className="bg-white dark:bg-gray-900/50 rounded-xl p-6 shadow-md">
+            <div className="backdrop-blur-md bg-white/20 dark:bg-white/10 rounded-xl p-6 shadow-lg border border-white/30">
               <div className="flex items-center gap-4">
                 <img
                   alt="Noah Thompson"
@@ -300,8 +265,8 @@ export default function Home() {
                   src="https://lh3.googleusercontent.com/aida-public/AB6AXuAMkKqA5887PyEvMoAoMGbHHQk-Rh_q2cRtzfXC0qx-aTsH5YTspd7j5aYqFbdgaN6R5T1fVrp9MmpUPpYOUSN-IfVcNDarmQb9_fTjeBiGDONL6h16LRJjS1L9iaVPhoZCPH29tDsqpXs4tLslrkG9Jn_L_d8NyBGt49IbljYSjy-gwLtrjleFDcrdUvV71tCnkGEHrA7Eh1xj9e3tYHrks_9-IUuh4lLy9Sj-OF0rGZ5DD8nHxNm12eq-5mZCHd4Ns5BZnyaIpZE_"
                 />
                 <div>
-                  <p className="font-bold text-gray-900 dark:text-white">Noah Thompson</p>
-                  <p className="text-sm text-gray-500 dark:text-gray-400">
+                  <p className="font-bold text-white drop-shadow">Noah Thompson</p>
+                  <p className="text-sm text-white/80 drop-shadow">
                     {currentLang === 'en' ? '4 months ago' : 'Vor 4 Monaten'}
                   </p>
                 </div>
@@ -311,7 +276,7 @@ export default function Home() {
                   <span key={i} className="material-symbols-outlined text-primary text-lg">star</span>
                 ))}
               </div>
-              <p className="mt-4 text-gray-600 dark:text-gray-300">
+              <p className="mt-4 text-white drop-shadow">
                 {currentLang === 'en'
                   ? 'The Amiga is absolutely worth the investment. Premium quality and incredible performance!'
                   : 'Der Amiga ist die Investition absolut wert. Premium-Qualität und unglaubliche Leistung!'}
