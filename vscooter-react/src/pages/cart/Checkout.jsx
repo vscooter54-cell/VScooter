@@ -121,27 +121,32 @@ export default function Checkout() {
         </h1>
 
         {/* Progress Steps */}
-        <div className="flex items-center justify-center mb-8">
-          <div className="flex items-center">
-            <div className={`flex items-center justify-center w-10 h-10 rounded-full ${step >= 1 ? 'bg-red-600 text-white' : 'bg-gray-300 dark:bg-gray-700 text-gray-600 dark:text-gray-400'}`}>
-              1
+        <div className="flex items-center justify-center mb-8 overflow-x-auto px-4">
+          <div className="flex items-center min-w-max">
+            <div className="flex items-center">
+              <div className={`flex items-center justify-center w-8 h-8 sm:w-10 sm:h-10 rounded-full text-sm sm:text-base ${step >= 1 ? 'bg-primary text-white' : 'bg-gray-300 dark:bg-gray-700 text-gray-600 dark:text-gray-400'}`}>
+                1
+              </div>
+              <span className={`ml-2 text-sm sm:text-base whitespace-nowrap ${step >= 1 ? 'text-gray-900 dark:text-white' : 'text-gray-500 dark:text-gray-400'}`}>
+                {language === 'en' ? 'Shipping' : 'Versand'}
+              </span>
             </div>
-            <span className={`ml-2 ${step >= 1 ? 'text-gray-900 dark:text-white' : 'text-gray-500 dark:text-gray-400'}`}>
-              {language === 'en' ? 'Shipping' : 'Versand'}
-            </span>
-          </div>
 
-          <div className="w-24 h-1 mx-4 bg-gray-300 dark:bg-gray-700">
-            <div className={`h-full ${step >= 2 ? 'bg-red-600' : 'bg-gray-300 dark:bg-gray-700'}`} style={{ width: step >= 2 ? '100%' : '0%' }}></div>
-          </div>
-
-          <div className="flex items-center">
-            <div className={`flex items-center justify-center w-10 h-10 rounded-full ${step >= 2 ? 'bg-red-600 text-white' : 'bg-gray-300 dark:bg-gray-700 text-gray-600 dark:text-gray-400'}`}>
-              2
+            <div className="w-16 sm:w-24 h-1 mx-2 sm:mx-4 bg-gray-300 dark:bg-gray-700 rounded-full overflow-hidden">
+              <div
+                className="h-full bg-primary transition-all duration-300"
+                style={{ width: step >= 2 ? '100%' : '0%' }}
+              ></div>
             </div>
-            <span className={`ml-2 ${step >= 2 ? 'text-gray-900 dark:text-white' : 'text-gray-500 dark:text-gray-400'}`}>
-              {language === 'en' ? 'Review' : 'Überprüfen'}
-            </span>
+
+            <div className="flex items-center">
+              <div className={`flex items-center justify-center w-8 h-8 sm:w-10 sm:h-10 rounded-full text-sm sm:text-base ${step >= 2 ? 'bg-primary text-white' : 'bg-gray-300 dark:bg-gray-700 text-gray-600 dark:text-gray-400'}`}>
+                2
+              </div>
+              <span className={`ml-2 text-sm sm:text-base whitespace-nowrap ${step >= 2 ? 'text-gray-900 dark:text-white' : 'text-gray-500 dark:text-gray-400'}`}>
+                {language === 'en' ? 'Review' : 'Überprüfen'}
+              </span>
+            </div>
           </div>
         </div>
 
@@ -154,8 +159,8 @@ export default function Checkout() {
         <div className="lg:grid lg:grid-cols-12 lg:gap-8">
           <div className="lg:col-span-8">
             {step === 1 && (
-              <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6">
-                <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-6">
+              <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-4 sm:p-6">
+                <h2 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white mb-6">
                   {language === 'en' ? 'Shipping Address' : 'Lieferadresse'}
                 </h2>
 
@@ -169,12 +174,12 @@ export default function Checkout() {
                       name="street"
                       value={shippingData.street}
                       onChange={handleShippingChange}
-                      className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-700 dark:text-white"
+                      className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-700 dark:text-white focus:ring-2 focus:ring-primary focus:border-transparent transition-all touch-manipulation"
                       required
                     />
                   </div>
 
-                  <div className="grid grid-cols-2 gap-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
                       <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                         {language === 'en' ? 'City' : 'Stadt'}
@@ -184,7 +189,7 @@ export default function Checkout() {
                         name="city"
                         value={shippingData.city}
                         onChange={handleShippingChange}
-                        className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-700 dark:text-white"
+                        className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-700 dark:text-white focus:ring-2 focus:ring-primary focus:border-transparent transition-all touch-manipulation"
                         required
                       />
                     </div>
@@ -198,13 +203,13 @@ export default function Checkout() {
                         name="state"
                         value={shippingData.state}
                         onChange={handleShippingChange}
-                        className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-700 dark:text-white"
+                        className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-700 dark:text-white focus:ring-2 focus:ring-primary focus:border-transparent transition-all touch-manipulation"
                         required
                       />
                     </div>
                   </div>
 
-                  <div className="grid grid-cols-2 gap-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
                       <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                         {language === 'en' ? 'Postal Code' : 'Postleitzahl'}
@@ -214,7 +219,7 @@ export default function Checkout() {
                         name="postalCode"
                         value={shippingData.postalCode}
                         onChange={handleShippingChange}
-                        className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-700 dark:text-white"
+                        className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-700 dark:text-white focus:ring-2 focus:ring-primary focus:border-transparent transition-all touch-manipulation"
                         required
                       />
                     </div>
@@ -228,21 +233,21 @@ export default function Checkout() {
                         name="country"
                         value={shippingData.country}
                         onChange={handleShippingChange}
-                        className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-700 dark:text-white"
+                        className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-700 dark:text-white focus:ring-2 focus:ring-primary focus:border-transparent transition-all touch-manipulation"
                         required
                       />
                     </div>
                   </div>
 
-                  <div className="flex items-center">
+                  <div className="flex items-center py-2">
                     <input
                       type="checkbox"
                       id="saveAddress"
                       checked={saveAddress}
                       onChange={(e) => setSaveAddress(e.target.checked)}
-                      className="w-4 h-4 text-red-600 border-gray-300 rounded focus:ring-red-500"
+                      className="w-5 h-5 text-primary border-gray-300 rounded focus:ring-primary touch-manipulation"
                     />
-                    <label htmlFor="saveAddress" className="ml-2 text-sm text-gray-700 dark:text-gray-300">
+                    <label htmlFor="saveAddress" className="ml-3 text-sm text-gray-700 dark:text-gray-300">
                       {language === 'en' ? 'Save this address for future orders' : 'Diese Adresse für zukünftige Bestellungen speichern'}
                     </label>
                   </div>
@@ -251,7 +256,7 @@ export default function Checkout() {
                 <div className="mt-6 flex justify-end">
                   <button
                     onClick={handleContinueToReview}
-                    className="bg-red-600 text-white px-6 py-3 rounded-lg hover:bg-red-700 transition-colors"
+                    className="w-full sm:w-auto bg-gradient-to-r from-primary to-accent text-white px-8 py-4 rounded-lg hover:shadow-xl transition-all font-semibold touch-manipulation"
                   >
                     {language === 'en' ? 'Continue to Review' : 'Weiter zur Überprüfung'}
                   </button>
@@ -260,26 +265,29 @@ export default function Checkout() {
             )}
 
             {step === 2 && (
-              <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6">
-                <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-6">
+              <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-4 sm:p-6 mb-24 sm:mb-0">
+                <h2 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white mb-6">
                   {language === 'en' ? 'Review Order' : 'Bestellung überprüfen'}
                 </h2>
 
-                <div className="mb-6">
-                  <h3 className="font-semibold text-gray-900 dark:text-white mb-3">
-                    {language === 'en' ? 'Shipping Address' : 'Lieferadresse'}
-                  </h3>
-                  <div className="text-gray-600 dark:text-gray-400">
+                <div className="mb-6 p-4 bg-gray-50 dark:bg-gray-900 rounded-lg">
+                  <div className="flex justify-between items-start mb-2">
+                    <h3 className="font-semibold text-gray-900 dark:text-white">
+                      {language === 'en' ? 'Shipping Address' : 'Lieferadresse'}
+                    </h3>
+                    <button
+                      onClick={() => setStep(1)}
+                      className="text-primary hover:text-primary/80 text-sm font-medium flex items-center gap-1"
+                    >
+                      <span className="material-symbols-outlined text-sm">edit</span>
+                      {language === 'en' ? 'Edit' : 'Bearbeiten'}
+                    </button>
+                  </div>
+                  <div className="text-sm sm:text-base text-gray-600 dark:text-gray-400">
                     <p>{shippingData.street}</p>
                     <p>{shippingData.city}, {shippingData.state} {shippingData.postalCode}</p>
                     <p>{shippingData.country}</p>
                   </div>
-                  <button
-                    onClick={() => setStep(1)}
-                    className="text-red-600 hover:text-red-700 text-sm mt-2"
-                  >
-                    {language === 'en' ? 'Edit' : 'Bearbeiten'}
-                  </button>
                 </div>
 
                 <div className="border-t border-gray-200 dark:border-gray-700 pt-6">
@@ -287,40 +295,38 @@ export default function Checkout() {
                     {language === 'en' ? 'Order Items' : 'Bestellartikel'}
                   </h3>
                   {cart.items.map((item) => (
-                    <div key={item.product._id} className="flex items-center justify-between mb-4">
-                      <div className="flex items-center">
-                        <img
-                          src={`/${item.product.images?.[0] || 'placeholder.jpg'}`}
-                          alt={item.product.name?.[language] || item.product.name?.en}
-                          className="w-16 h-16 object-cover rounded-lg"
-                        />
-                        <div className="ml-4">
-                          <p className="font-medium text-gray-900 dark:text-white">
-                            {item.product.name?.[language] || item.product.name?.en}
-                          </p>
-                          <p className="text-sm text-gray-600 dark:text-gray-400">
-                            {language === 'en' ? 'Qty' : 'Menge'}: {item.quantity}
-                          </p>
-                        </div>
+                    <div key={item.product._id} className="flex items-center gap-3 sm:gap-4 mb-4 p-3 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-900 transition-colors">
+                      <img
+                        src={`/${item.product.images?.[0] || 'placeholder.jpg'}`}
+                        alt={item.product.name?.[language] || item.product.name?.en}
+                        className="w-12 h-12 sm:w-16 sm:h-16 object-contain rounded-lg bg-gray-100 dark:bg-gray-800"
+                      />
+                      <div className="flex-1 min-w-0">
+                        <p className="font-medium text-gray-900 dark:text-white text-sm sm:text-base truncate">
+                          {item.product.name?.[language] || item.product.name?.en}
+                        </p>
+                        <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-400">
+                          {language === 'en' ? 'Qty' : 'Menge'}: {item.quantity}
+                        </p>
                       </div>
-                      <p className="font-semibold text-gray-900 dark:text-white">
+                      <p className="font-semibold text-gray-900 dark:text-white text-sm sm:text-base whitespace-nowrap">
                         {currency} {((item.product.pricing?.salePrice?.[currency] || 0) * item.quantity).toFixed(2)}
                       </p>
                     </div>
                   ))}
                 </div>
 
-                <div className="mt-6 flex space-x-4">
+                <div className="fixed sm:static bottom-0 left-0 right-0 mt-6 flex flex-col sm:flex-row gap-3 sm:gap-4 p-4 sm:p-0 bg-white dark:bg-gray-800 border-t sm:border-t-0 border-gray-200 dark:border-gray-700 z-30">
                   <button
                     onClick={() => setStep(1)}
-                    className="flex-1 bg-gray-200 dark:bg-gray-700 text-gray-900 dark:text-white px-6 py-3 rounded-lg hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors"
+                    className="flex-1 bg-gray-200 dark:bg-gray-700 text-gray-900 dark:text-white px-6 py-4 rounded-lg hover:bg-gray-300 dark:hover:bg-gray-600 transition-all font-semibold touch-manipulation"
                   >
                     {language === 'en' ? 'Back' : 'Zurück'}
                   </button>
                   <button
                     onClick={handlePlaceOrder}
                     disabled={loading}
-                    className="flex-1 bg-red-600 text-white px-6 py-3 rounded-lg hover:bg-red-700 transition-colors disabled:opacity-50"
+                    className="flex-1 bg-gradient-to-r from-primary to-accent text-white px-6 py-4 rounded-lg hover:shadow-xl transition-all disabled:opacity-50 font-semibold touch-manipulation"
                   >
                     {loading
                       ? (language === 'en' ? 'Placing Order...' : 'Bestellung wird aufgegeben...')
@@ -332,8 +338,8 @@ export default function Checkout() {
           </div>
 
           {/* Order Summary */}
-          <div className="lg:col-span-4 mt-8 lg:mt-0">
-            <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 sticky top-4">
+          <div className="lg:col-span-4">
+            <div className="hidden lg:block bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 sticky top-4">
               <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
                 {language === 'en' ? 'Order Summary' : 'Bestellübersicht'}
               </h2>

@@ -17,6 +17,8 @@ import UserManual from './pages/support/UserManual';
 import WarrantyRegistration from './pages/support/WarrantyRegistration';
 import Troubleshooting from './pages/support/Troubleshooting';
 import ReplacementParts from './pages/support/ReplacementParts';
+import TestDrive from './pages/TestDrive';
+import Contact from './pages/Contact';
 
 // Legal pages
 import Impressum from './pages/Impressum';
@@ -185,6 +187,8 @@ function App() {
                         <Route path="/support/warranty" element={<WarrantyRegistration />} />
                         <Route path="/support/troubleshooting" element={<Troubleshooting />} />
                         <Route path="/support/replacement-parts" element={<ReplacementParts />} />
+                        <Route path="/test-drive" element={<TestDrive />} />
+                        <Route path="/contact" element={<Contact />} />
 
                         {/* Legal routes */}
                         <Route path="/impressum" element={<Impressum />} />

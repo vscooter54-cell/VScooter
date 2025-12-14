@@ -59,6 +59,38 @@ export default function Home() {
             alt="VScooter Hero Banner"
             className="w-full h-full object-cover object-center"
           />
+          {/* Dark overlay for better text/button visibility */}
+          <div className="absolute inset-0 bg-black/30"></div>
+        </div>
+
+        {/* Hero Content */}
+        <div className="relative z-10 text-center px-4 sm:px-6 lg:px-8">
+          <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-white drop-shadow-2xl mb-6">
+            {currentLang === 'en' ? 'Experience the Future' : 'Erleben Sie die Zukunft'}
+          </h1>
+          <p className="text-xl sm:text-2xl md:text-3xl text-white drop-shadow-lg mb-12 max-w-3xl mx-auto">
+            {currentLang === 'en'
+              ? 'Premium Electric Scooters for Your Journey'
+              : 'Premium Elektroroller für Ihre Reise'}
+          </p>
+
+          {/* CTA Buttons - Only show on desktop */}
+          <div className="hidden md:flex gap-6 justify-center">
+            <button
+              onClick={() => navigate('/test-drive')}
+              className="bg-gradient-to-r from-primary to-accent text-white px-8 py-4 rounded-xl font-bold text-lg hover:shadow-2xl hover:scale-105 transition-all duration-300 flex items-center gap-3"
+            >
+              <span className="material-symbols-outlined text-2xl">directions_car</span>
+              {currentLang === 'en' ? 'Book a Test Drive' : 'Probefahrt buchen'}
+            </button>
+            <button
+              onClick={() => navigate('/contact?callback=true')}
+              className="bg-white/90 backdrop-blur-sm text-gray-900 px-8 py-4 rounded-xl font-bold text-lg hover:shadow-2xl hover:scale-105 transition-all duration-300 flex items-center gap-3 border-2 border-white/50"
+            >
+              <span className="material-symbols-outlined text-2xl">call</span>
+              {currentLang === 'en' ? 'Get a Call' : 'Rückruf erhalten'}
+            </button>
+          </div>
         </div>
       </section>
 

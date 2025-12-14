@@ -174,12 +174,12 @@ export default function ProductDetail() {
             {/* Left Column - Sticky Image Gallery */}
             <div className="lg:sticky lg:top-24 lg:self-start" ref={imageContainerRef}>
               {/* Main Image */}
-              <div className="bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-800 dark:to-gray-900 rounded-2xl p-6 lg:p-8 mb-4 relative overflow-hidden group">
+              <div className="bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-800 dark:to-gray-900 rounded-2xl p-4 md:p-6 lg:p-8 mb-4 relative overflow-hidden group">
                 <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-accent/5"></div>
                 <img
                   src={`/${product.images[selectedImage]?.url}`}
                   alt={product.images[selectedImage]?.alt || product.name[currentLang]}
-                  className="relative w-full h-[400px] lg:h-[500px] object-contain cursor-zoom-in transition-transform duration-300 group-hover:scale-105"
+                  className="relative w-full h-[300px] sm:h-[400px] lg:h-[500px] object-contain cursor-zoom-in transition-transform duration-300 group-hover:scale-105"
                   onClick={() => setZoomedImage(product.images[selectedImage]?.url)}
                 />
                 <button
@@ -192,19 +192,19 @@ export default function ProductDetail() {
 
               {/* Thumbnail Gallery */}
               {product.images.length > 1 && (
-                <div className="grid grid-cols-4 gap-3">
+                <div className="grid grid-cols-3 sm:grid-cols-4 gap-2 md:gap-3">
                   {product.images.map((image, index) => (
                     <button
                       key={index}
                       onClick={() => setSelectedImage(index)}
-                      className={`bg-gray-100 dark:bg-gray-800 rounded-xl p-3 hover:ring-2 hover:ring-primary transition-all ${
+                      className={`bg-gray-100 dark:bg-gray-800 rounded-lg md:rounded-xl p-2 md:p-3 hover:ring-2 hover:ring-primary transition-all ${
                         selectedImage === index ? 'ring-2 ring-primary shadow-lg' : ''
                       }`}
                     >
                       <img
                         src={`/${image.url}`}
                         alt={image.alt}
-                        className="w-full h-20 object-contain"
+                        className="w-full h-16 sm:h-20 object-contain"
                       />
                     </button>
                   ))}
@@ -213,15 +213,15 @@ export default function ProductDetail() {
 
               {/* 3D View Button */}
               <div className="mt-4">
-                <button className="w-full bg-gradient-to-r from-purple-600 to-blue-600 text-white py-4 px-6 rounded-xl font-bold hover:opacity-90 transition-all flex items-center justify-center gap-3 shadow-lg hover:shadow-xl">
-                  <span className="material-symbols-outlined text-2xl">view_in_ar</span>
+                <button className="w-full bg-gradient-to-r from-purple-600 to-blue-600 text-white py-3 md:py-4 px-4 md:px-6 rounded-xl font-bold hover:opacity-90 transition-all flex items-center justify-center gap-2 md:gap-3 shadow-lg hover:shadow-xl text-sm md:text-base">
+                  <span className="material-symbols-outlined text-xl md:text-2xl">view_in_ar</span>
                   <span>{currentLang === 'en' ? 'View in 3D' : '3D-Ansicht'}</span>
                   <span className="text-xs bg-white/20 px-2 py-1 rounded-full">Coming Soon</span>
                 </button>
               </div>
 
               {/* Share & Wishlist */}
-              <div className="flex gap-3 mt-4">
+              <div className="flex flex-col sm:flex-row gap-3 mt-4">
                 <button className="flex-1 bg-gray-100 dark:bg-gray-800 py-3 px-4 rounded-xl font-semibold hover:bg-gray-200 dark:hover:bg-gray-700 transition-all flex items-center justify-center gap-2">
                   <span className="material-symbols-outlined">favorite_border</span>
                   <span>{currentLang === 'en' ? 'Wishlist' : 'Wunschliste'}</span>
@@ -334,7 +334,7 @@ export default function ProductDetail() {
 
                 {/* Quick Specs */}
                 {product.specifications && (
-                  <div className="grid grid-cols-2 gap-4 mb-8">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 md:gap-4 mb-8">
                     {product.specifications.range && (
                       <div className="bg-gray-50 dark:bg-gray-800/50 rounded-xl p-4 border border-gray-200 dark:border-gray-700">
                         <div className="flex items-center gap-2 mb-2">
@@ -410,12 +410,12 @@ export default function ProductDetail() {
                 )}
 
                 {/* Add to Cart Section */}
-                <div className="bg-white dark:bg-gray-800 border-2 border-gray-200 dark:border-gray-700 rounded-2xl p-6 sticky bottom-4 shadow-xl">
-                  <div className="flex gap-4 items-center mb-4">
+                <div className="fixed sm:sticky bottom-0 left-0 right-0 sm:bottom-4 bg-white dark:bg-gray-800 border-t-2 sm:border-2 border-gray-200 dark:border-gray-700 sm:rounded-2xl p-4 sm:p-6 shadow-2xl z-30">
+                  <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 items-stretch sm:items-center">
                     <div className="flex items-center border-2 border-gray-300 dark:border-gray-600 rounded-xl overflow-hidden">
                       <button
                         onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                        className="px-5 py-4 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+                        className="px-4 sm:px-5 py-3 sm:py-4 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors touch-manipulation"
                       >
                         <span className="material-symbols-outlined">remove</span>
                       </button>
@@ -423,13 +423,13 @@ export default function ProductDetail() {
                         type="number"
                         value={quantity}
                         onChange={(e) => setQuantity(Math.max(1, parseInt(e.target.value) || 1))}
-                        className="w-20 text-center border-x-2 border-gray-300 dark:border-gray-600 bg-transparent py-4 focus:outline-none text-lg font-semibold"
+                        className="w-16 sm:w-20 text-center border-x-2 border-gray-300 dark:border-gray-600 bg-transparent py-3 sm:py-4 focus:outline-none text-base sm:text-lg font-semibold"
                         min="1"
                         max={product.inventory.stock}
                       />
                       <button
                         onClick={() => setQuantity(Math.min(product.inventory.stock, quantity + 1))}
-                        className="px-5 py-4 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+                        className="px-4 sm:px-5 py-3 sm:py-4 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors touch-manipulation"
                       >
                         <span className="material-symbols-outlined">add</span>
                       </button>
@@ -437,13 +437,14 @@ export default function ProductDetail() {
                     <button
                       onClick={handleAddToCart}
                       disabled={product.inventory.stock === 0}
-                      className="flex-1 bg-gradient-to-r from-primary to-accent text-white py-4 px-6 rounded-xl font-bold text-lg hover:shadow-2xl disabled:opacity-50 disabled:cursor-not-allowed transition-all flex items-center justify-center gap-3 transform hover:scale-105 active:scale-95"
+                      className="flex-1 bg-gradient-to-r from-primary to-accent text-white py-4 px-6 rounded-xl font-bold text-base sm:text-lg hover:shadow-2xl disabled:opacity-50 disabled:cursor-not-allowed transition-all flex items-center justify-center gap-3 transform hover:scale-105 active:scale-95 touch-manipulation"
                     >
-                      <span className="material-symbols-outlined text-2xl">shopping_cart</span>
-                      {currentLang === 'en' ? 'Add to Cart' : 'In den Warenkorb'}
+                      <span className="material-symbols-outlined text-xl sm:text-2xl">shopping_cart</span>
+                      <span className="hidden sm:inline">{currentLang === 'en' ? 'Add to Cart' : 'In den Warenkorb'}</span>
+                      <span className="sm:hidden">{currentLang === 'en' ? 'Add' : 'Hinzufügen'}</span>
                     </button>
                   </div>
-                  <p className="text-sm text-gray-500 dark:text-gray-400 text-center">
+                  <p className="text-xs sm:text-sm text-gray-500 dark:text-gray-400 text-center mt-2 sm:mt-0 sm:absolute sm:bottom-2 sm:right-4">
                     SKU: {product.inventory.sku}
                   </p>
                 </div>
@@ -458,27 +459,29 @@ export default function ProductDetail() {
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
 
           {/* Tab Navigation */}
-          <div className="flex flex-wrap gap-2 mb-8 border-b border-gray-200 dark:border-gray-700">
-            {[
-              { id: 'specifications', label: currentLang === 'en' ? 'Specifications' : 'Spezifikationen', icon: 'table_chart' },
-              { id: 'compare', label: currentLang === 'en' ? 'Compare' : 'Vergleichen', icon: 'compare_arrows' },
-              { id: 'reviews', label: currentLang === 'en' ? 'Reviews' : 'Bewertungen', icon: 'star' },
-              { id: 'qa', label: currentLang === 'en' ? 'Q&A' : 'Fragen & Antworten', icon: 'question_answer' },
-              { id: 'faq', label: 'FAQ', icon: 'help' }
-            ].map(tab => (
-              <button
-                key={tab.id}
-                onClick={() => setActiveTab(tab.id)}
-                className={`flex items-center gap-2 px-6 py-3 rounded-t-xl font-semibold transition-all ${
-                  activeTab === tab.id
-                    ? 'bg-white dark:bg-gray-800 text-primary border-b-2 border-primary'
-                    : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'
-                }`}
-              >
-                <span className="material-symbols-outlined text-xl">{tab.icon}</span>
-                <span>{tab.label}</span>
-              </button>
-            ))}
+          <div className="overflow-x-auto -mx-4 px-4 sm:mx-0 sm:px-0">
+            <div className="flex gap-2 mb-8 border-b border-gray-200 dark:border-gray-700 min-w-max sm:min-w-0">
+              {[
+                { id: 'specifications', label: currentLang === 'en' ? 'Specifications' : 'Spezifikationen', icon: 'table_chart' },
+                { id: 'compare', label: currentLang === 'en' ? 'Compare' : 'Vergleichen', icon: 'compare_arrows' },
+                { id: 'reviews', label: currentLang === 'en' ? 'Reviews' : 'Bewertungen', icon: 'star' },
+                { id: 'qa', label: currentLang === 'en' ? 'Q&A' : 'Fragen & Antworten', icon: 'question_answer' },
+                { id: 'faq', label: 'FAQ', icon: 'help' }
+              ].map(tab => (
+                <button
+                  key={tab.id}
+                  onClick={() => setActiveTab(tab.id)}
+                  className={`flex items-center gap-2 px-4 sm:px-6 py-3 rounded-t-xl font-semibold transition-all whitespace-nowrap text-sm sm:text-base ${
+                    activeTab === tab.id
+                      ? 'bg-white dark:bg-gray-800 text-primary border-b-2 border-primary'
+                      : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'
+                  }`}
+                >
+                  <span className="material-symbols-outlined text-lg sm:text-xl">{tab.icon}</span>
+                  <span>{tab.label}</span>
+                </button>
+              ))}
+            </div>
           </div>
 
           {/* Tab Content */}
@@ -523,7 +526,7 @@ export default function ProductDetail() {
                       ? 'Select up to 3 models to compare (current model already selected)'
                       : 'Wählen Sie bis zu 3 Modelle zum Vergleichen aus (aktuelles Modell bereits ausgewählt)'}
                   </p>
-                  <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                     {allProducts.map(p => (
                       <div
                         key={p._id}
@@ -535,13 +538,13 @@ export default function ProductDetail() {
                         onClick={() => p._id !== product._id && toggleCompare(p._id)}
                       >
                         <div className="flex items-center gap-3">
-                          <img src={`/${p.images[0]?.url}`} alt={p.name[currentLang]} className="w-16 h-16 object-contain" />
-                          <div className="flex-1">
-                            <h4 className="font-semibold text-gray-900 dark:text-white">{p.name[currentLang]}</h4>
-                            <p className="text-primary font-bold">€{p.pricing.eur}</p>
+                          <img src={`/${p.images[0]?.url}`} alt={p.name[currentLang]} className="w-12 h-12 sm:w-16 sm:h-16 object-contain" />
+                          <div className="flex-1 min-w-0">
+                            <h4 className="font-semibold text-gray-900 dark:text-white text-sm sm:text-base truncate">{p.name[currentLang]}</h4>
+                            <p className="text-primary font-bold text-sm sm:text-base">€{p.pricing.eur}</p>
                           </div>
                           {(compareProducts.includes(p._id) || p._id === product._id) && (
-                            <span className="material-symbols-outlined text-primary">check_circle</span>
+                            <span className="material-symbols-outlined text-primary flex-shrink-0">check_circle</span>
                           )}
                         </div>
                       </div>

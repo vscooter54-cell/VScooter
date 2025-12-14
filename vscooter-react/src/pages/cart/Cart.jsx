@@ -150,51 +150,52 @@ export default function Cart() {
           <div className="lg:col-span-8">
             <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden">
               {cartItems.map((item) => (
-                <div key={item.product._id} className="flex items-center p-6 border-b border-gray-200 dark:border-gray-700 last:border-b-0">
+                <div key={item.product._id} className="flex flex-col sm:flex-row sm:items-center p-4 sm:p-6 border-b border-gray-200 dark:border-gray-700 last:border-b-0 gap-4">
                   <img
                     src={`/${item.product.images?.[0] || 'placeholder.jpg'}`}
                     alt={item.product.name?.[language] || item.product.name?.en}
-                    className="w-24 h-24 object-cover rounded-lg"
+                    className="w-full sm:w-24 h-40 sm:h-24 object-contain rounded-lg bg-gray-50 dark:bg-gray-900"
                   />
 
-                  <div className="ml-6 flex-1">
-                    <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
-                      {item.product.name?.[language] || item.product.name?.en}
-                    </h3>
-                    <p className="text-gray-600 dark:text-gray-400 mt-1">
-                      {currency} {item.product.pricing?.salePrice?.[currency] || item.product.pricing?.regularPrice?.[currency]}
+                  <div className="flex-1 min-w-0">
+                    <div className="flex justify-between items-start mb-3">
+                      <h3 className="text-base sm:text-lg font-semibold text-gray-900 dark:text-white pr-4">
+                        {item.product.name?.[language] || item.product.name?.en}
+                      </h3>
+                      <p className="text-lg sm:text-xl font-bold text-gray-900 dark:text-white whitespace-nowrap">
+                        {currency} {((item.product.pricing?.salePrice?.[currency] || item.product.pricing?.regularPrice?.[currency]) * item.quantity).toFixed(2)}
+                      </p>
+                    </div>
+
+                    <p className="text-gray-600 dark:text-gray-400 text-sm mb-4">
+                      {currency} {item.product.pricing?.salePrice?.[currency] || item.product.pricing?.regularPrice?.[currency]} {language === 'en' ? 'each' : 'pro Stück'}
                     </p>
 
-                    <div className="flex items-center mt-4 space-x-4">
-                      <div className="flex items-center border border-gray-300 dark:border-gray-600 rounded-lg">
+                    <div className="flex items-center justify-between sm:justify-start gap-4">
+                      <div className="flex items-center border-2 border-gray-300 dark:border-gray-600 rounded-lg">
                         <button
                           onClick={() => handleQuantityChange(item.product._id, item.quantity - 1)}
-                          className="px-3 py-1 text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700"
+                          className="px-4 py-3 text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors touch-manipulation"
                         >
-                          −
+                          <span className="material-symbols-outlined">remove</span>
                         </button>
-                        <span className="px-4 py-1 text-gray-900 dark:text-white">{item.quantity}</span>
+                        <span className="px-5 py-3 text-gray-900 dark:text-white font-semibold min-w-[3rem] text-center">{item.quantity}</span>
                         <button
                           onClick={() => handleQuantityChange(item.product._id, item.quantity + 1)}
-                          className="px-3 py-1 text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700"
+                          className="px-4 py-3 text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors touch-manipulation"
                         >
-                          +
+                          <span className="material-symbols-outlined">add</span>
                         </button>
                       </div>
 
                       <button
                         onClick={() => handleRemove(item.product._id)}
-                        className="text-red-600 hover:text-red-700 dark:text-red-400 dark:hover:text-red-300"
+                        className="flex items-center gap-2 text-red-600 hover:text-red-700 dark:text-red-400 dark:hover:text-red-300 py-3 px-4 rounded-lg hover:bg-red-50 dark:hover:bg-red-900/20 transition-all touch-manipulation"
                       >
-                        {language === 'en' ? 'Remove' : 'Entfernen'}
+                        <span className="material-symbols-outlined">delete</span>
+                        <span className="hidden sm:inline">{language === 'en' ? 'Remove' : 'Entfernen'}</span>
                       </button>
                     </div>
-                  </div>
-
-                  <div className="ml-6 text-right">
-                    <p className="text-xl font-bold text-gray-900 dark:text-white">
-                      {currency} {((item.product.pricing?.salePrice?.[currency] || item.product.pricing?.regularPrice?.[currency]) * item.quantity).toFixed(2)}
-                    </p>
                   </div>
                 </div>
               ))}
@@ -202,65 +203,69 @@ export default function Cart() {
           </div>
 
           {/* Order Summary */}
-          <div className="lg:col-span-4 mt-8 lg:mt-0">
-            <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 sticky top-4">
-              <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
+          <div className="lg:col-span-4">
+            <div className="fixed lg:sticky bottom-0 left-0 right-0 lg:top-4 bg-white dark:bg-gray-800 rounded-t-2xl lg:rounded-lg shadow-2xl lg:shadow-lg p-4 sm:p-6 z-30 border-t-2 lg:border-2 border-gray-200 dark:border-gray-700">
+              <h2 className="text-lg sm:text-xl font-bold text-gray-900 dark:text-white mb-4">
                 {language === 'en' ? 'Order Summary' : 'Bestellübersicht'}
               </h2>
 
               {isAuthenticated && (
-                <div className="mb-6">
-                  <form onSubmit={handleApplyCoupon} className="flex space-x-2">
+                <details className="mb-6 lg:open" open>
+                  <summary className="lg:hidden cursor-pointer text-primary font-semibold mb-2 list-none flex items-center justify-between">
+                    <span>{language === 'en' ? 'Have a coupon code?' : 'Gutscheincode?'}</span>
+                    <span className="material-symbols-outlined">expand_more</span>
+                  </summary>
+                  <form onSubmit={handleApplyCoupon} className="flex gap-2">
                     <input
                       type="text"
                       value={couponCode}
                       onChange={(e) => setCouponCode(e.target.value)}
                       placeholder={language === 'en' ? 'Coupon code' : 'Gutscheincode'}
-                      className="flex-1 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-700 dark:text-white"
+                      className="flex-1 px-3 py-2 sm:py-2 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-700 dark:text-white text-sm sm:text-base"
                     />
                     <button
                       type="submit"
-                      className="px-4 py-2 bg-gray-200 dark:bg-gray-700 text-gray-900 dark:text-white rounded-lg hover:bg-gray-300 dark:hover:bg-gray-600"
+                      className="px-3 sm:px-4 py-2 bg-gray-200 dark:bg-gray-700 text-gray-900 dark:text-white rounded-lg hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors text-sm sm:text-base whitespace-nowrap"
                     >
                       {language === 'en' ? 'Apply' : 'Anwenden'}
                     </button>
                   </form>
-                  {couponError && <p className="text-red-600 text-sm mt-2">{couponError}</p>}
+                  {couponError && <p className="text-red-600 text-xs sm:text-sm mt-2">{couponError}</p>}
                   {couponSuccess && (
-                    <div className="flex items-center justify-between mt-2 text-green-600 text-sm">
+                    <div className="flex items-center justify-between mt-2 text-green-600 text-xs sm:text-sm">
                       <span>{language === 'en' ? 'Coupon applied!' : 'Gutschein angewendet!'}</span>
                       <button onClick={handleRemoveCoupon} className="underline">
                         {language === 'en' ? 'Remove' : 'Entfernen'}
                       </button>
                     </div>
                   )}
-                </div>
+                </details>
               )}
 
-              <div className="space-y-3 border-t border-gray-200 dark:border-gray-700 pt-4">
-                <div className="flex justify-between text-gray-600 dark:text-gray-400">
+              <div className="space-y-2 sm:space-y-3 border-t border-gray-200 dark:border-gray-700 pt-4">
+                <div className="flex justify-between text-sm sm:text-base text-gray-600 dark:text-gray-400">
                   <span>{language === 'en' ? 'Subtotal' : 'Zwischensumme'}</span>
                   <span>{currency} {calculations.subtotal?.toFixed(2) || '0.00'}</span>
                 </div>
 
                 {calculations.discount > 0 && (
-                  <div className="flex justify-between text-green-600">
+                  <div className="flex justify-between text-sm sm:text-base text-green-600">
                     <span>{language === 'en' ? 'Discount' : 'Rabatt'}</span>
                     <span>-{currency} {calculations.discount?.toFixed(2)}</span>
                   </div>
                 )}
 
-                <div className="flex justify-between text-gray-600 dark:text-gray-400">
+                <div className="flex justify-between text-sm sm:text-base text-gray-600 dark:text-gray-400">
                   <span>{language === 'en' ? 'Tax' : 'Steuer'}</span>
                   <span>{currency} {calculations.tax?.toFixed(2) || '0.00'}</span>
                 </div>
 
-                <div className="flex justify-between text-gray-600 dark:text-gray-400">
+                <div className="flex justify-between text-sm sm:text-base text-gray-600 dark:text-gray-400">
                   <span>{language === 'en' ? 'Shipping' : 'Versand'}</span>
                   <span>{currency} {calculations.shipping?.toFixed(2) || '0.00'}</span>
                 </div>
 
-                <div className="flex justify-between text-xl font-bold text-gray-900 dark:text-white border-t border-gray-200 dark:border-gray-700 pt-3">
+                <div className="flex justify-between text-lg sm:text-xl font-bold text-gray-900 dark:text-white border-t border-gray-200 dark:border-gray-700 pt-3">
                   <span>{language === 'en' ? 'Total' : 'Gesamt'}</span>
                   <span>{currency} {calculations.total?.toFixed(2) || '0.00'}</span>
                 </div>
@@ -268,18 +273,21 @@ export default function Cart() {
 
               <button
                 onClick={handleCheckout}
-                className="w-full mt-6 bg-red-600 text-white py-3 rounded-lg hover:bg-red-700 transition-colors font-semibold"
+                className="w-full mt-4 sm:mt-6 bg-gradient-to-r from-primary to-accent text-white py-4 rounded-lg hover:shadow-xl transition-all font-semibold text-base sm:text-lg touch-manipulation"
               >
                 {language === 'en' ? 'Proceed to Checkout' : 'Zur Kasse gehen'}
               </button>
 
               <Link
                 to="/products"
-                className="block text-center mt-4 text-red-600 hover:text-red-700"
+                className="block text-center mt-3 sm:mt-4 text-primary hover:text-primary/80 text-sm sm:text-base"
               >
                 {language === 'en' ? 'Continue Shopping' : 'Weiter einkaufen'}
               </Link>
             </div>
+
+            {/* Spacer for fixed bottom summary on mobile */}
+            <div className="h-[280px] lg:hidden" aria-hidden="true"></div>
           </div>
         </div>
       </div>
