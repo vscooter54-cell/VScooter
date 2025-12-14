@@ -75,19 +75,19 @@ export default function Home() {
           </p>
 
           {/* CTA Buttons - Only show on desktop */}
-          <div className="hidden md:flex gap-6 justify-center">
+          <div className="hidden md:flex gap-4 justify-center mt-8">
             <button
               onClick={() => navigate('/test-drive')}
-              className="bg-gradient-to-r from-primary to-accent text-white px-8 py-4 rounded-xl font-bold text-lg hover:shadow-2xl hover:scale-105 transition-all duration-300 flex items-center gap-3"
+              className="bg-white/20 dark:bg-white/10 backdrop-blur-md text-white px-6 py-3 rounded-lg font-semibold text-base hover:bg-white/30 dark:hover:bg-white/20 hover:shadow-xl hover:scale-105 transition-all duration-300 flex items-center gap-2 border border-white/30"
             >
-              <span className="material-symbols-outlined text-2xl">directions_car</span>
+              <span className="material-symbols-outlined text-xl">directions_car</span>
               {currentLang === 'en' ? 'Book a Test Drive' : 'Probefahrt buchen'}
             </button>
             <button
               onClick={() => navigate('/contact?callback=true')}
-              className="bg-white/90 backdrop-blur-sm text-gray-900 px-8 py-4 rounded-xl font-bold text-lg hover:shadow-2xl hover:scale-105 transition-all duration-300 flex items-center gap-3 border-2 border-white/50"
+              className="bg-white/20 dark:bg-white/10 backdrop-blur-md text-white px-6 py-3 rounded-lg font-semibold text-base hover:bg-white/30 dark:hover:bg-white/20 hover:shadow-xl hover:scale-105 transition-all duration-300 flex items-center gap-2 border border-white/30"
             >
-              <span className="material-symbols-outlined text-2xl">call</span>
+              <span className="material-symbols-outlined text-xl">call</span>
               {currentLang === 'en' ? 'Get a Call' : 'Rückruf erhalten'}
             </button>
           </div>
