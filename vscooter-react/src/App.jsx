@@ -13,6 +13,10 @@ import ProductDetail from './pages/ProductDetail';
 import Search from './pages/Search';
 import Wishlist from './pages/Wishlist';
 import Support from './pages/Support';
+import UserManual from './pages/support/UserManual';
+import WarrantyRegistration from './pages/support/WarrantyRegistration';
+import Troubleshooting from './pages/support/Troubleshooting';
+import ReplacementParts from './pages/support/ReplacementParts';
 
 // Legal pages
 import Impressum from './pages/Impressum';
@@ -177,6 +181,10 @@ function App() {
                         <Route path="/search" element={<Search />} />
                         <Route path="/wishlist" element={<Wishlist />} />
                         <Route path="/support" element={<Support />} />
+                        <Route path="/support/user-manual" element={<UserManual />} />
+                        <Route path="/support/warranty" element={<WarrantyRegistration />} />
+                        <Route path="/support/troubleshooting" element={<Troubleshooting />} />
+                        <Route path="/support/replacement-parts" element={<ReplacementParts />} />
 
                         {/* Legal routes */}
                         <Route path="/impressum" element={<Impressum />} />

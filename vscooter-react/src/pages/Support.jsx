@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { useLanguage } from '../context/LanguageContext';
 
 export default function Support() {
@@ -39,7 +40,7 @@ export default function Support() {
             {t('quickHelp.title')}
           </h2>
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
-            <div className="bg-white dark:bg-gray-800/50 rounded-xl p-6 shadow-lg hover:shadow-xl transition-shadow cursor-pointer">
+            <Link to="/support/user-manual" className="bg-white dark:bg-gray-800/50 rounded-xl p-6 shadow-lg hover:shadow-xl transition-all hover:scale-105 cursor-pointer">
               <div className="w-12 h-12 bg-primary/10 dark:bg-primary/20 rounded-lg flex items-center justify-center mb-4">
                 <span className="material-symbols-outlined text-primary text-2xl">description</span>
               </div>
@@ -47,8 +48,8 @@ export default function Support() {
                 {t('quickHelp.userManual')}
               </h3>
               <p className="text-sm text-gray-600 dark:text-gray-400">{t('quickHelp.userManualDesc')}</p>
-            </div>
-            <div className="bg-white dark:bg-gray-800/50 rounded-xl p-6 shadow-lg hover:shadow-xl transition-shadow cursor-pointer">
+            </Link>
+            <Link to="/support/warranty" className="bg-white dark:bg-gray-800/50 rounded-xl p-6 shadow-lg hover:shadow-xl transition-all hover:scale-105 cursor-pointer">
               <div className="w-12 h-12 bg-primary/10 dark:bg-primary/20 rounded-lg flex items-center justify-center mb-4">
                 <span className="material-symbols-outlined text-primary text-2xl">verified_user</span>
               </div>
@@ -56,8 +57,8 @@ export default function Support() {
                 {t('quickHelp.warranty')}
               </h3>
               <p className="text-sm text-gray-600 dark:text-gray-400">{t('quickHelp.warrantyDesc')}</p>
-            </div>
-            <div className="bg-white dark:bg-gray-800/50 rounded-xl p-6 shadow-lg hover:shadow-xl transition-shadow cursor-pointer">
+            </Link>
+            <Link to="/support/troubleshooting" className="bg-white dark:bg-gray-800/50 rounded-xl p-6 shadow-lg hover:shadow-xl transition-all hover:scale-105 cursor-pointer">
               <div className="w-12 h-12 bg-primary/10 dark:bg-primary/20 rounded-lg flex items-center justify-center mb-4">
                 <span className="material-symbols-outlined text-primary text-2xl">build</span>
               </div>
@@ -65,8 +66,8 @@ export default function Support() {
                 {t('quickHelp.troubleshooting')}
               </h3>
               <p className="text-sm text-gray-600 dark:text-gray-400">{t('quickHelp.troubleshootingDesc')}</p>
-            </div>
-            <div className="bg-white dark:bg-gray-800/50 rounded-xl p-6 shadow-lg hover:shadow-xl transition-shadow cursor-pointer">
+            </Link>
+            <Link to="/support/replacement-parts" className="bg-white dark:bg-gray-800/50 rounded-xl p-6 shadow-lg hover:shadow-xl transition-all hover:scale-105 cursor-pointer">
               <div className="w-12 h-12 bg-primary/10 dark:bg-primary/20 rounded-lg flex items-center justify-center mb-4">
                 <span className="material-symbols-outlined text-primary text-2xl">settings</span>
               </div>
@@ -74,7 +75,7 @@ export default function Support() {
                 {t('quickHelp.parts')}
               </h3>
               <p className="text-sm text-gray-600 dark:text-gray-400">{t('quickHelp.partsDesc')}</p>
-            </div>
+            </Link>
           </div>
         </div>
       </section>

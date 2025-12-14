@@ -109,13 +109,8 @@ export default function Products() {
               <Link
                 to={`/products/${product._id}`}
                 key={product._id}
-                className={`bg-white dark:bg-gray-900/50 rounded-xl overflow-hidden shadow-xl hover:shadow-2xl transition-all duration-300 flex flex-col cursor-pointer hover:scale-105 ${
-                  product.isPremium ? 'border-2 border-primary' : ''
-                }`}
+                className="bg-white dark:bg-gray-900/50 rounded-xl overflow-hidden shadow-xl hover:shadow-2xl transition-all duration-300 flex flex-col cursor-pointer hover:scale-105"
               >
-                {product.isPremium && (
-                  <div className="bg-primary text-white text-center py-2 text-sm font-bold">PREMIUM MODEL</div>
-                )}
                 <div className="h-64 w-full overflow-hidden bg-gradient-to-br from-primary/10 to-primary/30 flex items-center justify-center p-4">
                   <img
                     alt={product.name[currentLang]}
@@ -131,10 +126,10 @@ export default function Products() {
                     <div className="text-right">
                       {product.pricing.originalPrice && (
                         <div className="text-sm text-gray-400 line-through">
-                          ${product.pricing.originalPrice.usd}
+                          €{product.pricing.originalPrice.eur}
                         </div>
                       )}
-                      <span className="text-2xl font-bold text-primary">${product.pricing.usd}</span>
+                      <span className="text-2xl font-bold text-primary">€{product.pricing.eur}</span>
                     </div>
                   </div>
                   <p className="text-gray-600 dark:text-gray-400 mb-6 line-clamp-3">
@@ -223,7 +218,11 @@ export default function Products() {
                   const icon = iconMap[accessory.subcategory] || 'category';
 
                   return (
-                    <div key={accessory._id} className="text-center">
+                    <Link
+                      to={`/products/${accessory._id}`}
+                      key={accessory._id}
+                      className="text-center"
+                    >
                       <div className="bg-white dark:bg-gray-800 rounded-lg p-6 shadow-lg hover:shadow-xl transition-all hover:scale-105 cursor-pointer">
                         <div className="w-16 h-16 mx-auto mb-4 bg-primary/10 rounded-full flex items-center justify-center">
                           <span className="material-symbols-outlined text-primary text-2xl">{icon}</span>
@@ -237,19 +236,22 @@ export default function Products() {
                         <div className="text-xl font-bold text-primary mt-4">
                           {accessory.pricing.originalPrice && (
                             <span className="text-sm text-gray-400 line-through mr-2">
-                              ${accessory.pricing.originalPrice.usd}
+                              €{accessory.pricing.originalPrice.eur}
                             </span>
                           )}
-                          ${accessory.pricing.usd}
+                          €{accessory.pricing.eur}
                         </div>
                         <button
-                          onClick={() => handleAddToCart(accessory)}
+                          onClick={(e) => {
+                            e.preventDefault();
+                            handleAddToCart(accessory);
+                          }}
                           className="mt-4 w-full bg-primary text-white px-4 py-2 rounded-lg hover:bg-primary/90 transition-colors text-sm font-semibold"
                         >
                           {currentLang === 'en' ? 'Add to Cart' : 'In den Warenkorb'}
                         </button>
                       </div>
-                    </div>
+                    </Link>
                   );
                 })}
               </div>

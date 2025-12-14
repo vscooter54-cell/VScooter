@@ -217,7 +217,7 @@ export default function AdminProducts() {
                         </span>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm font-semibold text-gray-900 dark:text-white">
-                        ${product.pricing.usd}
+                        €{product.pricing.eur}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
                         <span

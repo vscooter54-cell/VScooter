@@ -197,11 +197,11 @@ export default function Wishlist() {
                     <div>
                       {item.product.pricing.originalPrice && (
                         <span className="text-gray-400 line-through text-sm mr-2">
-                          ${item.product.pricing.originalPrice.usd}
+                          €{item.product.pricing.originalPrice.eur}
                         </span>
                       )}
                       <span className="text-2xl font-bold text-primary">
-                        ${item.product.pricing.usd}
+                        €{item.product.pricing.eur}
                       </span>
                     </div>
 

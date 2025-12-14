@@ -1,21 +1,40 @@
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useLanguage } from '../context/LanguageContext';
-import ProductModal from '../components/ProductModal';
 import WelcomeModal from '../components/WelcomeModal';
 import { productAPI } from '../services/api';
 import { useCart } from '../contexts/CartContext';
 
 export default function Home() {
+  const navigate = useNavigate();
   const { currentLang } = useLanguage();
   const { addToCart } = useCart();
-  const [selectedProduct, setSelectedProduct] = useState(null);
-  const [isModalOpen, setIsModalOpen] = useState(false);
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [currentSlide, setCurrentSlide] = useState(0);
+
+  // Slideshow images
+  const heroImages = [
+    '/banner2.webp',  // First slide
+    '/banner1.webp',  // Second slide
+    'https://placehold.co/1920x1080/d62828/ffffff?text=VScooter+Hero+3'  // Third slide (placeholder)
+  ];
 
   useEffect(() => {
     fetchFeaturedProducts();
   }, []);
+
+  // Auto-advance slideshow every 5 seconds
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentSlide((prev) => (prev + 1) % heroImages.length);
+    }, 5000);
+    return () => clearInterval(interval);
+  }, [heroImages.length]);
+
+  const goToSlide = (index) => {
+    setCurrentSlide(index);
+  };
 
   const fetchFeaturedProducts = async () => {
     try {
@@ -33,14 +52,8 @@ export default function Home() {
     }
   };
 
-  const openProductModal = (product) => {
-    setSelectedProduct(product);
-    setIsModalOpen(true);
-  };
-
-  const closeProductModal = () => {
-    setIsModalOpen(false);
-    setTimeout(() => setSelectedProduct(null), 300);
+  const handleProductClick = (productId) => {
+    navigate(`/products/${productId}`);
   };
 
   const handleAddToCart = async (product) => {
@@ -55,38 +68,41 @@ export default function Home() {
 
   return (
     <main className="flex-grow">
-      {/* Hero Section */}
-      <section className="relative min-h-[80vh] flex items-center justify-center overflow-hidden">
-        {/* Video Background */}
+      {/* Hero Section - Slideshow */}
+      <section className="relative h-[80vh] flex items-center justify-center overflow-hidden">
+        {/* Slideshow Background */}
         <div className="absolute inset-0 w-full h-full">
-          <iframe
-            className="absolute top-1/2 left-1/2 w-[100vw] h-[56.25vw] min-h-[100vh] min-w-[177.77vh] -translate-x-1/2 -translate-y-1/2"
-            src="https://www.youtube.com/embed/PCugszp8ehk?autoplay=1&mute=1&loop=1&playlist=PCugszp8ehk&controls=0&showinfo=0&rel=0&modestbranding=1&iv_load_policy=3&fs=0&disablekb=1"
-            title="Hero Video"
-            frameBorder="0"
-            allow="autoplay; encrypted-media"
-            allowFullScreen
-          />
-          {/* Dark Overlay */}
-          <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/50 to-black/70"></div>
+          {heroImages.map((image, index) => (
+            <div
+              key={index}
+              className={`absolute inset-0 w-full h-full transition-opacity duration-1000 ${
+                index === currentSlide ? 'opacity-100' : 'opacity-0'
+              }`}
+            >
+              <img
+                src={image}
+                alt={`Hero ${index + 1}`}
+                className="w-full h-full object-cover object-center"
+              />
+            </div>
+          ))}
         </div>
 
-        {/* Content */}
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8 text-white text-center relative z-10">
-          <h1 className="text-6xl md:text-8xl font-bold tracking-tighter text-white drop-shadow-2xl">
-            {currentLang === 'en' ? 'Ride the Future' : 'Fahre die Zukunft'}
-          </h1>
-          <p className="mt-4 text-lg md:text-xl text-gray-200 max-w-2xl mx-auto drop-shadow-lg">
-            {currentLang === 'en'
-              ? 'Experience the freedom of electric mobility with our premium scooters'
-              : 'Erleben Sie die Freiheit elektrischer Mobilität mit unseren Premium-Rollern'}
-          </p>
-          <a
-            href="/products"
-            className="inline-block mt-8 bg-gradient-to-r from-primary to-accent text-white px-8 py-4 rounded-xl text-lg font-bold hover:shadow-2xl hover:scale-105 transition-all duration-300 shadow-lg"
-          >
-            {currentLang === 'en' ? 'Explore Models' : 'Modelle erkunden'}
-          </a>
+
+        {/* Slideshow Navigation Dots */}
+        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex gap-3 z-20">
+          {heroImages.map((_, index) => (
+            <button
+              key={index}
+              onClick={() => goToSlide(index)}
+              className={`w-3 h-3 rounded-full transition-all duration-300 ${
+                index === currentSlide
+                  ? 'bg-white w-8'
+                  : 'bg-white/50 hover:bg-white/75'
+              }`}
+              aria-label={`Go to slide ${index + 1}`}
+            />
+          ))}
         </div>
       </section>
 
@@ -108,7 +124,7 @@ export default function Home() {
               {products.map((product) => (
                 <div
                   key={product._id}
-                  onClick={() => openProductModal(product)}
+                  onClick={() => handleProductClick(product._id)}
                   className="bg-white dark:bg-gray-900/50 rounded-xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 flex flex-col cursor-pointer hover:scale-105"
                 >
                   <div className="h-64 w-full overflow-hidden bg-gradient-to-br from-primary/10 to-primary/30">
@@ -136,10 +152,10 @@ export default function Home() {
                       <div>
                         {product.pricing.originalPrice && (
                           <span className="text-sm text-gray-400 line-through mr-2">
-                            ${product.pricing.originalPrice.usd}
+                            €{product.pricing.originalPrice.eur}
                           </span>
                         )}
-                        <span className="text-2xl font-bold text-primary">${product.pricing.usd}</span>
+                        <span className="text-2xl font-bold text-primary">€{product.pricing.eur}</span>
                       </div>
                     </div>
                     <button
@@ -305,13 +321,6 @@ export default function Home() {
 
       {/* Welcome Modal */}
       <WelcomeModal />
-
-      {/* Product Modal */}
-      <ProductModal
-        product={selectedProduct}
-        isOpen={isModalOpen}
-        onClose={closeProductModal}
-      />
     </main>
   );
 }

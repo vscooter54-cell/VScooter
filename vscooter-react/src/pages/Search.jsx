@@ -103,8 +103,8 @@ export default function Search() {
     if (filters.category !== 'all' && product.category !== filters.category) return false;
 
     // Price filter
-    if (filters.minPrice && product.pricing.usd < parseFloat(filters.minPrice)) return false;
-    if (filters.maxPrice && product.pricing.usd > parseFloat(filters.maxPrice)) return false;
+    if (filters.minPrice && product.pricing.eur < parseFloat(filters.minPrice)) return false;
+    if (filters.maxPrice && product.pricing.eur > parseFloat(filters.maxPrice)) return false;
 
     // Rating filter
     if (filters.rating && (product.rating?.average || 0) < parseFloat(filters.rating))
@@ -126,9 +126,9 @@ export default function Search() {
   filteredProducts = [...filteredProducts].sort((a, b) => {
     switch (sortBy) {
       case 'price-asc':
-        return a.pricing.usd - b.pricing.usd;
+        return a.pricing.eur - b.pricing.eur;
       case 'price-desc':
-        return b.pricing.usd - a.pricing.usd;
+        return b.pricing.eur - a.pricing.eur;
       case 'rating':
         return (b.rating?.average || 0) - (a.rating?.average || 0);
       case 'newest':
@@ -367,11 +367,11 @@ export default function Search() {
                         <div>
                           {product.pricing.originalPrice && (
                             <span className="text-sm text-gray-400 line-through mr-2">
-                              ${product.pricing.originalPrice.usd}
+                              €{product.pricing.originalPrice.eur}
                             </span>
                           )}
                           <span className="text-xl font-bold text-primary">
-                            ${product.pricing.usd}
+                            €{product.pricing.eur}
                           </span>
                         </div>
                         {product.inventory.stock > 0 ? (

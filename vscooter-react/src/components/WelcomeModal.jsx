@@ -30,7 +30,7 @@ export default function WelcomeModal() {
     >
       <div className="flex min-h-screen items-center justify-center p-4">
         <div
-          className={`relative rounded-3xl shadow-2xl max-w-5xl w-full overflow-hidden transition-all duration-300 ${
+          className={`relative rounded-3xl shadow-2xl w-auto max-h-[90vh] overflow-hidden transition-all duration-300 ${
             isAnimating ? 'scale-100 opacity-100' : 'scale-75 opacity-0'
           }`}
           onClick={(e) => e.stopPropagation()}
@@ -45,10 +45,21 @@ export default function WelcomeModal() {
 
           {/* Popup Modal Image */}
           <img
-            src="/popupmodal.jfif"
+            src="/firstpopup.webp"
             alt="Vscooter Popup"
-            className="w-full h-auto rounded-3xl"
+            className="w-auto max-h-[90vh] rounded-3xl object-contain"
           />
+
+          {/* Explore Now Button */}
+          <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-10">
+            <a
+              href="/products"
+              onClick={handleClose}
+              className="inline-block bg-gradient-to-r from-primary to-accent text-white px-10 py-4 rounded-xl text-lg font-bold hover:shadow-2xl hover:scale-105 transition-all duration-300 shadow-lg"
+            >
+              Explore Now
+            </a>
+          </div>
         </div>
       </div>
     </div>

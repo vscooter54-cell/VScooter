@@ -78,7 +78,12 @@ const products = [
     subcategory: 'model-y',
     pricing: {
       usd: 699,
-      eur: 699
+      eur: 699,
+      originalPrice: {
+        usd: 799,
+        eur: 799
+      },
+      discount: 13
     },
     images: [
       { url: 'mars.webp', alt: 'Mars Electric Scooter', isPrimary: true },
