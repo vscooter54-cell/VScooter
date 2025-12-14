@@ -8,7 +8,7 @@ const api = axios.create({
   headers: {
     'Content-Type': 'application/json',
   },
-  withCredentials: true, // Include cookies in requests
+  withCredentials: false, // Disabled for demo - no authentication needed
 });
 
 // Request interceptor to add token

@@ -41,12 +41,14 @@ export default function Home() {
       setLoading(true);
       const response = await productAPI.getAll();
       // Get only featured scooters
-      const featured = response.data.data.filter(
+      const data = response?.data?.data || [];
+      const featured = data.filter(
         (p) => p.category === 'scooter' && p.isFeatured && p.isActive
       );
       setProducts(featured);
     } catch (err) {
       console.error('Error fetching featured products:', err);
+      setProducts([]); // Set empty array on error
     } finally {
       setLoading(false);
     }

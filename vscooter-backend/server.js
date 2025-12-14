@@ -33,6 +33,21 @@ connectDB();
 // Trust proxy (for rate limiting behind reverse proxy)
 app.set('trust proxy', 1);
 
+// CORS Configuration - Manual headers (cors package not working)
+console.log('🔧 CORS: Setting manual headers for all origins');
+
+app.use((req, res, next) => {
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS');
+  res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+
+  // Handle preflight
+  if (req.method === 'OPTIONS') {
+    return res.sendStatus(200);
+  }
+  next();
+});
+
 // Security Middleware
 // Helmet helps secure Express apps by setting various HTTP headers
 app.use(helmet({
@@ -58,31 +73,6 @@ const authLimiter = rateLimit({
   max: 5,
   message: 'Too many authentication attempts, please try again later'
 });
-
-// CORS Configuration
-const corsOptions = {
-  origin: function (origin, callback) {
-    // Allow requests with no origin (like mobile apps or curl requests)
-    if (!origin) return callback(null, true);
-
-    // In development, allow all localhost origins
-    if (process.env.NODE_ENV === 'development' && origin.startsWith('http://localhost:')) {
-      return callback(null, true);
-    }
-
-    // In production, only allow the configured frontend URL
-    const allowedOrigins = [process.env.FRONTEND_URL || 'http://localhost:5173'];
-    if (allowedOrigins.includes(origin)) {
-      return callback(null, true);
-    }
-
-    callback(new Error('Not allowed by CORS'));
-  },
-  credentials: true,
-  optionsSuccessStatus: 200
-};
-
-app.use(cors(corsOptions));
 
 // Body Parser Middleware
 app.use(express.json({ limit: '10mb' }));

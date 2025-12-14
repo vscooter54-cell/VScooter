@@ -46,9 +46,11 @@ export default function ProductDetail() {
   const fetchAllProducts = async () => {
     try {
       const response = await productAPI.getAll();
-      setAllProducts(response.data.data.filter(p => p.category === 'scooter' && p.isActive));
+      const data = response?.data?.data || [];
+      setAllProducts(data.filter(p => p.category === 'scooter' && p.isActive));
     } catch (err) {
       console.error('Error fetching products:', err);
+      setAllProducts([]);
     }
   };
 

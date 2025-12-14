@@ -22,18 +22,28 @@ export default function Products() {
   const fetchProducts = async () => {
     try {
       setLoading(true);
+      console.log('Fetching products from API...');
       const response = await productAPI.getAll();
+      console.log('API Response:', response);
+      console.log('Response data:', response?.data);
+      console.log('Response data.data:', response?.data?.data);
 
       // Separate scooters and accessories
-      const scooters = response.data.data.filter(p => p.category === 'scooter' && p.isActive);
-      const accs = response.data.data.filter(p => p.category === 'accessory' && p.isActive);
+      const data = response?.data?.data || [];
+      console.log('Extracted data array:', data);
+      const scooters = data.filter(p => p.category === 'scooter' && p.isActive);
+      const accs = data.filter(p => p.category === 'accessory' && p.isActive);
+      console.log('Scooters:', scooters.length, 'Accessories:', accs.length);
 
       setProducts(scooters);
       setAccessories(accs);
       setError('');
     } catch (err) {
       console.error('Error fetching products:', err);
+      console.error('Error details:', err.response || err.message);
       setError('Failed to load products. Please try again later.');
+      setProducts([]);
+      setAccessories([]);
     } finally {
       setLoading(false);
     }
