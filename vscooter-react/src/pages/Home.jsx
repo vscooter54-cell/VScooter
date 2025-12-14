@@ -63,34 +63,22 @@ export default function Home() {
           <div className="absolute inset-0 bg-black/30"></div>
         </div>
 
-        {/* Hero Content */}
-        <div className="relative z-10 text-center px-4 sm:px-6 lg:px-8">
-          <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-white drop-shadow-2xl mb-6">
-            {currentLang === 'en' ? 'Experience the Future' : 'Erleben Sie die Zukunft'}
-          </h1>
-          <p className="text-xl sm:text-2xl md:text-3xl text-white drop-shadow-lg mb-12 max-w-3xl mx-auto">
-            {currentLang === 'en'
-              ? 'Premium Electric Scooters for Your Journey'
-              : 'Premium Elektroroller für Ihre Reise'}
-          </p>
-
-          {/* CTA Buttons - Only show on desktop */}
-          <div className="hidden md:flex gap-4 justify-center mt-8">
-            <button
-              onClick={() => navigate('/test-drive')}
-              className="bg-white/20 dark:bg-white/10 backdrop-blur-md text-white px-6 py-3 rounded-lg font-semibold text-base hover:bg-white/30 dark:hover:bg-white/20 hover:shadow-xl hover:scale-105 transition-all duration-300 flex items-center gap-2 border border-white/30"
-            >
-              <span className="material-symbols-outlined text-xl">directions_car</span>
-              {currentLang === 'en' ? 'Book a Test Drive' : 'Probefahrt buchen'}
-            </button>
-            <button
-              onClick={() => navigate('/contact?callback=true')}
-              className="bg-white/20 dark:bg-white/10 backdrop-blur-md text-white px-6 py-3 rounded-lg font-semibold text-base hover:bg-white/30 dark:hover:bg-white/20 hover:shadow-xl hover:scale-105 transition-all duration-300 flex items-center gap-2 border border-white/30"
-            >
-              <span className="material-symbols-outlined text-xl">call</span>
-              {currentLang === 'en' ? 'Get a Call' : 'Rückruf erhalten'}
-            </button>
-          </div>
+        {/* CTA Buttons - Positioned at bottom */}
+        <div className="absolute bottom-12 left-0 right-0 z-10 hidden md:flex gap-4 justify-center px-4">
+          <button
+            onClick={() => navigate('/test-drive')}
+            className="bg-white/20 dark:bg-white/10 backdrop-blur-md text-white px-6 py-3 rounded-lg font-semibold text-base hover:bg-primary hover:border-primary hover:shadow-xl hover:scale-105 transition-all duration-300 flex items-center gap-2 border border-white/30"
+          >
+            <span className="material-symbols-outlined text-xl">directions_car</span>
+            {currentLang === 'en' ? 'Book a Test Drive' : 'Probefahrt buchen'}
+          </button>
+          <button
+            onClick={() => navigate('/contact?callback=true')}
+            className="bg-white/20 dark:bg-white/10 backdrop-blur-md text-white px-6 py-3 rounded-lg font-semibold text-base hover:bg-accent hover:border-accent hover:shadow-xl hover:scale-105 transition-all duration-300 flex items-center gap-2 border border-white/30"
+          >
+            <span className="material-symbols-outlined text-xl">call</span>
+            {currentLang === 'en' ? 'Get a Call' : 'Rückruf erhalten'}
+          </button>
         </div>
       </section>
 
