@@ -291,7 +291,7 @@ export default function Home() {
               >
                 {testimonials.map((testimonial, index) => (
                   <div key={index} className="w-full flex-shrink-0 px-4">
-                    <div className="bg-white dark:bg-gray-900 rounded-xl p-6 shadow-lg">
+                    <div className="rounded-xl p-6">
                       <div className="flex items-center gap-4">
                         <img
                           alt={testimonial.name}
@@ -299,8 +299,8 @@ export default function Home() {
                           src={testimonial.image}
                         />
                         <div>
-                          <p className="font-bold text-gray-900 dark:text-white">{testimonial.name}</p>
-                          <p className="text-sm text-gray-600 dark:text-gray-400">{testimonial.time}</p>
+                          <p className="font-bold text-white drop-shadow">{testimonial.name}</p>
+                          <p className="text-sm text-white/80 drop-shadow">{testimonial.time}</p>
                         </div>
                       </div>
                       <div className="flex mt-3">
@@ -311,7 +311,7 @@ export default function Home() {
                           <span key={i} className="material-symbols-outlined text-gray-400 dark:text-gray-600 text-lg">star</span>
                         ))}
                       </div>
-                      <p className="mt-4 text-gray-700 dark:text-gray-300">{testimonial.text}</p>
+                      <p className="mt-4 text-white drop-shadow">{testimonial.text}</p>
                     </div>
                   </div>
                 ))}
@@ -352,7 +352,7 @@ export default function Home() {
           {/* Desktop Grid */}
           <div className="hidden md:grid mt-12 gap-8 md:grid-cols-2 lg:grid-cols-3">
             {testimonials.map((testimonial, index) => (
-              <div key={index} className="backdrop-blur-md bg-white/20 dark:bg-white/10 rounded-xl p-6 shadow-lg border border-white/30">
+              <div key={index} className="rounded-xl p-6">
                 <div className="flex items-center gap-4">
                   <img
                     alt={testimonial.name}
