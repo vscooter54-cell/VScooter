@@ -22,11 +22,8 @@ export default function Home() {
     fetchFeaturedProducts();
   }, []);
 
-  // Scroll animation for mobile
+  // Scroll animation for all devices
   useEffect(() => {
-    const isMobile = window.innerWidth < 768;
-    if (!isMobile) return;
-
     const observerOptions = {
       threshold: 0.1,
       rootMargin: '0px 0px -50px 0px'
@@ -131,35 +128,37 @@ export default function Home() {
   return (
     <main className="flex-grow">
       <style>{`
-        @media (max-width: 768px) {
-          .mobile-animate {
-            opacity: 0;
-            transform: scale(0.8) translateY(30px);
-            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
-          }
+        .mobile-animate {
+          opacity: 0;
+          transform: scale(0.8) translateY(30px);
+          transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
 
-          .mobile-animate.visible {
-            opacity: 1;
-            transform: scale(1) translateY(0);
-          }
+        .mobile-animate.visible {
+          opacity: 1;
+          transform: scale(1) translateY(0);
         }
       `}</style>
 
       {/* Hero Section - Single Banner */}
-      <section className="relative h-[80vh] flex items-center justify-center overflow-hidden">
-        {/* Banner Background */}
-        <div className="absolute inset-0 w-full h-full">
-          {/* Mobile Banner - Portrait */}
+      <section className="relative h-auto md:h-[80vh] flex items-center justify-center overflow-hidden">
+        {/* Mobile Banner - Portrait */}
+        <div className="block md:hidden w-full relative">
           <img
             src="/banner-mobile.webp"
             alt="VScooter Hero Banner Mobile"
-            className="block md:hidden w-full h-full object-contain object-center"
+            className="w-full h-auto"
           />
-          {/* Desktop Banner - Landscape */}
+          {/* Dark overlay for better text/button visibility */}
+          <div className="absolute inset-0 bg-black/30"></div>
+        </div>
+
+        {/* Desktop Banner - Landscape */}
+        <div className="hidden md:block absolute inset-0 w-full h-full">
           <img
             src="/banner2.webp"
             alt="VScooter Hero Banner Desktop"
-            className="hidden md:block w-full h-full object-cover object-center"
+            className="w-full h-full object-cover object-center"
           />
           {/* Dark overlay for better text/button visibility */}
           <div className="absolute inset-0 bg-black/30"></div>
