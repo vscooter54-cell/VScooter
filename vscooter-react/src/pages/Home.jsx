@@ -11,18 +11,13 @@ export default function Home() {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [currentSlide, setCurrentSlide] = useState(0);
-  const [visibleSections, setVisibleSections] = useState(new Set());
-
-  const mobileCtaRef = useRef(null);
-  const featuredRef = useRef(null);
-  const whyChooseRef = useRef(null);
-  const testimonialsRef = useRef(null);
+  const [visibleItems, setVisibleItems] = useState(new Set());
 
   useEffect(() => {
     fetchFeaturedProducts();
   }, []);
 
-  // Scroll animation for all devices
+  // Scroll animation for individual items
   useEffect(() => {
     const observerOptions = {
       threshold: 0.1,
@@ -32,28 +27,28 @@ export default function Home() {
     const observerCallback = (entries) => {
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
-          setVisibleSections((prev) => new Set(prev).add(entry.target.dataset.section));
+          const itemId = entry.target.dataset.animateId;
+          if (itemId) {
+            setVisibleItems((prev) => new Set(prev).add(itemId));
+          }
         }
       });
     };
 
     const observer = new IntersectionObserver(observerCallback, observerOptions);
 
-    const sections = [mobileCtaRef, featuredRef, whyChooseRef, testimonialsRef];
-    sections.forEach((ref) => {
-      if (ref.current) {
-        observer.observe(ref.current);
-      }
+    // Observe all elements with animate-on-scroll class
+    const animateElements = document.querySelectorAll('.animate-on-scroll');
+    animateElements.forEach((element) => {
+      observer.observe(element);
     });
 
     return () => {
-      sections.forEach((ref) => {
-        if (ref.current) {
-          observer.unobserve(ref.current);
-        }
+      animateElements.forEach((element) => {
+        observer.unobserve(element);
       });
     };
-  }, []);
+  }, [products]);
 
   const fetchFeaturedProducts = async () => {
     try {
@@ -128,13 +123,13 @@ export default function Home() {
   return (
     <main className="flex-grow">
       <style>{`
-        .mobile-animate {
+        .animate-on-scroll {
           opacity: 0;
           transform: scale(0.8) translateY(30px);
           transition: opacity 0.6s ease-out, transform 0.6s ease-out;
         }
 
-        .mobile-animate.visible {
+        .animate-on-scroll.visible {
           opacity: 1;
           transform: scale(1) translateY(0);
         }
@@ -185,9 +180,8 @@ export default function Home() {
 
       {/* Mobile CTA - Book a Test Drive */}
       <div
-        ref={mobileCtaRef}
-        data-section="mobileCta"
-        className={`md:hidden bg-gradient-to-b from-red-50 to-orange-50 dark:from-gray-950 dark:to-gray-900 py-4 px-4 mobile-animate ${visibleSections.has('mobileCta') ? 'visible' : ''}`}
+        data-animate-id="mobileCta"
+        className={`md:hidden bg-gradient-to-b from-red-50 to-orange-50 dark:from-gray-950 dark:to-gray-900 py-4 px-4 animate-on-scroll ${visibleItems.has('mobileCta') ? 'visible' : ''}`}
       >
         <button
           onClick={() => navigate('/test-drive')}
@@ -199,11 +193,7 @@ export default function Home() {
       </div>
 
       {/* Featured Models */}
-      <section
-        ref={featuredRef}
-        data-section="featured"
-        className={`py-16 md:py-24 bg-gradient-to-b from-red-50 to-orange-50 dark:from-gray-950 dark:to-gray-900 mobile-animate ${visibleSections.has('featured') ? 'visible' : ''}`}
-      >
+      <section className="py-16 md:py-24 bg-gradient-to-b from-red-50 to-orange-50 dark:from-gray-950 dark:to-gray-900">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="text-3xl font-bold text-center text-gray-900 dark:text-white">
             {currentLang === 'en' ? 'Featured Models' : 'Ausgewählte Modelle'}
@@ -217,11 +207,12 @@ export default function Home() {
             </div>
           ) : (
             <div className="mt-12 grid gap-8 md:grid-cols-3">
-              {products.map((product) => (
+              {products.map((product, index) => (
                 <div
                   key={product._id}
+                  data-animate-id={`product-${index}`}
                   onClick={() => handleProductClick(product._id)}
-                  className="bg-white dark:bg-gray-900/50 rounded-xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 flex flex-col cursor-pointer hover:scale-105"
+                  className={`bg-white dark:bg-gray-900/50 rounded-xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 flex flex-col cursor-pointer hover:scale-105 animate-on-scroll ${visibleItems.has(`product-${index}`) ? 'visible' : ''}`}
                 >
                   <div className="h-64 w-full overflow-hidden bg-gradient-to-br from-primary/10 to-primary/30">
                     <img
@@ -272,11 +263,7 @@ export default function Home() {
       </section>
 
       {/* Why Choose Vscooter */}
-      <section
-        ref={whyChooseRef}
-        data-section="whyChoose"
-        className={`py-16 md:py-24 bg-gradient-to-br from-white via-red-50/30 to-orange-50/30 dark:from-gray-950 dark:via-gray-900 dark:to-gray-950 mobile-animate ${visibleSections.has('whyChoose') ? 'visible' : ''}`}
-      >
+      <section className="py-16 md:py-24 bg-gradient-to-br from-white via-red-50/30 to-orange-50/30 dark:from-gray-950 dark:via-gray-900 dark:to-gray-950">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center">
             <h2 className="text-3xl font-bold text-gray-900 dark:text-white">
@@ -289,7 +276,10 @@ export default function Home() {
             </p>
           </div>
           <div className="mt-16 grid gap-10 md:grid-cols-3">
-            <div className="text-center">
+            <div
+              data-animate-id="feature-0"
+              className={`text-center animate-on-scroll ${visibleItems.has('feature-0') ? 'visible' : ''}`}
+            >
               <div className="flex items-center justify-center size-12 mx-auto bg-primary/20 dark:bg-primary/30 rounded-full text-primary">
                 <span className="material-symbols-outlined">battery_horiz_075</span>
               </div>
@@ -302,7 +292,10 @@ export default function Home() {
                   : 'Fahren Sie bis zu 72 km mit einer einzigen Ladung dank unserer fortschrittlichen Batterietechnologie'}
               </p>
             </div>
-            <div className="text-center">
+            <div
+              data-animate-id="feature-1"
+              className={`text-center animate-on-scroll ${visibleItems.has('feature-1') ? 'visible' : ''}`}
+            >
               <div className="flex items-center justify-center size-12 mx-auto bg-primary/20 dark:bg-primary/30 rounded-full text-primary">
                 <span className="material-symbols-outlined">speed</span>
               </div>
@@ -315,7 +308,10 @@ export default function Home() {
                   : 'Leistungsstarke Motoren bieten sanfte Beschleunigung und Höchstgeschwindigkeiten bis zu 48 km/h'}
               </p>
             </div>
-            <div className="text-center">
+            <div
+              data-animate-id="feature-2"
+              className={`text-center animate-on-scroll ${visibleItems.has('feature-2') ? 'visible' : ''}`}
+            >
               <div className="flex items-center justify-center size-12 mx-auto bg-primary/20 dark:bg-primary/30 rounded-full text-primary">
                 <span className="material-symbols-outlined">eco</span>
               </div>
@@ -333,11 +329,7 @@ export default function Home() {
       </section>
 
       {/* Testimonials */}
-      <section
-        ref={testimonialsRef}
-        data-section="testimonials"
-        className={`relative py-16 md:py-24 overflow-hidden mobile-animate ${visibleSections.has('testimonials') ? 'visible' : ''}`}
-      >
+      <section className="relative py-16 md:py-24 overflow-hidden">
         {/* Banner1 Background */}
         <div className="absolute inset-0 w-full h-full">
           <img
@@ -424,7 +416,11 @@ export default function Home() {
           {/* Desktop Grid */}
           <div className="hidden md:grid mt-12 gap-8 md:grid-cols-2 lg:grid-cols-3">
             {testimonials.map((testimonial, index) => (
-              <div key={index} className="rounded-xl p-6">
+              <div
+                key={index}
+                data-animate-id={`testimonial-${index}`}
+                className={`rounded-xl p-6 animate-on-scroll ${visibleItems.has(`testimonial-${index}`) ? 'visible' : ''}`}
+              >
                 <div className="flex items-center gap-4">
                   <img
                     alt={testimonial.name}
