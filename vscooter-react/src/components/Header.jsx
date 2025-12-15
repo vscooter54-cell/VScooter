@@ -87,7 +87,7 @@ export default function Header() {
             </Link>
           </nav>
           <div className="flex items-center gap-4">
-            <div className="flex items-center gap-2 mr-2">
+            <div className="hidden md:flex items-center gap-2 mr-2">
               <button
                 className={`px-3 py-1 rounded text-xs font-medium transition-all ${
                   currentLang === 'de'
@@ -237,6 +237,17 @@ export default function Header() {
                     {cartCount}
                   </span>
                 )}
+              </span>
+            </Link>
+
+            <Link
+              to="/contact?callback=true"
+              onClick={() => setMobileMenuOpen(false)}
+              className="flex items-center gap-4 px-6 py-4 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+            >
+              <span className="material-symbols-outlined text-primary">call</span>
+              <span className="font-semibold text-gray-900 dark:text-white">
+                {currentLang === 'en' ? 'Get a Callback' : 'Rückruf erhalten'}
               </span>
             </Link>
           </div>

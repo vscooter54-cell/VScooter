@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useLanguage } from '../context/LanguageContext';
-import WelcomeModal from '../components/WelcomeModal';
 import { productAPI } from '../services/api';
 import { useCart } from '../contexts/CartContext';
 
@@ -11,6 +10,7 @@ export default function Home() {
   const { addToCart } = useCart();
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [currentSlide, setCurrentSlide] = useState(0);
 
   useEffect(() => {
     fetchFeaturedProducts();
@@ -48,16 +48,61 @@ export default function Home() {
     }
   };
 
+  const testimonials = [
+    {
+      name: 'Ethan Carter',
+      time: currentLang === 'en' ? '2 months ago' : 'Vor 2 Monaten',
+      rating: 5,
+      image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuBfCyJnibJRoybyNUuJ6z8qkaBFaUNDV2c6K5w0mhKd5c5EMySXPBmweaQKt5T2wL3VUg9TWPK3OZeTKyU_mRpcRfZ1d1BurZwaxXWbpG2ei0ui3oml21H_Xd5JFe2Cmw0_ruQsJN_PlkELdjdS-kZtPJfV6lLHeYLWhy0gstZ6DaHyHLeYvRTTlLX60MoKrvtVjR8jMEEtlnBSuDQuNSiBZ9-xZV5vKCBDDLu05usm1HnotKHtJ-354jeHELM6DVG-9yDbkP8eLgE6',
+      text: currentLang === 'en'
+        ? 'Best purchase I\'ve made this year! The Falcon 500 is incredibly smooth and the battery life exceeds expectations.'
+        : 'Bester Kauf, den ich dieses Jahr getätigt habe! Der Falcon 500 ist unglaublich geschmeidig und die Akkulaufzeit übertrifft die Erwartungen.'
+    },
+    {
+      name: 'Olivia Bennett',
+      time: currentLang === 'en' ? '3 months ago' : 'Vor 3 Monaten',
+      rating: 4,
+      image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuA83Bzx4n_92X3mKUkXvkGOTWzN7RjgVSQy38_k-g4RRZc6roDyyoUZ8mnWr5gtAFiskl6AixthGSCJznykL9ZGdjJoh9btg0cNm8F57YsIMp29kcw0rIWrXUyWDOEulTtoYvyRvG7fmDpvd5odfnasJoUw_NzLJk9DD53V2x9YVK0mA5t34U6Yp6Lg9v0lg6cR1g9hli2QCFpq_flpfje3RitNNS1CT6Oxl_lRBriZU6ejtT6DrLmycLONdpD1M-hXDMzAbAU4JSA0',
+      text: currentLang === 'en'
+        ? 'Great scooter for daily commuting. Very reliable and the customer service was excellent.'
+        : 'Toller Roller für den täglichen Pendelverkehr. Sehr zuverlässig und der Kundenservice war ausgezeichnet.'
+    },
+    {
+      name: 'Noah Thompson',
+      time: currentLang === 'en' ? '4 months ago' : 'Vor 4 Monaten',
+      rating: 5,
+      image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuAMkKqA5887PyEvMoAoMGbHHQk-Rh_q2cRtzfXC0qx-aTsH5YTspd7j5aYqFbdgaN6R5T1fVrp9MmpUPpYOUSN-IfVcNDarmQb9_fTjeBiGDONL6h16LRJjS1L9iaVPhoZCPH29tDsqpXs4tLslrkG9Jn_L_d8NyBGt49IbljYSjy-gwLtrjleFDcrdUvV71tCnkGEHrA7Eh1xj9e3tYHrks_9-IUuh4lLy9Sj-OF0rGZ5DD8nHxNm12eq-5mZCHd4Ns5BZnyaIpZE_',
+      text: currentLang === 'en'
+        ? 'The Amiga is absolutely worth the investment. Premium quality and incredible performance!'
+        : 'Der Amiga ist die Investition absolut wert. Premium-Qualität und unglaubliche Leistung!'
+    }
+  ];
+
+  const nextSlide = () => {
+    setCurrentSlide((prev) => (prev + 1) % testimonials.length);
+  };
+
+  const prevSlide = () => {
+    setCurrentSlide((prev) => (prev - 1 + testimonials.length) % testimonials.length);
+  };
+
   return (
     <main className="flex-grow">
       {/* Hero Section - Single Banner */}
       <section className="relative h-[80vh] flex items-center justify-center overflow-hidden">
         {/* Banner Background */}
         <div className="absolute inset-0 w-full h-full">
+          {/* Mobile Banner - Portrait */}
+          <img
+            src="/banner-mobile.webp"
+            alt="VScooter Hero Banner Mobile"
+            className="block md:hidden w-full h-full object-cover object-center"
+          />
+          {/* Desktop Banner - Landscape */}
           <img
             src="/banner2.webp"
-            alt="VScooter Hero Banner"
-            className="w-full h-full object-cover object-center"
+            alt="VScooter Hero Banner Desktop"
+            className="hidden md:block w-full h-full object-cover object-center"
           />
           {/* Dark overlay for better text/button visibility */}
           <div className="absolute inset-0 bg-black/30"></div>
@@ -81,6 +126,17 @@ export default function Home() {
           </button>
         </div>
       </section>
+
+      {/* Mobile CTA - Book a Test Drive */}
+      <div className="md:hidden bg-gradient-to-b from-red-50 to-orange-50 dark:from-gray-950 dark:to-gray-900 py-4 px-4">
+        <button
+          onClick={() => navigate('/test-drive')}
+          className="w-full bg-gradient-to-r from-primary to-accent text-white py-3 px-6 rounded-lg font-semibold text-base hover:shadow-xl hover:scale-105 transition-all duration-300 flex items-center justify-center gap-2"
+        >
+          <span className="material-symbols-outlined text-xl">directions_car</span>
+          {currentLang === 'en' ? 'Book a Test Drive' : 'Probefahrt buchen'}
+        </button>
+      </div>
 
       {/* Featured Models */}
       <section className="py-16 md:py-24 bg-gradient-to-b from-red-50 to-orange-50 dark:from-gray-950 dark:to-gray-900">
@@ -225,89 +281,103 @@ export default function Home() {
           <h2 className="text-3xl font-bold text-center text-white drop-shadow-lg">
             {currentLang === 'en' ? 'What Our Customers Say' : 'Was unsere Kunden sagen'}
           </h2>
-          <div className="mt-12 grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-            <div className="backdrop-blur-md bg-white/20 dark:bg-white/10 rounded-xl p-6 shadow-lg border border-white/30">
-              <div className="flex items-center gap-4">
-                <img
-                  alt="Ethan Carter"
-                  className="size-12 rounded-full object-cover"
-                  src="https://lh3.googleusercontent.com/aida-public/AB6AXuBfCyJnibJRoybyNUuJ6z8qkaBFaUNDV2c6K5w0mhKd5c5EMySXPBmweaQKt5T2wL3VUg9TWPK3OZeTKyU_mRpcRfZ1d1BurZwaxXWbpG2ei0ui3oml21H_Xd5JFe2Cmw0_ruQsJN_PlkELdjdS-kZtPJfV6lLHeYLWhy0gstZ6DaHyHLeYvRTTlLX60MoKrvtVjR8jMEEtlnBSuDQuNSiBZ9-xZV5vKCBDDLu05usm1HnotKHtJ-354jeHELM6DVG-9yDbkP8eLgE6"
-                />
-                <div>
-                  <p className="font-bold text-white drop-shadow">Ethan Carter</p>
-                  <p className="text-sm text-white/80 drop-shadow">
-                    {currentLang === 'en' ? '2 months ago' : 'Vor 2 Monaten'}
-                  </p>
-                </div>
-              </div>
-              <div className="flex mt-3">
-                {[...Array(5)].map((_, i) => (
-                  <span key={i} className="material-symbols-outlined text-primary text-lg">star</span>
+
+          {/* Mobile Slideshow */}
+          <div className="md:hidden mt-12 relative">
+            <div className="overflow-hidden">
+              <div
+                className="flex transition-transform duration-500 ease-out"
+                style={{ transform: `translateX(-${currentSlide * 100}%)` }}
+              >
+                {testimonials.map((testimonial, index) => (
+                  <div key={index} className="w-full flex-shrink-0 px-4">
+                    <div className="bg-white dark:bg-gray-900 rounded-xl p-6 shadow-lg">
+                      <div className="flex items-center gap-4">
+                        <img
+                          alt={testimonial.name}
+                          className="size-12 rounded-full object-cover"
+                          src={testimonial.image}
+                        />
+                        <div>
+                          <p className="font-bold text-gray-900 dark:text-white">{testimonial.name}</p>
+                          <p className="text-sm text-gray-600 dark:text-gray-400">{testimonial.time}</p>
+                        </div>
+                      </div>
+                      <div className="flex mt-3">
+                        {[...Array(testimonial.rating)].map((_, i) => (
+                          <span key={i} className="material-symbols-outlined text-primary text-lg">star</span>
+                        ))}
+                        {[...Array(5 - testimonial.rating)].map((_, i) => (
+                          <span key={i} className="material-symbols-outlined text-gray-400 dark:text-gray-600 text-lg">star</span>
+                        ))}
+                      </div>
+                      <p className="mt-4 text-gray-700 dark:text-gray-300">{testimonial.text}</p>
+                    </div>
+                  </div>
                 ))}
               </div>
-              <p className="mt-4 text-white drop-shadow">
-                {currentLang === 'en'
-                  ? 'Best purchase I\'ve made this year! The Falcon 500 is incredibly smooth and the battery life exceeds expectations.'
-                  : 'Bester Kauf, den ich dieses Jahr getätigt habe! Der Falcon 500 ist unglaublich geschmeidig und die Akkulaufzeit übertrifft die Erwartungen.'}
-              </p>
             </div>
-            <div className="backdrop-blur-md bg-white/20 dark:bg-white/10 rounded-xl p-6 shadow-lg border border-white/30">
-              <div className="flex items-center gap-4">
-                <img
-                  alt="Olivia Bennett"
-                  className="size-12 rounded-full object-cover"
-                  src="https://lh3.googleusercontent.com/aida-public/AB6AXuA83Bzx4n_92X3mKUkXvkGOTWzN7RjgVSQy38_k-g4RRZc6roDyyoUZ8mnWr5gtAFiskl6AixthGSCJznykL9ZGdjJoh9btg0cNm8F57YsIMp29kcw0rIWrXUyWDOEulTtoYvyRvG7fmDpvd5odfnasJoUw_NzLJk9DD53V2x9YVK0mA5t34U6Yp6Lg9v0lg6cR1g9hli2QCFpq_flpfje3RitNNS1CT6Oxl_lRBriZU6ejtT6DrLmycLONdpD1M-hXDMzAbAU4JSA0"
+
+            {/* Navigation Arrows */}
+            <button
+              onClick={prevSlide}
+              className="absolute left-0 top-1/2 -translate-y-1/2 bg-white/90 dark:bg-gray-900/90 text-gray-900 dark:text-white p-2 rounded-full shadow-lg hover:bg-white dark:hover:bg-gray-800 transition-colors"
+              aria-label="Previous testimonial"
+            >
+              <span className="material-symbols-outlined">chevron_left</span>
+            </button>
+            <button
+              onClick={nextSlide}
+              className="absolute right-0 top-1/2 -translate-y-1/2 bg-white/90 dark:bg-gray-900/90 text-gray-900 dark:text-white p-2 rounded-full shadow-lg hover:bg-white dark:hover:bg-gray-800 transition-colors"
+              aria-label="Next testimonial"
+            >
+              <span className="material-symbols-outlined">chevron_right</span>
+            </button>
+
+            {/* Dots Indicator */}
+            <div className="flex justify-center gap-2 mt-6">
+              {testimonials.map((_, index) => (
+                <button
+                  key={index}
+                  onClick={() => setCurrentSlide(index)}
+                  className={`w-2 h-2 rounded-full transition-all ${
+                    currentSlide === index ? 'bg-primary w-8' : 'bg-white/50'
+                  }`}
+                  aria-label={`Go to testimonial ${index + 1}`}
                 />
-                <div>
-                  <p className="font-bold text-white drop-shadow">Olivia Bennett</p>
-                  <p className="text-sm text-white/80 drop-shadow">
-                    {currentLang === 'en' ? '3 months ago' : 'Vor 3 Monaten'}
-                  </p>
-                </div>
-              </div>
-              <div className="flex mt-3">
-                {[...Array(4)].map((_, i) => (
-                  <span key={i} className="material-symbols-outlined text-primary text-lg">star</span>
-                ))}
-                <span className="material-symbols-outlined text-gray-400 dark:text-gray-600 text-lg">star</span>
-              </div>
-              <p className="mt-4 text-white drop-shadow">
-                {currentLang === 'en'
-                  ? 'Great scooter for daily commuting. Very reliable and the customer service was excellent.'
-                  : 'Toller Roller für den täglichen Pendelverkehr. Sehr zuverlässig und der Kundenservice war ausgezeichnet.'}
-              </p>
+              ))}
             </div>
-            <div className="backdrop-blur-md bg-white/20 dark:bg-white/10 rounded-xl p-6 shadow-lg border border-white/30">
-              <div className="flex items-center gap-4">
-                <img
-                  alt="Noah Thompson"
-                  className="size-12 rounded-full object-cover"
-                  src="https://lh3.googleusercontent.com/aida-public/AB6AXuAMkKqA5887PyEvMoAoMGbHHQk-Rh_q2cRtzfXC0qx-aTsH5YTspd7j5aYqFbdgaN6R5T1fVrp9MmpUPpYOUSN-IfVcNDarmQb9_fTjeBiGDONL6h16LRJjS1L9iaVPhoZCPH29tDsqpXs4tLslrkG9Jn_L_d8NyBGt49IbljYSjy-gwLtrjleFDcrdUvV71tCnkGEHrA7Eh1xj9e3tYHrks_9-IUuh4lLy9Sj-OF0rGZ5DD8nHxNm12eq-5mZCHd4Ns5BZnyaIpZE_"
-                />
-                <div>
-                  <p className="font-bold text-white drop-shadow">Noah Thompson</p>
-                  <p className="text-sm text-white/80 drop-shadow">
-                    {currentLang === 'en' ? '4 months ago' : 'Vor 4 Monaten'}
-                  </p>
+          </div>
+
+          {/* Desktop Grid */}
+          <div className="hidden md:grid mt-12 gap-8 md:grid-cols-2 lg:grid-cols-3">
+            {testimonials.map((testimonial, index) => (
+              <div key={index} className="backdrop-blur-md bg-white/20 dark:bg-white/10 rounded-xl p-6 shadow-lg border border-white/30">
+                <div className="flex items-center gap-4">
+                  <img
+                    alt={testimonial.name}
+                    className="size-12 rounded-full object-cover"
+                    src={testimonial.image}
+                  />
+                  <div>
+                    <p className="font-bold text-white drop-shadow">{testimonial.name}</p>
+                    <p className="text-sm text-white/80 drop-shadow">{testimonial.time}</p>
+                  </div>
                 </div>
+                <div className="flex mt-3">
+                  {[...Array(testimonial.rating)].map((_, i) => (
+                    <span key={i} className="material-symbols-outlined text-primary text-lg">star</span>
+                  ))}
+                  {[...Array(5 - testimonial.rating)].map((_, i) => (
+                    <span key={i} className="material-symbols-outlined text-gray-400 dark:text-gray-600 text-lg">star</span>
+                  ))}
+                </div>
+                <p className="mt-4 text-white drop-shadow">{testimonial.text}</p>
               </div>
-              <div className="flex mt-3">
-                {[...Array(5)].map((_, i) => (
-                  <span key={i} className="material-symbols-outlined text-primary text-lg">star</span>
-                ))}
-              </div>
-              <p className="mt-4 text-white drop-shadow">
-                {currentLang === 'en'
-                  ? 'The Amiga is absolutely worth the investment. Premium quality and incredible performance!'
-                  : 'Der Amiga ist die Investition absolut wert. Premium-Qualität und unglaubliche Leistung!'}
-              </p>
-            </div>
+            ))}
           </div>
         </div>
       </section>
-
-      {/* Welcome Modal */}
-      <WelcomeModal />
     </main>
   );
 }
