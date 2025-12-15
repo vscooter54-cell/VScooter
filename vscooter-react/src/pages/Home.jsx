@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useLanguage } from '../context/LanguageContext';
 import { productAPI } from '../services/api';
@@ -11,9 +11,51 @@ export default function Home() {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [currentSlide, setCurrentSlide] = useState(0);
+  const [visibleSections, setVisibleSections] = useState(new Set());
+
+  const mobileCtaRef = useRef(null);
+  const featuredRef = useRef(null);
+  const whyChooseRef = useRef(null);
+  const testimonialsRef = useRef(null);
 
   useEffect(() => {
     fetchFeaturedProducts();
+  }, []);
+
+  // Scroll animation for mobile
+  useEffect(() => {
+    const isMobile = window.innerWidth < 768;
+    if (!isMobile) return;
+
+    const observerOptions = {
+      threshold: 0.1,
+      rootMargin: '0px 0px -50px 0px'
+    };
+
+    const observerCallback = (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          setVisibleSections((prev) => new Set(prev).add(entry.target.dataset.section));
+        }
+      });
+    };
+
+    const observer = new IntersectionObserver(observerCallback, observerOptions);
+
+    const sections = [mobileCtaRef, featuredRef, whyChooseRef, testimonialsRef];
+    sections.forEach((ref) => {
+      if (ref.current) {
+        observer.observe(ref.current);
+      }
+    });
+
+    return () => {
+      sections.forEach((ref) => {
+        if (ref.current) {
+          observer.unobserve(ref.current);
+        }
+      });
+    };
   }, []);
 
   const fetchFeaturedProducts = async () => {
@@ -88,6 +130,21 @@ export default function Home() {
 
   return (
     <main className="flex-grow">
+      <style>{`
+        @media (max-width: 768px) {
+          .mobile-animate {
+            opacity: 0;
+            transform: scale(0.8) translateY(30px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+          }
+
+          .mobile-animate.visible {
+            opacity: 1;
+            transform: scale(1) translateY(0);
+          }
+        }
+      `}</style>
+
       {/* Hero Section - Single Banner */}
       <section className="relative h-[80vh] flex items-center justify-center overflow-hidden">
         {/* Banner Background */}
@@ -96,7 +153,7 @@ export default function Home() {
           <img
             src="/banner-mobile.webp"
             alt="VScooter Hero Banner Mobile"
-            className="block md:hidden w-full h-full object-cover object-center"
+            className="block md:hidden w-full h-full object-contain object-center"
           />
           {/* Desktop Banner - Landscape */}
           <img
@@ -128,7 +185,11 @@ export default function Home() {
       </section>
 
       {/* Mobile CTA - Book a Test Drive */}
-      <div className="md:hidden bg-gradient-to-b from-red-50 to-orange-50 dark:from-gray-950 dark:to-gray-900 py-4 px-4">
+      <div
+        ref={mobileCtaRef}
+        data-section="mobileCta"
+        className={`md:hidden bg-gradient-to-b from-red-50 to-orange-50 dark:from-gray-950 dark:to-gray-900 py-4 px-4 mobile-animate ${visibleSections.has('mobileCta') ? 'visible' : ''}`}
+      >
         <button
           onClick={() => navigate('/test-drive')}
           className="w-full bg-gradient-to-r from-primary to-accent text-white py-3 px-6 rounded-lg font-semibold text-base hover:shadow-xl hover:scale-105 transition-all duration-300 flex items-center justify-center gap-2"
@@ -139,7 +200,11 @@ export default function Home() {
       </div>
 
       {/* Featured Models */}
-      <section className="py-16 md:py-24 bg-gradient-to-b from-red-50 to-orange-50 dark:from-gray-950 dark:to-gray-900">
+      <section
+        ref={featuredRef}
+        data-section="featured"
+        className={`py-16 md:py-24 bg-gradient-to-b from-red-50 to-orange-50 dark:from-gray-950 dark:to-gray-900 mobile-animate ${visibleSections.has('featured') ? 'visible' : ''}`}
+      >
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="text-3xl font-bold text-center text-gray-900 dark:text-white">
             {currentLang === 'en' ? 'Featured Models' : 'Ausgewählte Modelle'}
@@ -208,7 +273,11 @@ export default function Home() {
       </section>
 
       {/* Why Choose Vscooter */}
-      <section className="py-16 md:py-24 bg-gradient-to-br from-white via-red-50/30 to-orange-50/30 dark:from-gray-950 dark:via-gray-900 dark:to-gray-950">
+      <section
+        ref={whyChooseRef}
+        data-section="whyChoose"
+        className={`py-16 md:py-24 bg-gradient-to-br from-white via-red-50/30 to-orange-50/30 dark:from-gray-950 dark:via-gray-900 dark:to-gray-950 mobile-animate ${visibleSections.has('whyChoose') ? 'visible' : ''}`}
+      >
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center">
             <h2 className="text-3xl font-bold text-gray-900 dark:text-white">
@@ -265,7 +334,11 @@ export default function Home() {
       </section>
 
       {/* Testimonials */}
-      <section className="relative py-16 md:py-24 overflow-hidden">
+      <section
+        ref={testimonialsRef}
+        data-section="testimonials"
+        className={`relative py-16 md:py-24 overflow-hidden mobile-animate ${visibleSections.has('testimonials') ? 'visible' : ''}`}
+      >
         {/* Banner1 Background */}
         <div className="absolute inset-0 w-full h-full">
           <img
