@@ -137,24 +137,23 @@ export default function Home() {
 
       {/* Hero Section - Single Banner */}
       <section className="relative h-auto md:h-[80vh] flex items-center justify-center overflow-hidden">
-        {/* Mobile Banner - Portrait */}
-        <div className="block md:hidden w-full relative">
-          <img
-            src="/banner-mobile.webp"
-            alt="VScooter Hero Banner Mobile"
-            className="w-full h-auto"
-          />
-          {/* Dark overlay for better text/button visibility */}
-          <div className="absolute inset-0 bg-black/30"></div>
-        </div>
-
-        {/* Desktop Banner - Landscape */}
-        <div className="hidden md:block absolute inset-0 w-full h-full">
-          <img
-            src="/banner2.webp"
-            alt="VScooter Hero Banner Desktop"
+        {/* Banner Video */}
+        <div className="absolute inset-0 w-full h-full">
+          <video
+            autoPlay
+            loop
+            muted
+            playsInline
             className="w-full h-full object-cover object-center"
-          />
+          >
+            <source src="/banner-video.mp4" type="video/mp4" />
+            {/* Fallback image if video doesn't load */}
+            <img
+              src="/banner2.webp"
+              alt="VScooter Hero Banner"
+              className="w-full h-full object-cover object-center"
+            />
+          </video>
           {/* Dark overlay for better text/button visibility */}
           <div className="absolute inset-0 bg-black/30"></div>
         </div>
