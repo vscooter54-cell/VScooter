@@ -6,7 +6,7 @@ import { useLanguage } from '../../context/LanguageContext';
 import { orderAPI, addressAPI } from '../../services/api';
 
 export default function Checkout() {
-  const { language } = useLanguage();
+  const { currentLang } = useLanguage();
   const { cart, clearCart } = useCart();
   const { user } = useAuth();
   const navigate = useNavigate();
@@ -55,7 +55,7 @@ export default function Checkout() {
   const handleContinueToReview = () => {
     // Validate shipping data
     if (!shippingData.street || !shippingData.city || !shippingData.state || !shippingData.postalCode || !shippingData.country) {
-      setError(language === 'en' ? 'Please fill in all shipping fields' : 'Bitte füllen Sie alle Versandfelder aus');
+      setError(currentLang === 'en' ? 'Please fill in all shipping fields' : 'Bitte füllen Sie alle Versandfelder aus');
       return;
     }
 
@@ -94,7 +94,7 @@ export default function Checkout() {
       });
     } catch (err) {
       console.error('Order error:', err);
-      setError(err.response?.data?.message || (language === 'en' ? 'Failed to place order' : 'Bestellung fehlgeschlagen'));
+      setError(err.response?.data?.message || (currentLang === 'en' ? 'Failed to place order' : 'Bestellung fehlgeschlagen'));
     } finally {
       setLoading(false);
     }
@@ -117,7 +117,7 @@ export default function Checkout() {
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900 py-12">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-8">
-          {language === 'en' ? 'Checkout' : 'Zur Kasse'}
+          {currentLang === 'en' ? 'Checkout' : 'Zur Kasse'}
         </h1>
 
         {/* Progress Steps */}
@@ -128,7 +128,7 @@ export default function Checkout() {
                 1
               </div>
               <span className={`ml-2 text-sm sm:text-base whitespace-nowrap ${step >= 1 ? 'text-gray-900 dark:text-white' : 'text-gray-500 dark:text-gray-400'}`}>
-                {language === 'en' ? 'Shipping' : 'Versand'}
+                {currentLang === 'en' ? 'Shipping' : 'Versand'}
               </span>
             </div>
 
@@ -144,7 +144,7 @@ export default function Checkout() {
                 2
               </div>
               <span className={`ml-2 text-sm sm:text-base whitespace-nowrap ${step >= 2 ? 'text-gray-900 dark:text-white' : 'text-gray-500 dark:text-gray-400'}`}>
-                {language === 'en' ? 'Review' : 'Überprüfen'}
+                {currentLang === 'en' ? 'Review' : 'Überprüfen'}
               </span>
             </div>
           </div>
@@ -161,13 +161,13 @@ export default function Checkout() {
             {step === 1 && (
               <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-4 sm:p-6">
                 <h2 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white mb-6">
-                  {language === 'en' ? 'Shipping Address' : 'Lieferadresse'}
+                  {currentLang === 'en' ? 'Shipping Address' : 'Lieferadresse'}
                 </h2>
 
                 <div className="space-y-4">
                   <div>
                     <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                      {language === 'en' ? 'Street Address' : 'Straße'}
+                      {currentLang === 'en' ? 'Street Address' : 'Straße'}
                     </label>
                     <input
                       type="text"
@@ -182,7 +182,7 @@ export default function Checkout() {
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
                       <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                        {language === 'en' ? 'City' : 'Stadt'}
+                        {currentLang === 'en' ? 'City' : 'Stadt'}
                       </label>
                       <input
                         type="text"
@@ -196,7 +196,7 @@ export default function Checkout() {
 
                     <div>
                       <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                        {language === 'en' ? 'State / Province' : 'Bundesland'}
+                        {currentLang === 'en' ? 'State / Province' : 'Bundesland'}
                       </label>
                       <input
                         type="text"
@@ -212,7 +212,7 @@ export default function Checkout() {
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
                       <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                        {language === 'en' ? 'Postal Code' : 'Postleitzahl'}
+                        {currentLang === 'en' ? 'Postal Code' : 'Postleitzahl'}
                       </label>
                       <input
                         type="text"
@@ -226,7 +226,7 @@ export default function Checkout() {
 
                     <div>
                       <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                        {language === 'en' ? 'Country' : 'Land'}
+                        {currentLang === 'en' ? 'Country' : 'Land'}
                       </label>
                       <input
                         type="text"
@@ -248,7 +248,7 @@ export default function Checkout() {
                       className="w-5 h-5 text-primary border-gray-300 rounded focus:ring-primary touch-manipulation"
                     />
                     <label htmlFor="saveAddress" className="ml-3 text-sm text-gray-700 dark:text-gray-300">
-                      {language === 'en' ? 'Save this address for future orders' : 'Diese Adresse für zukünftige Bestellungen speichern'}
+                      {currentLang === 'en' ? 'Save this address for future orders' : 'Diese Adresse für zukünftige Bestellungen speichern'}
                     </label>
                   </div>
                 </div>
@@ -258,7 +258,7 @@ export default function Checkout() {
                     onClick={handleContinueToReview}
                     className="w-full sm:w-auto bg-gradient-to-r from-primary to-accent text-white px-8 py-4 rounded-lg hover:shadow-xl transition-all font-semibold touch-manipulation"
                   >
-                    {language === 'en' ? 'Continue to Review' : 'Weiter zur Überprüfung'}
+                    {currentLang === 'en' ? 'Continue to Review' : 'Weiter zur Überprüfung'}
                   </button>
                 </div>
               </div>
@@ -267,20 +267,20 @@ export default function Checkout() {
             {step === 2 && (
               <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-4 sm:p-6 mb-24 sm:mb-0">
                 <h2 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white mb-6">
-                  {language === 'en' ? 'Review Order' : 'Bestellung überprüfen'}
+                  {currentLang === 'en' ? 'Review Order' : 'Bestellung überprüfen'}
                 </h2>
 
                 <div className="mb-6 p-4 bg-gray-50 dark:bg-gray-900 rounded-lg">
                   <div className="flex justify-between items-start mb-2">
                     <h3 className="font-semibold text-gray-900 dark:text-white">
-                      {language === 'en' ? 'Shipping Address' : 'Lieferadresse'}
+                      {currentLang === 'en' ? 'Shipping Address' : 'Lieferadresse'}
                     </h3>
                     <button
                       onClick={() => setStep(1)}
                       className="text-primary hover:text-primary/80 text-sm font-medium flex items-center gap-1"
                     >
                       <span className="material-symbols-outlined text-sm">edit</span>
-                      {language === 'en' ? 'Edit' : 'Bearbeiten'}
+                      {currentLang === 'en' ? 'Edit' : 'Bearbeiten'}
                     </button>
                   </div>
                   <div className="text-sm sm:text-base text-gray-600 dark:text-gray-400">
@@ -292,21 +292,21 @@ export default function Checkout() {
 
                 <div className="border-t border-gray-200 dark:border-gray-700 pt-6">
                   <h3 className="font-semibold text-gray-900 dark:text-white mb-4">
-                    {language === 'en' ? 'Order Items' : 'Bestellartikel'}
+                    {currentLang === 'en' ? 'Order Items' : 'Bestellartikel'}
                   </h3>
                   {cart.items.map((item) => (
                     <div key={item.product._id} className="flex items-center gap-3 sm:gap-4 mb-4 p-3 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-900 transition-colors">
                       <img
                         src={`/${item.product.images?.[0] || 'placeholder.jpg'}`}
-                        alt={item.product.name?.[language] || item.product.name?.en}
+                        alt={item.product.name?.[currentLang] || item.product.name?.en}
                         className="w-12 h-12 sm:w-16 sm:h-16 object-contain rounded-lg bg-gray-100 dark:bg-gray-800"
                       />
                       <div className="flex-1 min-w-0">
                         <p className="font-medium text-gray-900 dark:text-white text-sm sm:text-base truncate">
-                          {item.product.name?.[language] || item.product.name?.en}
+                          {item.product.name?.[currentLang] || item.product.name?.en}
                         </p>
                         <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-400">
-                          {language === 'en' ? 'Qty' : 'Menge'}: {item.quantity}
+                          {currentLang === 'en' ? 'Qty' : 'Menge'}: {item.quantity}
                         </p>
                       </div>
                       <p className="font-semibold text-gray-900 dark:text-white text-sm sm:text-base whitespace-nowrap">
@@ -321,7 +321,7 @@ export default function Checkout() {
                     onClick={() => setStep(1)}
                     className="flex-1 bg-gray-200 dark:bg-gray-700 text-gray-900 dark:text-white px-6 py-4 rounded-lg hover:bg-gray-300 dark:hover:bg-gray-600 transition-all font-semibold touch-manipulation"
                   >
-                    {language === 'en' ? 'Back' : 'Zurück'}
+                    {currentLang === 'en' ? 'Back' : 'Zurück'}
                   </button>
                   <button
                     onClick={handlePlaceOrder}
@@ -329,8 +329,8 @@ export default function Checkout() {
                     className="flex-1 bg-gradient-to-r from-primary to-accent text-white px-6 py-4 rounded-lg hover:shadow-xl transition-all disabled:opacity-50 font-semibold touch-manipulation"
                   >
                     {loading
-                      ? (language === 'en' ? 'Placing Order...' : 'Bestellung wird aufgegeben...')
-                      : (language === 'en' ? 'Place Order' : 'Bestellung aufgeben')}
+                      ? (currentLang === 'en' ? 'Placing Order...' : 'Bestellung wird aufgegeben...')
+                      : (currentLang === 'en' ? 'Place Order' : 'Bestellung aufgeben')}
                   </button>
                 </div>
               </div>
@@ -341,34 +341,34 @@ export default function Checkout() {
           <div className="lg:col-span-4">
             <div className="hidden lg:block bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 sticky top-4">
               <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
-                {language === 'en' ? 'Order Summary' : 'Bestellübersicht'}
+                {currentLang === 'en' ? 'Order Summary' : 'Bestellübersicht'}
               </h2>
 
               <div className="space-y-3">
                 <div className="flex justify-between text-gray-600 dark:text-gray-400">
-                  <span>{language === 'en' ? 'Subtotal' : 'Zwischensumme'}</span>
+                  <span>{currentLang === 'en' ? 'Subtotal' : 'Zwischensumme'}</span>
                   <span>{currency} {calculations.subtotal?.toFixed(2) || '0.00'}</span>
                 </div>
 
                 {calculations.discount > 0 && (
                   <div className="flex justify-between text-green-600">
-                    <span>{language === 'en' ? 'Discount' : 'Rabatt'}</span>
+                    <span>{currentLang === 'en' ? 'Discount' : 'Rabatt'}</span>
                     <span>-{currency} {calculations.discount?.toFixed(2)}</span>
                   </div>
                 )}
 
                 <div className="flex justify-between text-gray-600 dark:text-gray-400">
-                  <span>{language === 'en' ? 'Tax' : 'Steuer'}</span>
+                  <span>{currentLang === 'en' ? 'Tax' : 'Steuer'}</span>
                   <span>{currency} {calculations.tax?.toFixed(2) || '0.00'}</span>
                 </div>
 
                 <div className="flex justify-between text-gray-600 dark:text-gray-400">
-                  <span>{language === 'en' ? 'Shipping' : 'Versand'}</span>
+                  <span>{currentLang === 'en' ? 'Shipping' : 'Versand'}</span>
                   <span>{currency} {calculations.shipping?.toFixed(2) || '0.00'}</span>
                 </div>
 
                 <div className="flex justify-between text-xl font-bold text-gray-900 dark:text-white border-t border-gray-200 dark:border-gray-700 pt-3">
-                  <span>{language === 'en' ? 'Total' : 'Gesamt'}</span>
+                  <span>{currentLang === 'en' ? 'Total' : 'Gesamt'}</span>
                   <span>{currency} {calculations.total?.toFixed(2) || '0.00'}</span>
                 </div>
               </div>

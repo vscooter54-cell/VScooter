@@ -25,8 +25,11 @@ const products = [
     },
     images: [
       { url: 'falcon-500.webp', alt: 'Falcon 500 Electric Scooter', isPrimary: true },
-      { url: 'falcon-500-side.webp', alt: 'Falcon 500 Side View', isPrimary: false },
-      { url: 'falcon-500-detail.webp', alt: 'Falcon 500 Detail', isPrimary: false }
+      { url: 'banner1.webp', alt: 'Falcon 500 Lifestyle', isPrimary: false },
+      { url: 'mars.webp', alt: 'Falcon 500 Alternative View', isPrimary: false },
+      { url: 'banner2.webp', alt: 'Falcon 500 Urban Scene', isPrimary: false },
+      { url: 'amiga.webp', alt: 'Falcon 500 Detail View', isPrimary: false },
+      { url: 'pit.webp', alt: 'Falcon 500 Action Shot', isPrimary: false }
     ],
     specifications: {
       range: '35 miles (56 km)',
@@ -87,8 +90,11 @@ const products = [
     },
     images: [
       { url: 'mars.webp', alt: 'Mars Electric Scooter', isPrimary: true },
-      { url: 'mars-side.webp', alt: 'Mars Side View', isPrimary: false },
-      { url: 'mars-detail.webp', alt: 'Mars Detail', isPrimary: false }
+      { url: 'banner2.webp', alt: 'Mars Urban Lifestyle', isPrimary: false },
+      { url: 'falcon-500.webp', alt: 'Mars Alternative View', isPrimary: false },
+      { url: 'banner1.webp', alt: 'Mars City Scene', isPrimary: false },
+      { url: 'amiga.webp', alt: 'Mars Detail View', isPrimary: false },
+      { url: 'pit.webp', alt: 'Mars Action Shot', isPrimary: false }
     ],
     specifications: {
       range: '28 miles (45 km)',
@@ -149,8 +155,11 @@ const products = [
     },
     images: [
       { url: 'amiga.webp', alt: 'Amiga Electric Scooter', isPrimary: true },
-      { url: 'amiga-side.webp', alt: 'Amiga Side View', isPrimary: false },
-      { url: 'amiga-detail.webp', alt: 'Amiga Detail', isPrimary: false }
+      { url: 'banner1.webp', alt: 'Amiga Premium Lifestyle', isPrimary: false },
+      { url: 'falcon-500.webp', alt: 'Amiga Alternative View', isPrimary: false },
+      { url: 'banner2.webp', alt: 'Amiga Performance', isPrimary: false },
+      { url: 'mars.webp', alt: 'Amiga Detail View', isPrimary: false },
+      { url: 'pit.webp', alt: 'Amiga Action Shot', isPrimary: false }
     ],
     specifications: {
       range: '45 miles (72 km)',

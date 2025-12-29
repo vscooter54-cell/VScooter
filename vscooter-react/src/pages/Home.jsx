@@ -6,16 +6,31 @@ import { useCart } from '../contexts/CartContext';
 
 export default function Home() {
   const navigate = useNavigate();
-  const { currentLang } = useLanguage();
+  const { currentLang, switchLanguage } = useLanguage();
   const { addToCart } = useCart();
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [currentSlide, setCurrentSlide] = useState(0);
+  const [advantageSlide1, setAdvantageSlide1] = useState(0);
+  const [advantageSlide2, setAdvantageSlide2] = useState(0);
   const [visibleItems, setVisibleItems] = useState(new Set());
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   useEffect(() => {
     fetchFeaturedProducts();
   }, []);
+
+  // Prevent body scroll when mobile menu is open
+  useEffect(() => {
+    if (mobileMenuOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+    return () => {
+      document.body.style.overflow = 'unset';
+    };
+  }, [mobileMenuOpen]);
 
   // Scroll animation for individual items
   useEffect(() => {
@@ -133,10 +148,83 @@ export default function Home() {
           opacity: 1;
           transform: scale(1) translateY(0);
         }
+
+        /* Hamburger Menu Animation */
+        .hamburger {
+          width: 24px;
+          height: 18px;
+          position: relative;
+          cursor: pointer;
+        }
+
+        .hamburger span {
+          display: block;
+          position: absolute;
+          height: 2px;
+          width: 100%;
+          background: #1a1a1a;
+          border-radius: 2px;
+          opacity: 1;
+          left: 0;
+          transition: all 0.3s ease;
+        }
+
+        .hamburger.open span {
+          background: #1a1a1a;
+        }
+
+        .hamburger span:nth-child(1) {
+          top: 0;
+        }
+
+        .hamburger span:nth-child(2) {
+          top: 8px;
+        }
+
+        .hamburger.open span:nth-child(1) {
+          top: 8px;
+          transform: rotate(45deg);
+        }
+
+        .hamburger.open span:nth-child(2) {
+          top: 8px;
+          transform: rotate(-45deg);
+        }
+
+        /* Hide scrollbar for mobile menu */
+        .mobile-menu-nav {
+          scrollbar-width: none; /* Firefox */
+          -ms-overflow-style: none; /* IE and Edge */
+        }
+
+        .mobile-menu-nav::-webkit-scrollbar {
+          display: none; /* Chrome, Safari, Opera */
+        }
+
+        /* Hide scrollbar on mobile devices */
+        @media (max-width: 768px) {
+          body {
+            scrollbar-width: none; /* Firefox */
+            -ms-overflow-style: none; /* IE and Edge */
+          }
+
+          body::-webkit-scrollbar {
+            display: none; /* Chrome, Safari, Opera */
+          }
+
+          main {
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+          }
+
+          main::-webkit-scrollbar {
+            display: none;
+          }
+        }
       `}</style>
 
       {/* Hero Section - Single Banner */}
-      <section className="relative h-auto md:h-[80vh] flex items-center justify-center overflow-hidden">
+      <section className="relative h-[100vh] md:h-[80vh] flex items-center justify-center overflow-hidden">
         {/* Banner Video */}
         <div className="absolute inset-0 w-full h-full">
           <video
@@ -154,11 +242,45 @@ export default function Home() {
               className="w-full h-full object-cover object-center"
             />
           </video>
-          {/* Dark overlay for better text/button visibility */}
-          <div className="absolute inset-0 bg-black/30"></div>
         </div>
 
-        {/* CTA Buttons - Positioned at bottom */}
+        {/* Mobile White Bar Overlay */}
+        <div className="md:hidden absolute top-5 left-5 right-5 z-[70]">
+          <div className={`rounded-lg px-4 py-3 flex items-center justify-between transition-all duration-300 ${
+            mobileMenuOpen
+              ? 'bg-transparent shadow-none'
+              : 'bg-white shadow-lg'
+          }`}>
+            {/* VScooter Logo */}
+            <img
+              src="/logo.png"
+              alt="VScooter Logo"
+              className={`h-12 w-auto transition-opacity duration-300 ${mobileMenuOpen ? 'opacity-0' : 'opacity-100'}`}
+            />
+
+            {/* Right Side: Enquire Now + Hamburger */}
+            <div className="flex items-center gap-3">
+              {/* Enquire Now Button */}
+              <button
+                onClick={() => navigate('/contact')}
+                className={`bg-primary text-white px-4 py-2 rounded-lg text-sm font-semibold hover:bg-primary/90 transition-opacity duration-300 ${mobileMenuOpen ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}
+              >
+                {currentLang === 'en' ? 'Enquire Now' : 'Jetzt anfragen'}
+              </button>
+
+              {/* Hamburger Menu Icon */}
+              <div
+                className={`hamburger ${mobileMenuOpen ? 'open' : ''} cursor-pointer relative z-[70]`}
+                onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              >
+                <span></span>
+                <span></span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* CTA Buttons - Positioned at bottom (Desktop Only) */}
         <div className="absolute bottom-12 left-0 right-0 z-10 hidden md:flex gap-4 justify-center px-4">
           <button
             onClick={() => navigate('/test-drive')}
@@ -177,25 +299,188 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Mobile CTA - Book a Test Drive */}
+      {/* Mobile Menu Backdrop */}
       <div
-        data-animate-id="mobileCta"
-        className={`md:hidden bg-gradient-to-b from-red-50 to-orange-50 dark:from-gray-950 dark:to-gray-900 py-4 px-4 animate-on-scroll ${visibleItems.has('mobileCta') ? 'visible' : ''}`}
+        className={`md:hidden fixed inset-0 bg-black/50 backdrop-blur-sm z-40 transition-opacity duration-300 ${
+          mobileMenuOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'
+        }`}
+        onClick={() => setMobileMenuOpen(false)}
+        aria-hidden="true"
+      />
+
+      {/* Mobile Sliding Menu */}
+      <div
+        className={`md:hidden fixed top-0 right-0 bottom-0 w-full bg-white shadow-2xl z-[65] transform transition-transform duration-300 ease-out ${
+          mobileMenuOpen ? 'translate-x-0' : 'translate-x-full'
+        }`}
       >
-        <button
-          onClick={() => navigate('/test-drive')}
-          className="w-full bg-gradient-to-r from-primary to-accent text-white py-3 px-6 rounded-lg font-semibold text-base hover:shadow-xl hover:scale-105 transition-all duration-300 flex items-center justify-center gap-2"
-        >
-          <span className="material-symbols-outlined text-xl">directions_car</span>
-          {currentLang === 'en' ? 'Book a Test Drive' : 'Probefahrt buchen'}
-        </button>
+        <div className="flex flex-col h-full">
+          {/* Menu Header with Logo */}
+          <div className="p-5 flex items-center">
+            {/* VScooter Logo */}
+            <img src="/logo.png" alt="VScooter Logo" className="h-20 w-auto" />
+          </div>
+
+          {/* Divider */}
+          <div className="border-b border-gray-200" />
+
+          {/* Language Selector */}
+          <div className="px-4 pt-6 pb-4">
+            <div className="relative bg-gray-200 rounded-full p-1 flex items-center">
+              <div
+                className={`absolute top-1 left-1 h-8 bg-primary rounded-full transition-transform duration-300 ease-out ${
+                  currentLang === 'en' ? 'translate-x-full' : 'translate-x-0'
+                }`}
+                style={{ width: 'calc(50% - 4px)' }}
+              />
+              <button
+                className={`relative z-10 flex-1 py-2 rounded-full text-sm font-medium transition-colors duration-300 ${
+                  currentLang === 'de' ? 'text-white' : 'text-gray-700'
+                }`}
+                onClick={() => switchLanguage('de')}
+              >
+                DE
+              </button>
+              <button
+                className={`relative z-10 flex-1 py-2 rounded-full text-sm font-medium transition-colors duration-300 ${
+                  currentLang === 'en' ? 'text-white' : 'text-gray-700'
+                }`}
+                onClick={() => switchLanguage('en')}
+              >
+                EN
+              </button>
+            </div>
+          </div>
+
+          {/* Navigation Links */}
+          <nav className="flex-1 overflow-y-auto px-4 mobile-menu-nav">
+            <div className="space-y-2">
+              <button
+                onClick={() => {
+                  navigate('/');
+                  setMobileMenuOpen(false);
+                }}
+                className="block w-full text-left px-6 py-4 rounded-xl text-lg font-semibold text-gray-900 hover:bg-gray-100 transition-all"
+              >
+                {currentLang === 'en' ? 'Home' : 'Startseite'}
+              </button>
+              <button
+                onClick={() => {
+                  navigate('/products');
+                  setMobileMenuOpen(false);
+                }}
+                className="block w-full text-left px-6 py-4 rounded-xl text-lg font-semibold text-gray-900 hover:bg-gray-100 transition-all"
+              >
+                {currentLang === 'en' ? 'Products' : 'Produkte'}
+              </button>
+              <button
+                onClick={() => {
+                  navigate('/support');
+                  setMobileMenuOpen(false);
+                }}
+                className="block w-full text-left px-6 py-4 rounded-xl text-lg font-semibold text-gray-900 hover:bg-gray-100 transition-all"
+              >
+                {currentLang === 'en' ? 'Support' : 'Unterstützung'}
+              </button>
+              <button
+                onClick={() => {
+                  navigate('/cart');
+                  setMobileMenuOpen(false);
+                }}
+                className="block w-full text-left px-6 py-4 rounded-xl text-lg font-semibold text-gray-900 hover:bg-gray-100 transition-all"
+              >
+                {currentLang === 'en' ? 'Cart' : 'Warenkorb'}
+              </button>
+              <button
+                onClick={() => {
+                  navigate('/wishlist');
+                  setMobileMenuOpen(false);
+                }}
+                className="block w-full text-left px-6 py-4 rounded-xl text-lg font-semibold text-gray-900 hover:bg-gray-100 transition-all"
+              >
+                {currentLang === 'en' ? 'Wishlist' : 'Wunschliste'}
+              </button>
+            </div>
+          </nav>
+
+          {/* Login/Signup Buttons */}
+          <div className="p-4 border-t border-gray-200">
+            <div className="flex gap-3">
+              <button
+                onClick={() => {
+                  navigate('/login');
+                  setMobileMenuOpen(false);
+                }}
+                className="flex-1 bg-gradient-to-r from-primary to-accent text-white py-3 px-6 rounded-lg font-semibold text-base hover:shadow-xl hover:scale-105 transition-all duration-300"
+              >
+                {currentLang === 'en' ? 'Login' : 'Anmelden'}
+              </button>
+              <button
+                onClick={() => {
+                  navigate('/register');
+                  setMobileMenuOpen(false);
+                }}
+                className="flex-1 bg-white border-2 border-primary text-primary py-3 px-6 rounded-lg font-semibold text-base hover:bg-primary hover:text-white hover:shadow-xl hover:scale-105 transition-all duration-300"
+              >
+                {currentLang === 'en' ? 'Sign Up' : 'Registrieren'}
+              </button>
+            </div>
+          </div>
+        </div>
       </div>
 
-      {/* Featured Models */}
-      <section className="py-16 md:py-24 bg-gradient-to-b from-red-50 to-orange-50 dark:from-gray-950 dark:to-gray-900">
+      {/* Quick Actions Section - Mobile Only */}
+      <div className="md:hidden bg-gray-50 py-6 flex flex-col items-center">
+        <h2 className="text-xl font-bold text-gray-900 mb-4 text-center">
+          {currentLang === 'en' ? 'Quick Actions' : 'Schnellzugriff'}
+        </h2>
+        <div className="flex flex-col gap-4 w-[90vw]">
+          {/* Test Ride */}
+          <button
+            onClick={() => navigate('/test-drive')}
+            className="flex items-center bg-white rounded-xl p-4 shadow-md hover:shadow-lg transition-all duration-300 hover:scale-105"
+          >
+            <div className="w-14 h-14 bg-primary/10 rounded-full flex items-center justify-center mr-4">
+              <span className="material-symbols-outlined text-primary text-3xl">directions_car</span>
+            </div>
+            <span className="text-base font-semibold text-gray-900">
+              {currentLang === 'en' ? 'Test Ride' : 'Probefahrt'}
+            </span>
+          </button>
+
+          {/* Compare Models */}
+          <button
+            onClick={() => navigate('/products')}
+            className="flex items-center bg-white rounded-xl p-4 shadow-md hover:shadow-lg transition-all duration-300 hover:scale-105"
+          >
+            <div className="w-14 h-14 bg-primary/10 rounded-full flex items-center justify-center mr-4">
+              <span className="material-symbols-outlined text-primary text-3xl">compare_arrows</span>
+            </div>
+            <span className="text-base font-semibold text-gray-900">
+              {currentLang === 'en' ? 'Compare Models' : 'Modelle vergleichen'}
+            </span>
+          </button>
+
+          {/* Shop Now */}
+          <button
+            onClick={() => navigate('/products')}
+            className="flex items-center bg-white rounded-xl p-4 shadow-md hover:shadow-lg transition-all duration-300 hover:scale-105"
+          >
+            <div className="w-14 h-14 bg-primary/10 rounded-full flex items-center justify-center mr-4">
+              <span className="material-symbols-outlined text-primary text-3xl">shopping_bag</span>
+            </div>
+            <span className="text-base font-semibold text-gray-900">
+              {currentLang === 'en' ? 'Shop Now' : 'Jetzt kaufen'}
+            </span>
+          </button>
+        </div>
+      </div>
+
+      {/* VScooter Electric Family */}
+      <section className="py-16 md:py-24 bg-white dark:from-gray-950 dark:to-gray-900">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-3xl font-bold text-center text-gray-900 dark:text-white">
-            {currentLang === 'en' ? 'Featured Models' : 'Ausgewählte Modelle'}
+          <h2 className="text-3xl font-bold text-center text-gray-900 dark:text-white mb-12">
+            {currentLang === 'en' ? 'VScooter Electric Family' : 'VScooter Elektro-Familie'}
           </h2>
           {loading ? (
             <div className="mt-12 text-center">
@@ -205,68 +490,135 @@ export default function Home() {
               </p>
             </div>
           ) : (
-            <div className="mt-12 grid gap-8 md:grid-cols-3">
-              {products.map((product, index) => (
+            <div className="relative">
+              {/* Slideshow Container */}
+              <div className="overflow-hidden">
                 <div
-                  key={product._id}
-                  data-animate-id={`product-${index}`}
-                  onClick={() => handleProductClick(product._id)}
-                  className={`bg-white dark:bg-gray-900/50 rounded-xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 flex flex-col cursor-pointer hover:scale-105 animate-on-scroll ${visibleItems.has(`product-${index}`) ? 'visible' : ''}`}
+                  className="flex transition-transform duration-500 ease-out"
+                  style={{ transform: `translateX(-${currentSlide * 100}%)` }}
                 >
-                  <div className="h-64 w-full overflow-hidden bg-gradient-to-br from-primary/10 to-primary/30">
-                    <img
-                      alt={product.name[currentLang]}
-                      className="w-full h-full object-contain object-center"
-                      src={`/${product.primaryImage?.url || product.images[0]?.url}`}
-                    />
-                  </div>
-                  <div className="p-6 flex-grow flex flex-col">
-                    <div className="flex justify-between items-center mb-2">
-                      <h3 className="text-xl font-bold text-gray-900 dark:text-white">
-                        {product.name[currentLang]}
-                      </h3>
-                      {product.isPremium && (
-                        <span className="bg-primary text-white text-xs px-2 py-1 rounded-full font-bold">
-                          PREMIUM
-                        </span>
-                      )}
-                    </div>
-                    <p className="mt-2 text-gray-600 dark:text-gray-400 text-sm line-clamp-2">
-                      {product.description[currentLang]}
-                    </p>
-                    <div className="mt-4 flex items-center justify-between">
-                      <div>
-                        {product.pricing.originalPrice && (
-                          <span className="text-sm text-gray-400 line-through mr-2">
-                            €{product.pricing.originalPrice.eur}
-                          </span>
-                        )}
-                        <span className="text-2xl font-bold text-primary">€{product.pricing.eur}</span>
+                  {products.map((product) => (
+                    <div key={product._id} className="w-full flex-shrink-0 px-4">
+                      <div className="max-w-md mx-auto">
+                        {/* Price Starting At */}
+                        <p className="text-center text-lg font-semibold text-gray-700 dark:text-gray-300 mb-4">
+                          {currentLang === 'en' ? 'Price Starting at' : 'Preis ab'}{' '}
+                          <span className="text-2xl font-bold text-primary">€{product.pricing.eur}</span>
+                        </p>
+
+                        {/* Product Card */}
+                        <div className="bg-white dark:bg-gray-900/50 rounded-2xl overflow-hidden shadow-xl">
+                          {/* Image with Name Overlay */}
+                          <div className="relative h-96 bg-gradient-to-br from-primary/10 to-primary/30">
+                            <img
+                              alt={product.name[currentLang]}
+                              className="w-full h-full object-contain object-center"
+                              src={`/${product.primaryImage?.url || product.images[0]?.url}`}
+                            />
+                            {/* Name at Top */}
+                            <div className="absolute top-6 left-0 right-0 text-center">
+                              <h3 className="text-3xl font-bold text-gray-900 dark:text-white drop-shadow-lg">
+                                {product.name[currentLang]}
+                              </h3>
+                              {product.isPremium && (
+                                <span className="inline-block mt-2 bg-primary text-white text-xs px-3 py-1 rounded-full font-bold">
+                                  PREMIUM
+                                </span>
+                              )}
+                            </div>
+                          </div>
+
+                          {/* Action Buttons at Bottom */}
+                          <div className="p-6 flex gap-3">
+                            <button
+                              onClick={() => navigate('/test-drive')}
+                              className="flex-1 bg-white border-2 border-primary text-primary py-3 px-4 rounded-lg font-semibold hover:bg-primary hover:text-white transition-all duration-300"
+                            >
+                              {currentLang === 'en' ? 'Test Ride' : 'Probefahrt'}
+                            </button>
+                            <button
+                              onClick={() => handleProductClick(product._id)}
+                              className="flex-1 bg-gradient-to-r from-primary to-accent text-white py-3 px-4 rounded-lg font-semibold hover:shadow-lg transition-all duration-300"
+                            >
+                              {currentLang === 'en' ? `Explore ${product.name.en}` : `${product.name.de} erkunden`}
+                            </button>
+                          </div>
+                        </div>
                       </div>
                     </div>
-                    <button
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        handleAddToCart(product);
-                      }}
-                      className="mt-4 w-full bg-gradient-to-r from-primary to-accent text-white py-2 rounded-lg font-semibold hover:shadow-lg hover:scale-105 transition-all"
-                    >
-                      {currentLang === 'en' ? 'Add to Cart' : 'In den Warenkorb'}
-                    </button>
-                  </div>
+                  ))}
                 </div>
-              ))}
+              </div>
+
+              {/* Navigation Arrows */}
+              {products.length > 1 && (
+                <>
+                  <button
+                    onClick={() => setCurrentSlide((prev) => (prev === 0 ? products.length - 1 : prev - 1))}
+                    className="absolute left-2 top-1/2 -translate-y-1/2 bg-white/90 dark:bg-gray-800/90 p-3 rounded-full shadow-lg hover:scale-110 transition-all"
+                    aria-label="Previous"
+                  >
+                    <span className="material-symbols-outlined text-gray-900 dark:text-white">chevron_left</span>
+                  </button>
+                  <button
+                    onClick={() => setCurrentSlide((prev) => (prev === products.length - 1 ? 0 : prev + 1))}
+                    className="absolute right-2 top-1/2 -translate-y-1/2 bg-white/90 dark:bg-gray-800/90 p-3 rounded-full shadow-lg hover:scale-110 transition-all"
+                    aria-label="Next"
+                  >
+                    <span className="material-symbols-outlined text-gray-900 dark:text-white">chevron_right</span>
+                  </button>
+                </>
+              )}
+
+              {/* Dots Indicator */}
+              {products.length > 1 && (
+                <div className="flex justify-center gap-2 mt-6">
+                  {products.map((_, index) => (
+                    <button
+                      key={index}
+                      onClick={() => setCurrentSlide(index)}
+                      className={`w-3 h-3 rounded-full transition-all ${
+                        currentSlide === index ? 'bg-primary w-8' : 'bg-gray-300'
+                      }`}
+                      aria-label={`Go to slide ${index + 1}`}
+                    />
+                  ))}
+                </div>
+              )}
             </div>
           )}
         </div>
       </section>
 
-      {/* Why Choose Vscooter */}
-      <section className="py-16 md:py-24 bg-gradient-to-br from-white via-red-50/30 to-orange-50/30 dark:from-gray-950 dark:via-gray-900 dark:to-gray-950">
+      {/* Advantages of owning a V */}
+      <section className="py-16 md:py-24 bg-gray-50 dark:from-gray-950 dark:via-gray-900 dark:to-gray-950">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center">
-            <h2 className="text-3xl font-bold text-gray-900 dark:text-white">
-              {currentLang === 'en' ? 'Why Choose VScooter?' : 'Warum VScooter wählen?'}
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white">
+              {currentLang === 'en' ? (
+                <>
+                  Advantages of owning a{' '}
+                  <span className="text-primary inline-block animate-pulse" style={{
+                    animation: 'pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite, bounce 1s ease-in-out infinite',
+                    fontSize: '1.2em',
+                    fontWeight: '900'
+                  }}>
+                    V
+                  </span>
+                </>
+              ) : (
+                <>
+                  Vorteile eines{' '}
+                  <span className="text-primary inline-block animate-pulse" style={{
+                    animation: 'pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite, bounce 1s ease-in-out infinite',
+                    fontSize: '1.2em',
+                    fontWeight: '900'
+                  }}>
+                    V
+                  </span>
+                  {' '}besitzen
+                </>
+              )}
             </h2>
             <p className="mt-4 max-w-2xl mx-auto text-lg text-gray-600 dark:text-gray-400">
               {currentLang === 'en'
@@ -274,54 +626,111 @@ export default function Home() {
                 : 'Erleben Sie das Beste in elektrischer Mobilität mit unseren Premium-Funktionen'}
             </p>
           </div>
-          <div className="mt-16 grid gap-10 md:grid-cols-3">
-            <div
-              data-animate-id="feature-0"
-              className={`text-center animate-on-scroll ${visibleItems.has('feature-0') ? 'visible' : ''}`}
-            >
-              <div className="flex items-center justify-center size-12 mx-auto bg-primary/20 dark:bg-primary/30 rounded-full text-primary">
-                <span className="material-symbols-outlined">battery_horiz_075</span>
+          {/* Row 1 Slideshow */}
+          <div className="mt-12 relative">
+            <div className="overflow-hidden">
+              <div
+                className="flex transition-transform duration-500 ease-out"
+                style={{ transform: `translateX(-${advantageSlide1 * 100}%)` }}
+              >
+                {[
+                  { name: 'One View Display', nameDE: 'Ein-Ansicht-Display' },
+                  { name: 'Fast Charging', nameDE: 'Schnellladung' },
+                  { name: 'Storage Space', nameDE: 'Stauraum' }
+                ].map((item, index) => (
+                  <div key={index} className="w-full flex-shrink-0 flex justify-center px-4">
+                    <div className="w-[90vw] h-[50vh] bg-gradient-to-br from-primary/10 to-primary/30 rounded-2xl shadow-xl flex items-center justify-center">
+                      <h3 className="text-2xl font-bold text-gray-900 dark:text-white">
+                        {currentLang === 'en' ? item.name : item.nameDE}
+                      </h3>
+                    </div>
+                  </div>
+                ))}
               </div>
-              <h3 className="mt-6 text-xl font-bold text-gray-900 dark:text-white">
-                {currentLang === 'en' ? 'Long Battery Life' : 'Lange Akkulaufzeit'}
-              </h3>
-              <p className="mt-2 text-gray-600 dark:text-gray-400">
-                {currentLang === 'en'
-                  ? 'Travel up to 45 miles on a single charge with our advanced battery technology'
-                  : 'Fahren Sie bis zu 72 km mit einer einzigen Ladung dank unserer fortschrittlichen Batterietechnologie'}
-              </p>
             </div>
-            <div
-              data-animate-id="feature-1"
-              className={`text-center animate-on-scroll ${visibleItems.has('feature-1') ? 'visible' : ''}`}
+
+            {/* Navigation Arrows Row 1 */}
+            <button
+              onClick={() => setAdvantageSlide1((prev) => (prev === 0 ? 2 : prev - 1))}
+              className="absolute left-2 top-1/2 -translate-y-1/2 bg-white/90 dark:bg-gray-800/90 p-3 rounded-full shadow-lg hover:scale-110 transition-all"
+              aria-label="Previous"
             >
-              <div className="flex items-center justify-center size-12 mx-auto bg-primary/20 dark:bg-primary/30 rounded-full text-primary">
-                <span className="material-symbols-outlined">speed</span>
-              </div>
-              <h3 className="mt-6 text-xl font-bold text-gray-900 dark:text-white">
-                {currentLang === 'en' ? 'High Performance' : 'Hohe Leistung'}
-              </h3>
-              <p className="mt-2 text-gray-600 dark:text-gray-400">
-                {currentLang === 'en'
-                  ? 'Powerful motors deliver smooth acceleration and top speeds up to 30 mph'
-                  : 'Leistungsstarke Motoren bieten sanfte Beschleunigung und Höchstgeschwindigkeiten bis zu 48 km/h'}
-              </p>
+              <span className="material-symbols-outlined text-gray-900 dark:text-white">chevron_left</span>
+            </button>
+            <button
+              onClick={() => setAdvantageSlide1((prev) => (prev === 2 ? 0 : prev + 1))}
+              className="absolute right-2 top-1/2 -translate-y-1/2 bg-white/90 dark:bg-gray-800/90 p-3 rounded-full shadow-lg hover:scale-110 transition-all"
+              aria-label="Next"
+            >
+              <span className="material-symbols-outlined text-gray-900 dark:text-white">chevron_right</span>
+            </button>
+
+            {/* Dots Row 1 */}
+            <div className="flex justify-center gap-2 mt-4">
+              {[0, 1, 2].map((index) => (
+                <button
+                  key={index}
+                  onClick={() => setAdvantageSlide1(index)}
+                  className={`w-3 h-3 rounded-full transition-all ${
+                    advantageSlide1 === index ? 'bg-primary w-8' : 'bg-gray-300'
+                  }`}
+                  aria-label={`Go to slide ${index + 1}`}
+                />
+              ))}
             </div>
-            <div
-              data-animate-id="feature-2"
-              className={`text-center animate-on-scroll ${visibleItems.has('feature-2') ? 'visible' : ''}`}
-            >
-              <div className="flex items-center justify-center size-12 mx-auto bg-primary/20 dark:bg-primary/30 rounded-full text-primary">
-                <span className="material-symbols-outlined">eco</span>
+          </div>
+
+          {/* Row 2 Slideshow */}
+          <div className="mt-12 relative">
+            <div className="overflow-hidden">
+              <div
+                className="flex transition-transform duration-500 ease-out"
+                style={{ transform: `translateX(-${advantageSlide2 * 100}%)` }}
+              >
+                {[
+                  { name: 'Long Battery Life', nameDE: 'Lange Akkulaufzeit' },
+                  { name: 'High Performance', nameDE: 'Hohe Leistung' },
+                  { name: 'Eco-Friendly', nameDE: 'Umweltfreundlich' }
+                ].map((item, index) => (
+                  <div key={index} className="w-full flex-shrink-0 flex justify-center px-4">
+                    <div className="w-[90vw] h-[50vh] bg-gradient-to-br from-accent/10 to-accent/30 rounded-2xl shadow-xl flex items-center justify-center">
+                      <h3 className="text-2xl font-bold text-gray-900 dark:text-white">
+                        {currentLang === 'en' ? item.name : item.nameDE}
+                      </h3>
+                    </div>
+                  </div>
+                ))}
               </div>
-              <h3 className="mt-6 text-xl font-bold text-gray-900 dark:text-white">
-                {currentLang === 'en' ? 'Eco-Friendly' : 'Umweltfreundlich'}
-              </h3>
-              <p className="mt-2 text-gray-600 dark:text-gray-400">
-                {currentLang === 'en'
-                  ? 'Zero emissions and sustainable transportation for a greener future'
-                  : 'Null Emissionen und nachhaltige Fortbewegung für eine grünere Zukunft'}
-              </p>
+            </div>
+
+            {/* Navigation Arrows Row 2 */}
+            <button
+              onClick={() => setAdvantageSlide2((prev) => (prev === 0 ? 2 : prev - 1))}
+              className="absolute left-2 top-1/2 -translate-y-1/2 bg-white/90 dark:bg-gray-800/90 p-3 rounded-full shadow-lg hover:scale-110 transition-all"
+              aria-label="Previous"
+            >
+              <span className="material-symbols-outlined text-gray-900 dark:text-white">chevron_left</span>
+            </button>
+            <button
+              onClick={() => setAdvantageSlide2((prev) => (prev === 2 ? 0 : prev + 1))}
+              className="absolute right-2 top-1/2 -translate-y-1/2 bg-white/90 dark:bg-gray-800/90 p-3 rounded-full shadow-lg hover:scale-110 transition-all"
+              aria-label="Next"
+            >
+              <span className="material-symbols-outlined text-gray-900 dark:text-white">chevron_right</span>
+            </button>
+
+            {/* Dots Row 2 */}
+            <div className="flex justify-center gap-2 mt-4">
+              {[0, 1, 2].map((index) => (
+                <button
+                  key={index}
+                  onClick={() => setAdvantageSlide2(index)}
+                  className={`w-3 h-3 rounded-full transition-all ${
+                    advantageSlide2 === index ? 'bg-primary w-8' : 'bg-gray-300'
+                  }`}
+                  aria-label={`Go to slide ${index + 1}`}
+                />
+              ))}
             </div>
           </div>
         </div>

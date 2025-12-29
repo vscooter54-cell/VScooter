@@ -55,24 +55,24 @@ app.use(helmet({
   crossOriginEmbedderPolicy: false
 }));
 
-// Rate limiting
-const limiter = rateLimit({
-  windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 100, // Limit each IP to 100 requests per windowMs
-  message: 'Too many requests from this IP, please try again later',
-  standardHeaders: true,
-  legacyHeaders: false
-});
+// Rate limiting - DISABLED FOR DEVELOPMENT
+// const limiter = rateLimit({
+//   windowMs: 15 * 60 * 1000, // 15 minutes
+//   max: 100, // Limit each IP to 100 requests per windowMs
+//   message: 'Too many requests from this IP, please try again later',
+//   standardHeaders: true,
+//   legacyHeaders: false
+// });
 
-// Apply rate limiting to all routes
-app.use('/api/', limiter);
+// Apply rate limiting to all routes - DISABLED
+// app.use('/api/', limiter);
 
-// Stricter rate limit for auth routes
-const authLimiter = rateLimit({
-  windowMs: 15 * 60 * 1000,
-  max: 5,
-  message: 'Too many authentication attempts, please try again later'
-});
+// Stricter rate limit for auth routes - DISABLED
+// const authLimiter = rateLimit({
+//   windowMs: 15 * 60 * 1000,
+//   max: 5,
+//   message: 'Too many authentication attempts, please try again later'
+// });
 
 // Body Parser Middleware
 app.use(express.json({ limit: '10mb' }));
@@ -101,7 +101,7 @@ app.get('/health', (req, res) => {
 });
 
 // API Routes
-app.use('/api/users', authLimiter, userRoutes);
+app.use('/api/users', userRoutes); // authLimiter removed for development
 app.use('/api/products', productRoutes);
 app.use('/api/cart', cartRoutes);
 app.use('/api/orders', orderRoutes);

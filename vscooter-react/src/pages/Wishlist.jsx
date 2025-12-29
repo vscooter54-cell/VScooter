@@ -106,12 +106,30 @@ export default function Wishlist() {
   }
 
   return (
-    <main className="flex-grow bg-gray-50 dark:bg-gray-950 py-12">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
+    <main className="flex-grow bg-gray-50 dark:bg-gray-950 relative">
+      {/* Banner Section - 50vh height from top */}
+      <section className="relative h-[50vh] flex items-center justify-center overflow-hidden -mt-20 md:-mt-0">
+        {/* Background Image */}
+        <div className="absolute inset-0 w-full h-full">
+          <img
+            src="/banner2.webp"
+            alt="Wishlist Banner"
+            className="w-full h-full object-cover object-center"
+          />
+          {/* Dark overlay for better text readability */}
+          <div className="absolute inset-0 bg-black/40"></div>
+        </div>
+
+        {/* Banner Content */}
+        <div className="relative z-10 text-center px-4">
+          <h1 className="text-4xl md:text-6xl font-bold text-white drop-shadow-lg mb-4">
             {currentLang === 'en' ? 'My Wishlist' : 'Meine Wunschliste'}
           </h1>
+        </div>
+      </section>
+
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <div className="flex items-center justify-between mb-8">
           {wishlist && wishlist.items.length > 0 && (
             <button
               onClick={handleClearWishlist}

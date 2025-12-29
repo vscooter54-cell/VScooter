@@ -4,7 +4,7 @@ import { useAuth } from '../../contexts/AuthContext';
 import { useLanguage } from '../../context/LanguageContext';
 
 export default function Register() {
-  const { language } = useLanguage();
+  const { currentLang } = useLanguage();
   const { register } = useAuth();
   const navigate = useNavigate();
 
@@ -25,13 +25,13 @@ export default function Register() {
 
     // Validate passwords match
     if (formData.password !== formData.confirmPassword) {
-      setError(language === 'en' ? 'Passwords do not match' : 'Passwörter stimmen nicht überein');
+      setError(currentLang === 'en' ? 'Passwords do not match' : 'Passwörter stimmen nicht überein');
       return;
     }
 
     // Validate password length
     if (formData.password.length < 6) {
-      setError(language === 'en' ? 'Password must be at least 6 characters' : 'Passwort muss mindestens 6 Zeichen lang sein');
+      setError(currentLang === 'en' ? 'Password must be at least 6 characters' : 'Passwort muss mindestens 6 Zeichen lang sein');
       return;
     }
 
@@ -61,12 +61,12 @@ export default function Register() {
       <div className="max-w-md w-full space-y-8">
         <div>
           <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900 dark:text-white">
-            {language === 'en' ? 'Create your account' : 'Erstellen Sie Ihr Konto'}
+            {currentLang === 'en' ? 'Create your account' : 'Erstellen Sie Ihr Konto'}
           </h2>
           <p className="mt-2 text-center text-sm text-gray-600 dark:text-gray-400">
-            {language === 'en' ? 'Already have an account?' : 'Sie haben bereits ein Konto?'}{' '}
+            {currentLang === 'en' ? 'Already have an account?' : 'Sie haben bereits ein Konto?'}{' '}
             <Link to="/login" className="font-medium text-red-600 hover:text-red-500">
-              {language === 'en' ? 'Sign in' : 'Anmelden'}
+              {currentLang === 'en' ? 'Sign in' : 'Anmelden'}
             </Link>
           </p>
         </div>
@@ -86,7 +86,7 @@ export default function Register() {
             <div className="grid grid-cols-2 gap-4">
               <div>
                 <label htmlFor="firstName" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                  {language === 'en' ? 'First name' : 'Vorname'}
+                  {currentLang === 'en' ? 'First name' : 'Vorname'}
                 </label>
                 <input
                   id="firstName"
@@ -101,7 +101,7 @@ export default function Register() {
 
               <div>
                 <label htmlFor="lastName" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                  {language === 'en' ? 'Last name' : 'Nachname'}
+                  {currentLang === 'en' ? 'Last name' : 'Nachname'}
                 </label>
                 <input
                   id="lastName"
@@ -117,7 +117,7 @@ export default function Register() {
 
             <div>
               <label htmlFor="email" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                {language === 'en' ? 'Email address' : 'E-Mail-Adresse'}
+                {currentLang === 'en' ? 'Email address' : 'E-Mail-Adresse'}
               </label>
               <input
                 id="email"
@@ -133,7 +133,7 @@ export default function Register() {
 
             <div>
               <label htmlFor="phone" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                {language === 'en' ? 'Phone (optional)' : 'Telefon (optional)'}
+                {currentLang === 'en' ? 'Phone (optional)' : 'Telefon (optional)'}
               </label>
               <input
                 id="phone"
@@ -147,7 +147,7 @@ export default function Register() {
 
             <div>
               <label htmlFor="password" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                {language === 'en' ? 'Password' : 'Passwort'}
+                {currentLang === 'en' ? 'Password' : 'Passwort'}
               </label>
               <input
                 id="password"
@@ -162,7 +162,7 @@ export default function Register() {
 
             <div>
               <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                {language === 'en' ? 'Confirm password' : 'Passwort bestätigen'}
+                {currentLang === 'en' ? 'Confirm password' : 'Passwort bestätigen'}
               </label>
               <input
                 id="confirmPassword"
@@ -182,7 +182,7 @@ export default function Register() {
               disabled={loading}
               className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-lg text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
             >
-              {loading ? (language === 'en' ? 'Creating account...' : 'Konto wird erstellt...') : (language === 'en' ? 'Create account' : 'Konto erstellen')}
+              {loading ? (currentLang === 'en' ? 'Creating account...' : 'Konto wird erstellt...') : (currentLang === 'en' ? 'Create account' : 'Konto erstellen')}
             </button>
           </div>
         </form>

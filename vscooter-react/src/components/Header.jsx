@@ -1,10 +1,11 @@
 import { useState, useEffect } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useLanguage } from '../context/LanguageContext';
 import { useAuth } from '../contexts/AuthContext';
 import { useCart } from '../contexts/CartContext';
 
 export default function Header() {
+  const navigate = useNavigate();
   const { currentLang, switchLanguage, t } = useLanguage();
   const { isAuthenticated, user } = useAuth();
   const { cartCount } = useCart();
@@ -44,15 +45,94 @@ export default function Header() {
 
   return (
     <>
-      <header className="sticky top-0 z-50 bg-white/95 dark:bg-gray-950/95 backdrop-blur-md border-b-2 border-primary/20 dark:border-primary/30 shadow-sm">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex h-24 items-center justify-between py-2">
-          <div className="flex items-center">
+      <style>{`
+        /* Hamburger Menu Animation */
+        .hamburger {
+          width: 24px;
+          height: 18px;
+          position: relative;
+          cursor: pointer;
+        }
+
+        .hamburger span {
+          display: block;
+          position: absolute;
+          height: 2px;
+          width: 100%;
+          background: #1a1a1a;
+          border-radius: 2px;
+          opacity: 1;
+          left: 0;
+          transition: all 0.3s ease;
+        }
+
+        .hamburger span:nth-child(1) {
+          top: 0;
+        }
+
+        .hamburger span:nth-child(2) {
+          top: 8px;
+        }
+
+        .hamburger.open span:nth-child(1) {
+          top: 8px;
+          transform: rotate(45deg);
+        }
+
+        .hamburger.open span:nth-child(2) {
+          top: 8px;
+          transform: rotate(-45deg);
+        }
+
+        /* Hide scrollbar for mobile menu */
+        .mobile-menu-nav {
+          scrollbar-width: none;
+          -ms-overflow-style: none;
+        }
+
+        .mobile-menu-nav::-webkit-scrollbar {
+          display: none;
+        }
+      `}</style>
+
+      {/* Mobile White Bar - Hidden on home page */}
+      {!isActive('/') && (
+        <div className="md:hidden relative px-5 pt-5 z-[70]">
+          <div className={`rounded-lg px-4 py-3 flex items-center justify-between transition-all duration-300 ${
+            mobileMenuOpen ? 'bg-transparent shadow-none' : 'bg-white shadow-lg'
+          }`}>
+            {/* VScooter Logo */}
             <Link to="/">
-              <img src="/logo.png" alt="Vscooter Logo" className="h-[88px] w-auto" />
+              <img
+                src="/logo.png"
+                alt="VScooter Logo"
+                className={`h-12 w-auto transition-opacity duration-300 ${mobileMenuOpen ? 'opacity-0' : 'opacity-100'}`}
+              />
             </Link>
+
+            {/* Hamburger Menu Icon */}
+            <div
+              className={`hamburger ${mobileMenuOpen ? 'open' : ''} cursor-pointer relative z-[70]`}
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            >
+              <span></span>
+              <span></span>
+            </div>
           </div>
-          <nav className="hidden md:flex items-center gap-8">
+        </div>
+      )}
+
+      {/* Desktop Header - Only shown on desktop (md and above), completely hidden on mobile */}
+      <div className="hidden md:block">
+        <header className="sticky top-0 z-50 bg-white/95 dark:bg-gray-950/95 backdrop-blur-md border-b-2 border-primary/20 dark:border-primary/30 shadow-sm">
+          <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="flex h-24 items-center justify-between py-2">
+              <div className="flex items-center">
+                <Link to="/">
+                  <img src="/logo.png" alt="Vscooter Logo" className="h-[88px] w-auto" />
+                </Link>
+              </div>
+              <nav className="flex items-center gap-8">
             <Link
               className={`text-base font-semibold transition-colors ${
                 isActive('/') ? 'text-primary' : 'hover:text-primary'
@@ -152,151 +232,133 @@ export default function Header() {
         </div>
       </div>
     </header>
+      </div>
 
-    {/* Mobile Menu Backdrop Overlay */}
+    {/* Mobile Menu Backdrop */}
     <div
-      className={`fixed inset-0 bg-black/50 backdrop-blur-sm z-40 transition-opacity duration-300 md:hidden ${
+      className={`md:hidden fixed inset-0 bg-black/50 backdrop-blur-sm z-40 transition-opacity duration-300 ${
         mobileMenuOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'
       }`}
       onClick={() => setMobileMenuOpen(false)}
       aria-hidden="true"
     />
 
-    {/* Mobile Menu Drawer */}
+    {/* Mobile Sliding Menu */}
     <div
-      className={`fixed top-0 right-0 bottom-0 w-80 max-w-[85vw] bg-white/95 dark:bg-gray-950/95 backdrop-blur-md shadow-2xl z-50 transform transition-transform duration-300 ease-out md:hidden ${
+      className={`md:hidden fixed top-0 right-0 bottom-0 w-full bg-white shadow-2xl z-[65] transform transition-transform duration-300 ease-out ${
         mobileMenuOpen ? 'translate-x-0' : 'translate-x-full'
       }`}
     >
       <div className="flex flex-col h-full">
-        {/* Header with Close Button */}
-        <div className="flex items-center justify-between p-6 border-b border-gray-200 dark:border-gray-800">
-          <img src="/logo.png" alt="Vscooter Logo" className="h-16 w-auto" />
-          <button
-            onClick={() => setMobileMenuOpen(false)}
-            className="p-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors"
-            aria-label="Close menu"
-          >
-            <span className="material-symbols-outlined">close</span>
-          </button>
+        {/* Menu Header with Logo */}
+        <div className="p-5 flex items-center">
+          <img src="/logo.png" alt="VScooter Logo" className="h-20 w-auto" />
         </div>
 
-        {/* Navigation Links */}
-        <nav className="flex-1 overflow-y-auto py-6 px-4">
-          <div className="space-y-2">
-            {[
-              { path: '/', label: t('home') },
-              { path: '/products', label: t('products') },
-              { path: '/features', label: t('features') },
-              { path: '/support', label: t('support') },
-            ].map((item, index) => (
-              <Link
-                key={item.path}
-                to={item.path}
-                onClick={() => setMobileMenuOpen(false)}
-                className={`block px-6 py-4 rounded-xl text-lg font-semibold transition-all ${
-                  isActive(item.path)
-                    ? 'bg-primary text-white shadow-lg'
-                    : 'text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-800'
-                }`}
-                style={{
-                  animation: mobileMenuOpen ? `slideInRight 0.3s ease-out ${index * 0.05}s both` : 'none'
-                }}
-              >
-                {item.label}
-              </Link>
-            ))}
-          </div>
+        {/* Divider */}
+        <div className="border-b border-gray-200" />
 
-          {/* Divider */}
-          <div className="my-6 border-t border-gray-200 dark:border-gray-800" />
-
-          {/* Quick Action Buttons */}
-          <div className="space-y-3 px-2">
-            <Link
-              to="/wishlist"
-              onClick={() => setMobileMenuOpen(false)}
-              className="flex items-center gap-4 px-6 py-4 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
-            >
-              <span className="material-symbols-outlined text-primary">favorite</span>
-              <span className="font-semibold text-gray-900 dark:text-white">
-                {t('wishlist') || 'Wishlist'}
-              </span>
-            </Link>
-
-            <Link
-              to="/cart"
-              onClick={() => setMobileMenuOpen(false)}
-              className="flex items-center gap-4 px-6 py-4 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
-            >
-              <span className="material-symbols-outlined text-primary">shopping_cart</span>
-              <span className="font-semibold text-gray-900 dark:text-white">
-                {t('cart') || 'Cart'}
-                {cartCount > 0 && (
-                  <span className="ml-2 bg-primary text-white text-xs px-2 py-1 rounded-full">
-                    {cartCount}
-                  </span>
-                )}
-              </span>
-            </Link>
-
-            <Link
-              to="/contact?callback=true"
-              onClick={() => setMobileMenuOpen(false)}
-              className="flex items-center gap-4 px-6 py-4 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
-            >
-              <span className="material-symbols-outlined text-primary">call</span>
-              <span className="font-semibold text-gray-900 dark:text-white">
-                {currentLang === 'en' ? 'Get a Callback' : 'Rückruf erhalten'}
-              </span>
-            </Link>
-          </div>
-        </nav>
-
-        {/* Footer Section with Language & Auth */}
-        <div className="p-6 border-t border-gray-200 dark:border-gray-800 space-y-4">
-          {/* Language Switcher */}
-          <div className="flex gap-2">
+        {/* Language Selector */}
+        <div className="px-4 pt-6 pb-4">
+          <div className="relative bg-gray-200 rounded-full p-1 flex items-center">
+            <div
+              className={`absolute top-1 left-1 h-8 bg-primary rounded-full transition-transform duration-300 ease-out ${
+                currentLang === 'en' ? 'translate-x-full' : 'translate-x-0'
+              }`}
+              style={{ width: 'calc(50% - 4px)' }}
+            />
             <button
-              className={`flex-1 px-4 py-3 rounded-lg text-sm font-medium transition-all ${
-                currentLang === 'de'
-                  ? 'bg-primary text-white'
-                  : 'bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300'
+              className={`relative z-10 flex-1 py-2 rounded-full text-sm font-medium transition-colors duration-300 ${
+                currentLang === 'de' ? 'text-white' : 'text-gray-700'
               }`}
               onClick={() => switchLanguage('de')}
             >
               DE
             </button>
             <button
-              className={`flex-1 px-4 py-3 rounded-lg text-sm font-medium transition-all ${
-                currentLang === 'en'
-                  ? 'bg-primary text-white'
-                  : 'bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300'
+              className={`relative z-10 flex-1 py-2 rounded-full text-sm font-medium transition-colors duration-300 ${
+                currentLang === 'en' ? 'text-white' : 'text-gray-700'
               }`}
               onClick={() => switchLanguage('en')}
             >
               EN
             </button>
           </div>
+        </div>
 
-          {/* Auth Button */}
-          {isAuthenticated ? (
-            <Link
-              to="/account"
-              onClick={() => setMobileMenuOpen(false)}
-              className="block w-full bg-gradient-to-r from-primary to-accent text-white px-5 py-4 rounded-lg text-center font-bold hover:shadow-lg transition-all"
+        {/* Navigation Links */}
+        <nav className="flex-1 overflow-y-auto px-4 mobile-menu-nav">
+          <div className="space-y-2">
+            <button
+              onClick={() => {
+                navigate('/');
+                setMobileMenuOpen(false);
+              }}
+              className="block w-full text-left px-6 py-4 rounded-xl text-lg font-semibold text-gray-900 hover:bg-gray-100 transition-all"
             >
-              {user?.firstName || t('account')}
-            </Link>
-          ) : (
-            <Link
-              to="/login"
-              onClick={() => setMobileMenuOpen(false)}
-              className="block w-full bg-gradient-to-r from-primary to-accent text-white px-5 py-4 rounded-lg text-center font-bold hover:shadow-lg transition-all"
+              {currentLang === 'en' ? 'Home' : 'Startseite'}
+            </button>
+            <button
+              onClick={() => {
+                navigate('/products');
+                setMobileMenuOpen(false);
+              }}
+              className="block w-full text-left px-6 py-4 rounded-xl text-lg font-semibold text-gray-900 hover:bg-gray-100 transition-all"
             >
-              {t('login') || 'Login'}
-            </Link>
-          )}
+              {currentLang === 'en' ? 'Products' : 'Produkte'}
+            </button>
+            <button
+              onClick={() => {
+                navigate('/support');
+                setMobileMenuOpen(false);
+              }}
+              className="block w-full text-left px-6 py-4 rounded-xl text-lg font-semibold text-gray-900 hover:bg-gray-100 transition-all"
+            >
+              {currentLang === 'en' ? 'Support' : 'Unterstützung'}
+            </button>
+            <button
+              onClick={() => {
+                navigate('/cart');
+                setMobileMenuOpen(false);
+              }}
+              className="block w-full text-left px-6 py-4 rounded-xl text-lg font-semibold text-gray-900 hover:bg-gray-100 transition-all"
+            >
+              {currentLang === 'en' ? 'Cart' : 'Warenkorb'}
+            </button>
+            <button
+              onClick={() => {
+                navigate('/wishlist');
+                setMobileMenuOpen(false);
+              }}
+              className="block w-full text-left px-6 py-4 rounded-xl text-lg font-semibold text-gray-900 hover:bg-gray-100 transition-all"
+            >
+              {currentLang === 'en' ? 'Wishlist' : 'Wunschliste'}
+            </button>
+          </div>
+        </nav>
+
+        {/* Login/Signup Buttons */}
+        <div className="p-4 border-t border-gray-200">
+          <div className="flex gap-3">
+            <button
+              onClick={() => {
+                navigate('/login');
+                setMobileMenuOpen(false);
+              }}
+              className="flex-1 bg-gradient-to-r from-primary to-accent text-white py-3 px-6 rounded-lg font-semibold text-base hover:shadow-xl hover:scale-105 transition-all duration-300"
+            >
+              {currentLang === 'en' ? 'Login' : 'Anmelden'}
+            </button>
+            <button
+              onClick={() => {
+                navigate('/register');
+                setMobileMenuOpen(false);
+              }}
+              className="flex-1 bg-white border-2 border-primary text-primary py-3 px-6 rounded-lg font-semibold text-base hover:bg-primary hover:text-white hover:shadow-xl hover:scale-105 transition-all duration-300"
+            >
+              {currentLang === 'en' ? 'Sign Up' : 'Registrieren'}
+            </button>
+          </div>
         </div>
       </div>
     </div>

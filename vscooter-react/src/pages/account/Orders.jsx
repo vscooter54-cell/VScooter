@@ -4,7 +4,7 @@ import { useLanguage } from '../../context/LanguageContext';
 import { orderAPI } from '../../services/api';
 
 export default function Orders() {
-  const { language } = useLanguage();
+  const { currentLang } = useLanguage();
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
@@ -60,7 +60,7 @@ export default function Orders() {
     return (
       <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center">
         <div className="text-xl text-gray-600 dark:text-gray-400">
-          {language === 'en' ? 'Loading...' : 'Laden...'}
+          {currentLang === 'en' ? 'Loading...' : 'Laden...'}
         </div>
       </div>
     );
@@ -71,13 +71,13 @@ export default function Orders() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between mb-8">
           <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
-            {language === 'en' ? 'My Orders' : 'Meine Bestellungen'}
+            {currentLang === 'en' ? 'My Orders' : 'Meine Bestellungen'}
           </h1>
           <Link
             to="/account"
             className="text-red-600 hover:text-red-700 dark:text-red-400 dark:hover:text-red-300"
           >
-            {language === 'en' ? 'Back to Account' : 'Zurück zum Konto'}
+            {currentLang === 'en' ? 'Back to Account' : 'Zurück zum Konto'}
           </Link>
         </div>
 
@@ -90,13 +90,13 @@ export default function Orders() {
         {orders.length === 0 ? (
           <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-12 text-center">
             <p className="text-gray-600 dark:text-gray-400 mb-4">
-              {language === 'en' ? 'You haven\'t placed any orders yet.' : 'Sie haben noch keine Bestellungen aufgegeben.'}
+              {currentLang === 'en' ? 'You haven\'t placed any orders yet.' : 'Sie haben noch keine Bestellungen aufgegeben.'}
             </p>
             <Link
               to="/products"
               className="inline-block bg-red-600 text-white px-6 py-3 rounded-lg hover:bg-red-700 transition-colors"
             >
-              {language === 'en' ? 'Start Shopping' : 'Mit dem Einkaufen beginnen'}
+              {currentLang === 'en' ? 'Start Shopping' : 'Mit dem Einkaufen beginnen'}
             </Link>
           </div>
         ) : (
@@ -107,10 +107,10 @@ export default function Orders() {
                   <div className="flex items-center justify-between mb-4">
                     <div>
                       <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
-                        {language === 'en' ? 'Order' : 'Bestellung'} #{order.orderNumber}
+                        {currentLang === 'en' ? 'Order' : 'Bestellung'} #{order.orderNumber}
                       </h2>
                       <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
-                        {new Date(order.createdAt).toLocaleDateString(language === 'en' ? 'en-US' : 'de-DE', {
+                        {new Date(order.createdAt).toLocaleDateString(currentLang === 'en' ? 'en-US' : 'de-DE', {
                           year: 'numeric',
                           month: 'long',
                           day: 'numeric'
@@ -128,14 +128,14 @@ export default function Orders() {
                         {order.pricing.currency} {order.pricing.total.toFixed(2)}
                       </span>
                       <span className="text-gray-600 dark:text-gray-400 ml-2">
-                        ({order.items.length} {language === 'en' ? 'item' : 'Artikel'}{order.items.length !== 1 && 's'})
+                        ({order.items.length} {currentLang === 'en' ? 'item' : 'Artikel'}{order.items.length !== 1 && 's'})
                       </span>
                     </div>
                     <Link
                       to={`/account/orders/${order._id}`}
                       className="text-red-600 hover:text-red-700 dark:text-red-400 dark:hover:text-red-300 font-medium"
                     >
-                      {language === 'en' ? 'View Details' : 'Details anzeigen'} →
+                      {currentLang === 'en' ? 'View Details' : 'Details anzeigen'} →
                     </Link>
                   </div>
                 </div>
@@ -154,14 +154,14 @@ export default function Orders() {
                             {item.name[language] || item.name.en}
                           </p>
                           <p className="text-sm text-gray-600 dark:text-gray-400">
-                            {language === 'en' ? 'Qty' : 'Menge'}: {item.quantity}
+                            {currentLang === 'en' ? 'Qty' : 'Menge'}: {item.quantity}
                           </p>
                         </div>
                       </div>
                     ))}
                     {order.items.length > 3 && (
                       <div className="flex items-center justify-center text-gray-600 dark:text-gray-400">
-                        +{order.items.length - 3} {language === 'en' ? 'more' : 'weitere'}
+                        +{order.items.length - 3} {currentLang === 'en' ? 'more' : 'weitere'}
                       </div>
                     )}
                   </div>

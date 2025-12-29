@@ -6,7 +6,7 @@ import { useLanguage } from '../../context/LanguageContext';
 import { productAPI } from '../../services/api';
 
 export default function Cart() {
-  const { language } = useLanguage();
+  const { currentLang } = useLanguage();
   const { cart, loading, updateQuantity, removeFromCart, applyCoupon, removeCoupon, cartTotal } = useCart();
   const { isAuthenticated } = useAuth();
   const navigate = useNavigate();
@@ -70,7 +70,7 @@ export default function Cart() {
     setCouponSuccess(false);
 
     if (!isAuthenticated) {
-      setCouponError(language === 'en' ? 'Please sign in to use coupons' : 'Bitte melden Sie sich an, um Gutscheine zu verwenden');
+      setCouponError(currentLang === 'en' ? 'Please sign in to use coupons' : 'Bitte melden Sie sich an, um Gutscheine zu verwenden');
       return;
     }
 
@@ -100,7 +100,7 @@ export default function Cart() {
     return (
       <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center">
         <div className="text-xl text-gray-600 dark:text-gray-400">
-          {language === 'en' ? 'Loading...' : 'Laden...'}
+          {currentLang === 'en' ? 'Loading...' : 'Laden...'}
         </div>
       </div>
     );
@@ -112,16 +112,16 @@ export default function Cart() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center">
             <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">
-              {language === 'en' ? 'Your cart is empty' : 'Ihr Warenkorb ist leer'}
+              {currentLang === 'en' ? 'Your cart is empty' : 'Ihr Warenkorb ist leer'}
             </h1>
             <p className="text-gray-600 dark:text-gray-400 mb-8">
-              {language === 'en' ? 'Add some products to get started!' : 'Fügen Sie einige Produkte hinzu, um zu beginnen!'}
+              {currentLang === 'en' ? 'Add some products to get started!' : 'Fügen Sie einige Produkte hinzu, um zu beginnen!'}
             </p>
             <Link
               to="/products"
               className="inline-block bg-red-600 text-white px-6 py-3 rounded-lg hover:bg-red-700 transition-colors"
             >
-              {language === 'en' ? 'Shop Now' : 'Jetzt einkaufen'}
+              {currentLang === 'en' ? 'Shop Now' : 'Jetzt einkaufen'}
             </Link>
           </div>
         </div>
@@ -139,11 +139,29 @@ export default function Cart() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 py-12">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-8">
-          {language === 'en' ? 'Shopping Cart' : 'Warenkorb'}
-        </h1>
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 relative">
+      {/* Banner Section - 50vh height from top */}
+      <section className="relative h-[50vh] flex items-center justify-center overflow-hidden -mt-20 md:-mt-0">
+        {/* Background Image */}
+        <div className="absolute inset-0 w-full h-full">
+          <img
+            src="/banner1.webp"
+            alt="Shopping Cart Banner"
+            className="w-full h-full object-cover object-center"
+          />
+          {/* Dark overlay for better text readability */}
+          <div className="absolute inset-0 bg-black/40"></div>
+        </div>
+
+        {/* Banner Content */}
+        <div className="relative z-10 text-center px-4">
+          <h1 className="text-4xl md:text-6xl font-bold text-white drop-shadow-lg mb-4">
+            {currentLang === 'en' ? 'Shopping Cart' : 'Warenkorb'}
+          </h1>
+        </div>
+      </section>
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
 
         <div className="lg:grid lg:grid-cols-12 lg:gap-8">
           {/* Cart Items */}
@@ -153,14 +171,14 @@ export default function Cart() {
                 <div key={item.product._id} className="flex flex-col sm:flex-row sm:items-center p-4 sm:p-6 border-b border-gray-200 dark:border-gray-700 last:border-b-0 gap-4">
                   <img
                     src={`/${item.product.images?.[0] || 'placeholder.jpg'}`}
-                    alt={item.product.name?.[language] || item.product.name?.en}
+                    alt={item.product.name?.[currentLang] || item.product.name?.en}
                     className="w-full sm:w-24 h-40 sm:h-24 object-contain rounded-lg bg-gray-50 dark:bg-gray-900"
                   />
 
                   <div className="flex-1 min-w-0">
                     <div className="flex justify-between items-start mb-3">
                       <h3 className="text-base sm:text-lg font-semibold text-gray-900 dark:text-white pr-4">
-                        {item.product.name?.[language] || item.product.name?.en}
+                        {item.product.name?.[currentLang] || item.product.name?.en}
                       </h3>
                       <p className="text-lg sm:text-xl font-bold text-gray-900 dark:text-white whitespace-nowrap">
                         {currency} {((item.product.pricing?.salePrice?.[currency] || item.product.pricing?.regularPrice?.[currency]) * item.quantity).toFixed(2)}
@@ -168,7 +186,7 @@ export default function Cart() {
                     </div>
 
                     <p className="text-gray-600 dark:text-gray-400 text-sm mb-4">
-                      {currency} {item.product.pricing?.salePrice?.[currency] || item.product.pricing?.regularPrice?.[currency]} {language === 'en' ? 'each' : 'pro Stück'}
+                      {currency} {item.product.pricing?.salePrice?.[currency] || item.product.pricing?.regularPrice?.[currency]} {currentLang === 'en' ? 'each' : 'pro Stück'}
                     </p>
 
                     <div className="flex items-center justify-between sm:justify-start gap-4">
@@ -193,7 +211,7 @@ export default function Cart() {
                         className="flex items-center gap-2 text-red-600 hover:text-red-700 dark:text-red-400 dark:hover:text-red-300 py-3 px-4 rounded-lg hover:bg-red-50 dark:hover:bg-red-900/20 transition-all touch-manipulation"
                       >
                         <span className="material-symbols-outlined">delete</span>
-                        <span className="hidden sm:inline">{language === 'en' ? 'Remove' : 'Entfernen'}</span>
+                        <span className="hidden sm:inline">{currentLang === 'en' ? 'Remove' : 'Entfernen'}</span>
                       </button>
                     </div>
                   </div>
@@ -206,13 +224,13 @@ export default function Cart() {
           <div className="lg:col-span-4">
             <div className="fixed lg:sticky bottom-0 left-0 right-0 lg:top-4 bg-white dark:bg-gray-800 rounded-t-2xl lg:rounded-lg shadow-2xl lg:shadow-lg p-4 sm:p-6 z-30 border-t-2 lg:border-2 border-gray-200 dark:border-gray-700">
               <h2 className="text-lg sm:text-xl font-bold text-gray-900 dark:text-white mb-4">
-                {language === 'en' ? 'Order Summary' : 'Bestellübersicht'}
+                {currentLang === 'en' ? 'Order Summary' : 'Bestellübersicht'}
               </h2>
 
               {isAuthenticated && (
                 <details className="mb-6 lg:open" open>
                   <summary className="lg:hidden cursor-pointer text-primary font-semibold mb-2 list-none flex items-center justify-between">
-                    <span>{language === 'en' ? 'Have a coupon code?' : 'Gutscheincode?'}</span>
+                    <span>{currentLang === 'en' ? 'Have a coupon code?' : 'Gutscheincode?'}</span>
                     <span className="material-symbols-outlined">expand_more</span>
                   </summary>
                   <form onSubmit={handleApplyCoupon} className="flex gap-2">
@@ -220,22 +238,22 @@ export default function Cart() {
                       type="text"
                       value={couponCode}
                       onChange={(e) => setCouponCode(e.target.value)}
-                      placeholder={language === 'en' ? 'Coupon code' : 'Gutscheincode'}
+                      placeholder={currentLang === 'en' ? 'Coupon code' : 'Gutscheincode'}
                       className="flex-1 px-3 py-2 sm:py-2 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-700 dark:text-white text-sm sm:text-base"
                     />
                     <button
                       type="submit"
                       className="px-3 sm:px-4 py-2 bg-gray-200 dark:bg-gray-700 text-gray-900 dark:text-white rounded-lg hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors text-sm sm:text-base whitespace-nowrap"
                     >
-                      {language === 'en' ? 'Apply' : 'Anwenden'}
+                      {currentLang === 'en' ? 'Apply' : 'Anwenden'}
                     </button>
                   </form>
                   {couponError && <p className="text-red-600 text-xs sm:text-sm mt-2">{couponError}</p>}
                   {couponSuccess && (
                     <div className="flex items-center justify-between mt-2 text-green-600 text-xs sm:text-sm">
-                      <span>{language === 'en' ? 'Coupon applied!' : 'Gutschein angewendet!'}</span>
+                      <span>{currentLang === 'en' ? 'Coupon applied!' : 'Gutschein angewendet!'}</span>
                       <button onClick={handleRemoveCoupon} className="underline">
-                        {language === 'en' ? 'Remove' : 'Entfernen'}
+                        {currentLang === 'en' ? 'Remove' : 'Entfernen'}
                       </button>
                     </div>
                   )}
@@ -244,29 +262,29 @@ export default function Cart() {
 
               <div className="space-y-2 sm:space-y-3 border-t border-gray-200 dark:border-gray-700 pt-4">
                 <div className="flex justify-between text-sm sm:text-base text-gray-600 dark:text-gray-400">
-                  <span>{language === 'en' ? 'Subtotal' : 'Zwischensumme'}</span>
+                  <span>{currentLang === 'en' ? 'Subtotal' : 'Zwischensumme'}</span>
                   <span>{currency} {calculations.subtotal?.toFixed(2) || '0.00'}</span>
                 </div>
 
                 {calculations.discount > 0 && (
                   <div className="flex justify-between text-sm sm:text-base text-green-600">
-                    <span>{language === 'en' ? 'Discount' : 'Rabatt'}</span>
+                    <span>{currentLang === 'en' ? 'Discount' : 'Rabatt'}</span>
                     <span>-{currency} {calculations.discount?.toFixed(2)}</span>
                   </div>
                 )}
 
                 <div className="flex justify-between text-sm sm:text-base text-gray-600 dark:text-gray-400">
-                  <span>{language === 'en' ? 'Tax' : 'Steuer'}</span>
+                  <span>{currentLang === 'en' ? 'Tax' : 'Steuer'}</span>
                   <span>{currency} {calculations.tax?.toFixed(2) || '0.00'}</span>
                 </div>
 
                 <div className="flex justify-between text-sm sm:text-base text-gray-600 dark:text-gray-400">
-                  <span>{language === 'en' ? 'Shipping' : 'Versand'}</span>
+                  <span>{currentLang === 'en' ? 'Shipping' : 'Versand'}</span>
                   <span>{currency} {calculations.shipping?.toFixed(2) || '0.00'}</span>
                 </div>
 
                 <div className="flex justify-between text-lg sm:text-xl font-bold text-gray-900 dark:text-white border-t border-gray-200 dark:border-gray-700 pt-3">
-                  <span>{language === 'en' ? 'Total' : 'Gesamt'}</span>
+                  <span>{currentLang === 'en' ? 'Total' : 'Gesamt'}</span>
                   <span>{currency} {calculations.total?.toFixed(2) || '0.00'}</span>
                 </div>
               </div>
@@ -275,14 +293,14 @@ export default function Cart() {
                 onClick={handleCheckout}
                 className="w-full mt-4 sm:mt-6 bg-gradient-to-r from-primary to-accent text-white py-4 rounded-lg hover:shadow-xl transition-all font-semibold text-base sm:text-lg touch-manipulation"
               >
-                {language === 'en' ? 'Proceed to Checkout' : 'Zur Kasse gehen'}
+                {currentLang === 'en' ? 'Proceed to Checkout' : 'Zur Kasse gehen'}
               </button>
 
               <Link
                 to="/products"
                 className="block text-center mt-3 sm:mt-4 text-primary hover:text-primary/80 text-sm sm:text-base"
               >
-                {language === 'en' ? 'Continue Shopping' : 'Weiter einkaufen'}
+                {currentLang === 'en' ? 'Continue Shopping' : 'Weiter einkaufen'}
               </Link>
             </div>
 

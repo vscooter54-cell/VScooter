@@ -4,7 +4,7 @@ import { useAuth } from '../../contexts/AuthContext';
 import { useLanguage } from '../../context/LanguageContext';
 
 export default function ForgotPassword() {
-  const { language } = useLanguage();
+  const { currentLang } = useLanguage();
   const { forgotPassword } = useAuth();
 
   const [email, setEmail] = useState('');
@@ -34,12 +34,12 @@ export default function ForgotPassword() {
       <div className="max-w-md w-full space-y-8">
         <div>
           <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900 dark:text-white">
-            {language === 'en' ? 'Reset your password' : 'Setzen Sie Ihr Passwort zurück'}
+            {currentLang === 'en' ? 'Reset your password' : 'Setzen Sie Ihr Passwort zurück'}
           </h2>
           <p className="mt-2 text-center text-sm text-gray-600 dark:text-gray-400">
-            {language === 'en' ? 'Remember your password?' : 'Erinnern Sie sich an Ihr Passwort?'}{' '}
+            {currentLang === 'en' ? 'Remember your password?' : 'Erinnern Sie sich an Ihr Passwort?'}{' '}
             <Link to="/login" className="font-medium text-red-600 hover:text-red-500">
-              {language === 'en' ? 'Sign in' : 'Anmelden'}
+              {currentLang === 'en' ? 'Sign in' : 'Anmelden'}
             </Link>
           </p>
         </div>
@@ -60,7 +60,7 @@ export default function ForgotPassword() {
               <div className="flex">
                 <div className="ml-3">
                   <h3 className="text-sm font-medium text-green-800 dark:text-green-200">
-                    {language === 'en'
+                    {currentLang === 'en'
                       ? 'Check your email for a password reset link.'
                       : 'Überprüfen Sie Ihre E-Mail für einen Link zum Zurücksetzen des Passworts.'}
                   </h3>
@@ -73,7 +73,7 @@ export default function ForgotPassword() {
             <>
               <div>
                 <label htmlFor="email" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                  {language === 'en' ? 'Email address' : 'E-Mail-Adresse'}
+                  {currentLang === 'en' ? 'Email address' : 'E-Mail-Adresse'}
                 </label>
                 <input
                   id="email"
@@ -84,7 +84,7 @@ export default function ForgotPassword() {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   className="appearance-none relative block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 placeholder-gray-500 dark:placeholder-gray-400 text-gray-900 dark:text-white dark:bg-gray-700 rounded-lg focus:outline-none focus:ring-red-500 focus:border-red-500 sm:text-sm"
-                  placeholder={language === 'en' ? 'you@example.com' : 'sie@beispiel.de'}
+                  placeholder={currentLang === 'en' ? 'you@example.com' : 'sie@beispiel.de'}
                 />
               </div>
 
@@ -95,8 +95,8 @@ export default function ForgotPassword() {
                   className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-lg text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                 >
                   {loading
-                    ? (language === 'en' ? 'Sending...' : 'Senden...')
-                    : (language === 'en' ? 'Send reset link' : 'Zurücksetzungslink senden')}
+                    ? (currentLang === 'en' ? 'Sending...' : 'Senden...')
+                    : (currentLang === 'en' ? 'Send reset link' : 'Zurücksetzungslink senden')}
                 </button>
               </div>
             </>

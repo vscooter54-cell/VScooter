@@ -4,7 +4,7 @@ import { useAuth } from '../../contexts/AuthContext';
 import { useLanguage } from '../../context/LanguageContext';
 
 export default function Login() {
-  const { language, translations } = useLanguage();
+  const { currentLang } = useLanguage();
   const { login } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
@@ -46,12 +46,12 @@ export default function Login() {
       <div className="max-w-md w-full space-y-8">
         <div>
           <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900 dark:text-white">
-            {language === 'en' ? 'Sign in to your account' : 'Melden Sie sich bei Ihrem Konto an'}
+            {currentLang === 'en' ? 'Sign in to your account' : 'Melden Sie sich bei Ihrem Konto an'}
           </h2>
           <p className="mt-2 text-center text-sm text-gray-600 dark:text-gray-400">
-            {language === 'en' ? "Don't have an account?" : 'Sie haben noch kein Konto?'}{' '}
+            {currentLang === 'en' ? "Don't have an account?" : 'Sie haben noch kein Konto?'}{' '}
             <Link to="/register" className="font-medium text-red-600 hover:text-red-500">
-              {language === 'en' ? 'Sign up' : 'Registrieren'}
+              {currentLang === 'en' ? 'Sign up' : 'Registrieren'}
             </Link>
           </p>
         </div>
@@ -70,7 +70,7 @@ export default function Login() {
           <div className="space-y-4">
             <div>
               <label htmlFor="email" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                {language === 'en' ? 'Email address' : 'E-Mail-Adresse'}
+                {currentLang === 'en' ? 'Email address' : 'E-Mail-Adresse'}
               </label>
               <input
                 id="email"
@@ -81,13 +81,13 @@ export default function Login() {
                 value={formData.email}
                 onChange={handleChange}
                 className="appearance-none relative block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 placeholder-gray-500 dark:placeholder-gray-400 text-gray-900 dark:text-white dark:bg-gray-700 rounded-lg focus:outline-none focus:ring-red-500 focus:border-red-500 focus:z-10 sm:text-sm"
-                placeholder={language === 'en' ? 'you@example.com' : 'sie@beispiel.de'}
+                placeholder={currentLang === 'en' ? 'you@example.com' : 'sie@beispiel.de'}
               />
             </div>
 
             <div>
               <label htmlFor="password" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                {language === 'en' ? 'Password' : 'Passwort'}
+                {currentLang === 'en' ? 'Password' : 'Passwort'}
               </label>
               <input
                 id="password"
@@ -98,7 +98,7 @@ export default function Login() {
                 value={formData.password}
                 onChange={handleChange}
                 className="appearance-none relative block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 placeholder-gray-500 dark:placeholder-gray-400 text-gray-900 dark:text-white dark:bg-gray-700 rounded-lg focus:outline-none focus:ring-red-500 focus:border-red-500 focus:z-10 sm:text-sm"
-                placeholder={language === 'en' ? 'Enter your password' : 'Geben Sie Ihr Passwort ein'}
+                placeholder={currentLang === 'en' ? 'Enter your password' : 'Geben Sie Ihr Passwort ein'}
               />
             </div>
           </div>
@@ -106,7 +106,7 @@ export default function Login() {
           <div className="flex items-center justify-between">
             <div className="text-sm">
               <Link to="/forgot-password" className="font-medium text-red-600 hover:text-red-500">
-                {language === 'en' ? 'Forgot your password?' : 'Passwort vergessen?'}
+                {currentLang === 'en' ? 'Forgot your password?' : 'Passwort vergessen?'}
               </Link>
             </div>
           </div>
@@ -117,7 +117,7 @@ export default function Login() {
               disabled={loading}
               className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-lg text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
             >
-              {loading ? (language === 'en' ? 'Signing in...' : 'Anmeldung...') : (language === 'en' ? 'Sign in' : 'Anmelden')}
+              {loading ? (currentLang === 'en' ? 'Signing in...' : 'Anmeldung...') : (currentLang === 'en' ? 'Sign in' : 'Anmelden')}
             </button>
           </div>
         </form>

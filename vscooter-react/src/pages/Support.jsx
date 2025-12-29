@@ -20,14 +20,26 @@ export default function Support() {
   ];
 
   return (
-    <main className="flex-grow">
-      {/* Hero Section */}
-      <section className="py-16 md:py-24 bg-gradient-to-br from-red-50 via-white to-red-50 dark:from-red-950/20 dark:via-black dark:to-red-950/20">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h1 className="text-4xl md:text-6xl font-bold text-gray-900 dark:text-white mb-6">
+    <main className="flex-grow relative">
+      {/* Banner Section - 50vh height from top */}
+      <section className="relative h-[50vh] flex items-center justify-center overflow-hidden -mt-20 md:-mt-0">
+        {/* Background Image */}
+        <div className="absolute inset-0 w-full h-full">
+          <img
+            src="/banner2.webp"
+            alt="VScooter Support Banner"
+            className="w-full h-full object-cover object-center"
+          />
+          {/* Dark overlay for better text readability */}
+          <div className="absolute inset-0 bg-black/40"></div>
+        </div>
+
+        {/* Banner Content */}
+        <div className="relative z-10 text-center px-4">
+          <h1 className="text-4xl md:text-6xl font-bold text-white drop-shadow-lg mb-4">
             {t('supportPage.title')}
           </h1>
-          <p className="text-lg md:text-xl text-gray-600 dark:text-gray-400 max-w-3xl mx-auto">
+          <p className="mt-4 text-lg md:text-xl text-white drop-shadow-lg max-w-2xl mx-auto">
             {t('supportPage.subtitle')}
           </p>
         </div>
