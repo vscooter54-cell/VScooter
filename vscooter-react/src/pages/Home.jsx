@@ -695,15 +695,30 @@ export default function Home() {
                 style={{ transform: `translateX(-${advantageSlide2 * 100}%)` }}
               >
                 {[
-                  { name: 'Long Battery Life', nameDE: 'Lange Akkulaufzeit' },
+                  { name: 'Long Battery Life', nameDE: 'Lange Akkulaufzeit', image: 'vscooter4.jpg' },
                   { name: 'High Performance', nameDE: 'Hohe Leistung' },
                   { name: 'Eco-Friendly', nameDE: 'Umweltfreundlich' }
                 ].map((item, index) => (
                   <div key={index} className="w-full flex-shrink-0 flex justify-center px-4">
-                    <div className="w-[90vw] h-[50vh] bg-gradient-to-br from-accent/10 to-accent/30 rounded-2xl shadow-xl flex items-center justify-center">
-                      <h3 className="text-2xl font-bold text-gray-900 dark:text-white">
-                        {currentLang === 'en' ? item.name : item.nameDE}
-                      </h3>
+                    <div className="w-[90vw] h-[50vh] bg-gradient-to-br from-accent/10 to-accent/30 rounded-2xl shadow-xl overflow-hidden relative flex items-center justify-center">
+                      {item.image ? (
+                        <>
+                          <img
+                            src={`/${item.image}`}
+                            alt={currentLang === 'en' ? item.name : item.nameDE}
+                            className="w-full h-full object-cover"
+                          />
+                          <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-6">
+                            <h3 className="text-2xl font-bold text-white drop-shadow-lg">
+                              {currentLang === 'en' ? item.name : item.nameDE}
+                            </h3>
+                          </div>
+                        </>
+                      ) : (
+                        <h3 className="text-2xl font-bold text-gray-900 dark:text-white">
+                          {currentLang === 'en' ? item.name : item.nameDE}
+                        </h3>
+                      )}
                     </div>
                   </div>
                 ))}
