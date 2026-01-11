@@ -490,102 +490,157 @@ export default function Home() {
               </p>
             </div>
           ) : (
-            <div className="relative">
-              {/* Slideshow Container */}
-              <div className="overflow-hidden">
-                <div
-                  className="flex transition-transform duration-500 ease-out"
-                  style={{ transform: `translateX(-${currentSlide * 100}%)` }}
-                >
-                  {products.map((product) => (
-                    <div key={product._id} className="w-full flex-shrink-0 px-4">
-                      <div className="max-w-md mx-auto">
-                        {/* Price Starting At */}
-                        <p className="text-center text-lg font-semibold text-gray-700 dark:text-gray-300 mb-4">
-                          {currentLang === 'en' ? 'Price Starting at' : 'Preis ab'}{' '}
-                          <span className="text-2xl font-bold text-primary">€{product.pricing.eur}</span>
-                        </p>
+            <>
+              {/* Mobile View - Vertical List */}
+              <div className="md:hidden space-y-6">
+                {products.map((product) => (
+                  <div key={product._id} className="w-full">
+                    {/* Price Starting At */}
+                    <p className="text-center text-lg font-semibold text-gray-700 dark:text-gray-300 mb-4">
+                      {currentLang === 'en' ? 'Price Starting at' : 'Preis ab'}{' '}
+                      <span className="text-2xl font-bold text-primary">€{product.pricing.eur}</span>
+                    </p>
 
-                        {/* Product Card */}
-                        <div className="bg-white dark:bg-gray-900/50 rounded-2xl overflow-hidden shadow-xl">
-                          {/* Image with Name Overlay */}
-                          <div className="relative h-96 bg-gradient-to-br from-primary/10 to-primary/30">
-                            <img
-                              alt={product.name[currentLang]}
-                              className="w-full h-full object-contain object-center"
-                              src={`/${product.primaryImage?.url || product.images[0]?.url}`}
-                            />
-                            {/* Name at Top */}
-                            <div className="absolute top-6 left-0 right-0 text-center">
-                              <h3 className="text-3xl font-bold text-gray-900 dark:text-white drop-shadow-lg">
-                                {product.name[currentLang]}
-                              </h3>
-                              {product.isPremium && (
-                                <span className="inline-block mt-2 bg-primary text-white text-xs px-3 py-1 rounded-full font-bold">
-                                  PREMIUM
-                                </span>
-                              )}
+                    {/* Product Card */}
+                    <div className="bg-white dark:bg-gray-900/50 rounded-2xl overflow-hidden shadow-xl">
+                      {/* Image with Name Overlay */}
+                      <div className="relative h-96 bg-gradient-to-br from-primary/10 to-primary/30">
+                        <img
+                          alt={product.name[currentLang]}
+                          className="w-full h-full object-contain object-center"
+                          src={`/${product.primaryImage?.url || product.images[0]?.url}`}
+                        />
+                        {/* Name at Top */}
+                        <div className="absolute top-6 left-0 right-0 text-center">
+                          <h3 className="text-3xl font-bold text-gray-900 dark:text-white drop-shadow-lg">
+                            {product.name[currentLang]}
+                          </h3>
+                          {product.isPremium && (
+                            <span className="inline-block mt-2 bg-primary text-white text-xs px-3 py-1 rounded-full font-bold">
+                              PREMIUM
+                            </span>
+                          )}
+                        </div>
+                      </div>
+
+                      {/* Action Buttons at Bottom */}
+                      <div className="p-6 flex gap-3">
+                        <button
+                          onClick={() => navigate('/test-drive')}
+                          className="flex-1 bg-white border-2 border-primary text-primary py-3 px-4 rounded-lg font-semibold hover:bg-primary hover:text-white transition-all duration-300"
+                        >
+                          {currentLang === 'en' ? 'Test Ride' : 'Probefahrt'}
+                        </button>
+                        <button
+                          onClick={() => handleProductClick(product._id)}
+                          className="flex-1 bg-gradient-to-r from-primary to-accent text-white py-3 px-4 rounded-lg font-semibold hover:shadow-lg transition-all duration-300"
+                        >
+                          {currentLang === 'en' ? `Explore ${product.name.en}` : `${product.name.de} erkunden`}
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              {/* Desktop View - Slideshow */}
+              <div className="hidden md:block relative">
+                {/* Slideshow Container */}
+                <div className="overflow-hidden">
+                  <div
+                    className="flex transition-transform duration-500 ease-out"
+                    style={{ transform: `translateX(-${currentSlide * 100}%)` }}
+                  >
+                    {products.map((product) => (
+                      <div key={product._id} className="w-full flex-shrink-0 px-4">
+                        <div className="max-w-md mx-auto">
+                          {/* Price Starting At */}
+                          <p className="text-center text-lg font-semibold text-gray-700 dark:text-gray-300 mb-4">
+                            {currentLang === 'en' ? 'Price Starting at' : 'Preis ab'}{' '}
+                            <span className="text-2xl font-bold text-primary">€{product.pricing.eur}</span>
+                          </p>
+
+                          {/* Product Card */}
+                          <div className="bg-white dark:bg-gray-900/50 rounded-2xl overflow-hidden shadow-xl">
+                            {/* Image with Name Overlay */}
+                            <div className="relative h-96 bg-gradient-to-br from-primary/10 to-primary/30">
+                              <img
+                                alt={product.name[currentLang]}
+                                className="w-full h-full object-contain object-center"
+                                src={`/${product.primaryImage?.url || product.images[0]?.url}`}
+                              />
+                              {/* Name at Top */}
+                              <div className="absolute top-6 left-0 right-0 text-center">
+                                <h3 className="text-3xl font-bold text-gray-900 dark:text-white drop-shadow-lg">
+                                  {product.name[currentLang]}
+                                </h3>
+                                {product.isPremium && (
+                                  <span className="inline-block mt-2 bg-primary text-white text-xs px-3 py-1 rounded-full font-bold">
+                                    PREMIUM
+                                  </span>
+                                )}
+                              </div>
                             </div>
-                          </div>
 
-                          {/* Action Buttons at Bottom */}
-                          <div className="p-6 flex gap-3">
-                            <button
-                              onClick={() => navigate('/test-drive')}
-                              className="flex-1 bg-white border-2 border-primary text-primary py-3 px-4 rounded-lg font-semibold hover:bg-primary hover:text-white transition-all duration-300"
-                            >
-                              {currentLang === 'en' ? 'Test Ride' : 'Probefahrt'}
-                            </button>
-                            <button
-                              onClick={() => handleProductClick(product._id)}
-                              className="flex-1 bg-gradient-to-r from-primary to-accent text-white py-3 px-4 rounded-lg font-semibold hover:shadow-lg transition-all duration-300"
-                            >
-                              {currentLang === 'en' ? `Explore ${product.name.en}` : `${product.name.de} erkunden`}
-                            </button>
+                            {/* Action Buttons at Bottom */}
+                            <div className="p-6 flex gap-3">
+                              <button
+                                onClick={() => navigate('/test-drive')}
+                                className="flex-1 bg-white border-2 border-primary text-primary py-3 px-4 rounded-lg font-semibold hover:bg-primary hover:text-white transition-all duration-300"
+                              >
+                                {currentLang === 'en' ? 'Test Ride' : 'Probefahrt'}
+                              </button>
+                              <button
+                                onClick={() => handleProductClick(product._id)}
+                                className="flex-1 bg-gradient-to-r from-primary to-accent text-white py-3 px-4 rounded-lg font-semibold hover:shadow-lg transition-all duration-300"
+                              >
+                                {currentLang === 'en' ? `Explore ${product.name.en}` : `${product.name.de} erkunden`}
+                              </button>
+                            </div>
                           </div>
                         </div>
                       </div>
-                    </div>
-                  ))}
+                    ))}
+                  </div>
                 </div>
-              </div>
 
-              {/* Navigation Arrows */}
-              {products.length > 1 && (
-                <>
-                  <button
-                    onClick={() => setCurrentSlide((prev) => (prev === 0 ? products.length - 1 : prev - 1))}
-                    className="absolute left-2 top-1/2 -translate-y-1/2 bg-white/90 dark:bg-gray-800/90 p-3 rounded-full shadow-lg hover:scale-110 transition-all"
-                    aria-label="Previous"
-                  >
-                    <span className="material-symbols-outlined text-gray-900 dark:text-white">chevron_left</span>
-                  </button>
-                  <button
-                    onClick={() => setCurrentSlide((prev) => (prev === products.length - 1 ? 0 : prev + 1))}
-                    className="absolute right-2 top-1/2 -translate-y-1/2 bg-white/90 dark:bg-gray-800/90 p-3 rounded-full shadow-lg hover:scale-110 transition-all"
-                    aria-label="Next"
-                  >
-                    <span className="material-symbols-outlined text-gray-900 dark:text-white">chevron_right</span>
-                  </button>
-                </>
-              )}
-
-              {/* Dots Indicator */}
-              {products.length > 1 && (
-                <div className="flex justify-center gap-2 mt-6">
-                  {products.map((_, index) => (
+                {/* Navigation Arrows - Desktop Only */}
+                {products.length > 1 && (
+                  <>
                     <button
-                      key={index}
-                      onClick={() => setCurrentSlide(index)}
-                      className={`w-3 h-3 rounded-full transition-all ${
-                        currentSlide === index ? 'bg-primary w-8' : 'bg-gray-300'
-                      }`}
-                      aria-label={`Go to slide ${index + 1}`}
-                    />
-                  ))}
-                </div>
-              )}
-            </div>
+                      onClick={() => setCurrentSlide((prev) => (prev === 0 ? products.length - 1 : prev - 1))}
+                      className="absolute left-2 top-1/2 -translate-y-1/2 bg-white/90 dark:bg-gray-800/90 p-3 rounded-full shadow-lg hover:scale-110 transition-all"
+                      aria-label="Previous"
+                    >
+                      <span className="material-symbols-outlined text-gray-900 dark:text-white">chevron_left</span>
+                    </button>
+                    <button
+                      onClick={() => setCurrentSlide((prev) => (prev === products.length - 1 ? 0 : prev + 1))}
+                      className="absolute right-2 top-1/2 -translate-y-1/2 bg-white/90 dark:bg-gray-800/90 p-3 rounded-full shadow-lg hover:scale-110 transition-all"
+                      aria-label="Next"
+                    >
+                      <span className="material-symbols-outlined text-gray-900 dark:text-white">chevron_right</span>
+                    </button>
+                  </>
+                )}
+
+                {/* Dots Indicator - Desktop Only */}
+                {products.length > 1 && (
+                  <div className="flex justify-center gap-2 mt-6">
+                    {products.map((_, index) => (
+                      <button
+                        key={index}
+                        onClick={() => setCurrentSlide(index)}
+                        className={`w-3 h-3 rounded-full transition-all ${
+                          currentSlide === index ? 'bg-primary w-8' : 'bg-gray-300'
+                        }`}
+                        aria-label={`Go to slide ${index + 1}`}
+                      />
+                    ))}
+                  </div>
+                )}
+              </div>
+            </>
           )}
         </div>
       </section>
