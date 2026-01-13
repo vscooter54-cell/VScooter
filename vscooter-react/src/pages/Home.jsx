@@ -312,22 +312,22 @@ export default function Home() {
       `}</style>
 
       {/* Hero Section - Single Banner */}
-      <section className="relative h-[50vh] md:h-[40vh] flex items-end justify-center overflow-hidden bg-black">
+      <section className="relative flex items-end justify-center overflow-hidden bg-black" style={{ paddingBottom: '12.5%', paddingTop: '12.5%' }}>
         {/* Banner Video */}
-        <div className="absolute inset-0 w-full h-full flex items-end justify-center">
+        <div className="w-full flex items-end justify-center">
           <video
             autoPlay
             loop
             muted
             playsInline
-            className="w-full h-full object-contain object-bottom"
+            className="w-full h-auto max-h-[80vh] object-contain object-bottom"
           >
             <source src="/banner-video.mp4" type="video/mp4" />
             {/* Fallback image if video doesn't load */}
             <img
               src="/banner2.webp"
               alt="VScooter Hero Banner"
-              className="w-full h-full object-contain object-bottom"
+              className="w-full h-auto max-h-[80vh] object-contain object-bottom"
             />
           </video>
         </div>
