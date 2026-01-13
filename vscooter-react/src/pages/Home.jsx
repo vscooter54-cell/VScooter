@@ -1126,42 +1126,6 @@ export default function Home() {
                 </button>
               </div>
             </form>
-
-            {/* Contact Info */}
-            <div className="mt-12 grid md:grid-cols-3 gap-6">
-              {/* Email */}
-              <div className="text-center p-6 bg-gray-50 dark:bg-gray-900 rounded-xl">
-                <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <span className="material-symbols-outlined text-primary text-2xl">email</span>
-                </div>
-                <h3 className="font-semibold text-gray-900 dark:text-white mb-2">
-                  {currentLang === 'en' ? 'Email' : 'E-Mail'}
-                </h3>
-                <p className="text-sm text-gray-600 dark:text-gray-400">info@vscooter.com</p>
-              </div>
-
-              {/* Phone */}
-              <div className="text-center p-6 bg-gray-50 dark:bg-gray-900 rounded-xl">
-                <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <span className="material-symbols-outlined text-primary text-2xl">call</span>
-                </div>
-                <h3 className="font-semibold text-gray-900 dark:text-white mb-2">
-                  {currentLang === 'en' ? 'Phone' : 'Telefon'}
-                </h3>
-                <p className="text-sm text-gray-600 dark:text-gray-400">+49 123 456 7890</p>
-              </div>
-
-              {/* Location */}
-              <div className="text-center p-6 bg-gray-50 dark:bg-gray-900 rounded-xl">
-                <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <span className="material-symbols-outlined text-primary text-2xl">location_on</span>
-                </div>
-                <h3 className="font-semibold text-gray-900 dark:text-white mb-2">
-                  {currentLang === 'en' ? 'Location' : 'Standort'}
-                </h3>
-                <p className="text-sm text-gray-600 dark:text-gray-400">Berlin, Germany</p>
-              </div>
-            </div>
           </div>
         </div>
       </section>
