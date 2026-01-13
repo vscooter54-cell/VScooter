@@ -15,10 +15,70 @@ export default function Home() {
   const [advantageSlide2, setAdvantageSlide2] = useState(0);
   const [visibleItems, setVisibleItems] = useState(new Set());
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const touchStartX1 = useRef(0);
+  const touchStartX2 = useRef(0);
+  const advantage1Ref = useRef(null);
+  const advantage2Ref = useRef(null);
 
   useEffect(() => {
     fetchFeaturedProducts();
   }, []);
+
+  // Auto-slide for Advantage Slideshow 1 (every 5 seconds)
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setAdvantageSlide1((prev) => (prev === 2 ? 0 : prev + 1));
+    }, 5000);
+    return () => clearInterval(interval);
+  }, []);
+
+  // Auto-slide for Advantage Slideshow 2 (every 5 seconds)
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setAdvantageSlide2((prev) => (prev === 2 ? 0 : prev + 1));
+    }, 5000);
+    return () => clearInterval(interval);
+  }, []);
+
+  // Touch handlers for Advantage Slideshow 1
+  const handleTouchStart1 = (e) => {
+    touchStartX1.current = e.touches[0].clientX;
+  };
+
+  const handleTouchEnd1 = (e) => {
+    const touchEndX = e.changedTouches[0].clientX;
+    const diff = touchStartX1.current - touchEndX;
+
+    if (Math.abs(diff) > 50) { // Minimum swipe distance
+      if (diff > 0) {
+        // Swipe left - next slide
+        setAdvantageSlide1((prev) => (prev === 2 ? 0 : prev + 1));
+      } else {
+        // Swipe right - previous slide
+        setAdvantageSlide1((prev) => (prev === 0 ? 2 : prev - 1));
+      }
+    }
+  };
+
+  // Touch handlers for Advantage Slideshow 2
+  const handleTouchStart2 = (e) => {
+    touchStartX2.current = e.touches[0].clientX;
+  };
+
+  const handleTouchEnd2 = (e) => {
+    const touchEndX = e.changedTouches[0].clientX;
+    const diff = touchStartX2.current - touchEndX;
+
+    if (Math.abs(diff) > 50) { // Minimum swipe distance
+      if (diff > 0) {
+        // Swipe left - next slide
+        setAdvantageSlide2((prev) => (prev === 2 ? 0 : prev + 1));
+      } else {
+        // Swipe right - previous slide
+        setAdvantageSlide2((prev) => (prev === 0 ? 2 : prev - 1));
+      }
+    }
+  };
 
   // Prevent body scroll when mobile menu is open
   useEffect(() => {
@@ -224,22 +284,22 @@ export default function Home() {
       `}</style>
 
       {/* Hero Section - Single Banner */}
-      <section className="relative h-[100vh] md:h-[80vh] flex items-center justify-center overflow-hidden">
+      <section className="relative h-[100vh] md:h-[80vh] flex items-center justify-center overflow-hidden bg-black">
         {/* Banner Video */}
-        <div className="absolute inset-0 w-full h-full">
+        <div className="absolute inset-0 w-full h-full flex items-center justify-center">
           <video
             autoPlay
             loop
             muted
             playsInline
-            className="w-full h-full object-cover object-center"
+            className="w-full h-full object-contain"
           >
             <source src="/banner-video.mp4" type="video/mp4" />
             {/* Fallback image if video doesn't load */}
             <img
               src="/banner2.webp"
               alt="VScooter Hero Banner"
-              className="w-full h-full object-cover object-center"
+              className="w-full h-full object-contain"
             />
           </video>
         </div>
@@ -683,7 +743,12 @@ export default function Home() {
           </div>
           {/* Row 1 Slideshow */}
           <div className="mt-12 relative">
-            <div className="overflow-hidden">
+            <div
+              className="overflow-hidden"
+              onTouchStart={handleTouchStart1}
+              onTouchEnd={handleTouchEnd1}
+              ref={advantage1Ref}
+            >
               <div
                 className="flex transition-transform duration-500 ease-out"
                 style={{ transform: `translateX(-${advantageSlide1 * 100}%)` }}
@@ -711,24 +776,24 @@ export default function Home() {
               </div>
             </div>
 
-            {/* Navigation Arrows Row 1 */}
+            {/* Navigation Arrows Row 1 - Hidden on mobile */}
             <button
               onClick={() => setAdvantageSlide1((prev) => (prev === 0 ? 2 : prev - 1))}
-              className="absolute left-2 top-1/2 -translate-y-1/2 bg-white/90 dark:bg-gray-800/90 p-3 rounded-full shadow-lg hover:scale-110 transition-all"
+              className="hidden md:block absolute left-2 top-1/2 -translate-y-1/2 bg-white/90 dark:bg-gray-800/90 p-3 rounded-full shadow-lg hover:scale-110 transition-all"
               aria-label="Previous"
             >
               <span className="material-symbols-outlined text-gray-900 dark:text-white">chevron_left</span>
             </button>
             <button
               onClick={() => setAdvantageSlide1((prev) => (prev === 2 ? 0 : prev + 1))}
-              className="absolute right-2 top-1/2 -translate-y-1/2 bg-white/90 dark:bg-gray-800/90 p-3 rounded-full shadow-lg hover:scale-110 transition-all"
+              className="hidden md:block absolute right-2 top-1/2 -translate-y-1/2 bg-white/90 dark:bg-gray-800/90 p-3 rounded-full shadow-lg hover:scale-110 transition-all"
               aria-label="Next"
             >
               <span className="material-symbols-outlined text-gray-900 dark:text-white">chevron_right</span>
             </button>
 
-            {/* Dots Row 1 */}
-            <div className="flex justify-center gap-2 mt-4">
+            {/* Dots Row 1 - Hidden on mobile */}
+            <div className="hidden md:flex justify-center gap-2 mt-4">
               {[0, 1, 2].map((index) => (
                 <button
                   key={index}
@@ -744,7 +809,12 @@ export default function Home() {
 
           {/* Row 2 Slideshow */}
           <div className="mt-12 relative">
-            <div className="overflow-hidden">
+            <div
+              className="overflow-hidden"
+              onTouchStart={handleTouchStart2}
+              onTouchEnd={handleTouchEnd2}
+              ref={advantage2Ref}
+            >
               <div
                 className="flex transition-transform duration-500 ease-out"
                 style={{ transform: `translateX(-${advantageSlide2 * 100}%)` }}
@@ -780,24 +850,24 @@ export default function Home() {
               </div>
             </div>
 
-            {/* Navigation Arrows Row 2 */}
+            {/* Navigation Arrows Row 2 - Hidden on mobile */}
             <button
               onClick={() => setAdvantageSlide2((prev) => (prev === 0 ? 2 : prev - 1))}
-              className="absolute left-2 top-1/2 -translate-y-1/2 bg-white/90 dark:bg-gray-800/90 p-3 rounded-full shadow-lg hover:scale-110 transition-all"
+              className="hidden md:block absolute left-2 top-1/2 -translate-y-1/2 bg-white/90 dark:bg-gray-800/90 p-3 rounded-full shadow-lg hover:scale-110 transition-all"
               aria-label="Previous"
             >
               <span className="material-symbols-outlined text-gray-900 dark:text-white">chevron_left</span>
             </button>
             <button
               onClick={() => setAdvantageSlide2((prev) => (prev === 2 ? 0 : prev + 1))}
-              className="absolute right-2 top-1/2 -translate-y-1/2 bg-white/90 dark:bg-gray-800/90 p-3 rounded-full shadow-lg hover:scale-110 transition-all"
+              className="hidden md:block absolute right-2 top-1/2 -translate-y-1/2 bg-white/90 dark:bg-gray-800/90 p-3 rounded-full shadow-lg hover:scale-110 transition-all"
               aria-label="Next"
             >
               <span className="material-symbols-outlined text-gray-900 dark:text-white">chevron_right</span>
             </button>
 
-            {/* Dots Row 2 */}
-            <div className="flex justify-center gap-2 mt-4">
+            {/* Dots Row 2 - Hidden on mobile */}
+            <div className="hidden md:flex justify-center gap-2 mt-4">
               {[0, 1, 2].map((index) => (
                 <button
                   key={index}
