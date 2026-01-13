@@ -312,7 +312,7 @@ export default function Home() {
       `}</style>
 
       {/* Hero Section - Single Banner */}
-      <section className="relative h-[100vh] md:h-[80vh] flex items-center justify-center overflow-hidden bg-black">
+      <section className="relative h-[50vh] md:h-[40vh] flex items-center justify-center overflow-hidden bg-black">
         {/* Banner Video */}
         <div className="absolute inset-0 w-full h-full flex items-center justify-center">
           <video
