@@ -312,7 +312,7 @@ export default function Home() {
       `}</style>
 
       {/* Hero Section - Single Banner */}
-      <section className="relative flex items-end justify-center overflow-hidden bg-black" style={{ paddingBottom: '12.5%', paddingTop: '12.5%' }}>
+      <section className="relative flex items-end justify-center overflow-hidden bg-black" style={{ paddingTop: '25%' }}>
         {/* Banner Video */}
         <div className="w-full flex items-end justify-center">
           <video
