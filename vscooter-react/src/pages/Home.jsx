@@ -782,7 +782,7 @@ export default function Home() {
                 style={{ transform: `translateX(-${advantageSlide1 * 100}%)` }}
               >
                 {[
-                  { name: 'One View Display', nameDE: 'Ein-Ansicht-Display', image: 'OneView Display.webp' },
+                  { name: 'One View Display', nameDE: 'Ein-Ansicht-Display', image: 'MA_0289.jpg' },
                   { name: 'Fast Charging', nameDE: 'Schnellladung', image: 'FastCharge.webp' },
                   { name: 'Storage Space', nameDE: 'Stauraum', image: 'StorageSpace.webp' }
                 ].map((item, index) => (
@@ -849,7 +849,7 @@ export default function Home() {
               >
                 {[
                   { name: 'Long Battery Life', nameDE: 'Lange Akkulaufzeit', image: 'vscooter4.jpg' },
-                  { name: 'High Performance', nameDE: 'Hohe Leistung' },
+                  { name: 'High Performance', nameDE: 'Hohe Leistung', image: 'e1d6d90f-c90f-4e1f-ac90-9fc2de75ee79-md.jpeg' },
                   { name: 'Eco-Friendly', nameDE: 'Umweltfreundlich', image: 'MA_0038.webp' }
                 ].map((item, index) => (
                   <div key={index} className="w-full flex-shrink-0 flex justify-center px-4">
