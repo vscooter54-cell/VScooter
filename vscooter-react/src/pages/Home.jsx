@@ -590,7 +590,7 @@ export default function Home() {
                     </p>
 
                     {/* Product Card */}
-                    <div className="bg-white dark:bg-gray-900/50 rounded-2xl overflow-hidden shadow-xl">
+                    <div className="bg-white dark:bg-gray-900/50 rounded-2xl overflow-hidden">
                       {/* Image with Name Overlay */}
                       <div className="relative h-96 bg-gradient-to-br from-primary/10 to-primary/30">
                         <img
@@ -649,7 +649,7 @@ export default function Home() {
                           </p>
 
                           {/* Product Card */}
-                          <div className="bg-white dark:bg-gray-900/50 rounded-2xl overflow-hidden shadow-xl">
+                          <div className="bg-white dark:bg-gray-900/50 rounded-2xl overflow-hidden">
                             {/* Image with Name Overlay */}
                             <div className="relative h-96 bg-gradient-to-br from-primary/10 to-primary/30">
                               <img
