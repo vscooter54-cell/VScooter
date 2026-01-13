@@ -314,7 +314,7 @@ export default function Home() {
       {/* Hero Section - Single Banner */}
       <section className="relative flex items-end justify-center overflow-hidden bg-black" style={{ paddingBottom: '12.5%', paddingTop: '12.5%' }}>
         {/* Banner Video */}
-        <div className="w-full flex items-end justify-center mb-[5vh]">
+        <div className="w-full flex items-end justify-center">
           <video
             autoPlay
             loop
