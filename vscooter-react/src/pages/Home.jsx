@@ -968,18 +968,32 @@ export default function Home() {
             {/* Navigation Arrows */}
             <button
               onClick={prevSlide}
-              className="absolute left-0 top-1/2 -translate-y-1/2 bg-white/90 dark:bg-gray-900/90 text-gray-900 dark:text-white p-2 rounded-full shadow-lg hover:bg-white dark:hover:bg-gray-800 transition-colors"
+              className="absolute left-0 top-1/2 -translate-y-1/2 text-gray-900 dark:text-white p-2 transition-colors"
               aria-label="Previous testimonial"
             >
-              <span className="material-symbols-outlined">chevron_left</span>
+              <span className="material-symbols-outlined text-4xl">chevron_left</span>
             </button>
             <button
               onClick={nextSlide}
-              className="absolute right-0 top-1/2 -translate-y-1/2 bg-white/90 dark:bg-gray-900/90 text-gray-900 dark:text-white p-2 rounded-full shadow-lg hover:bg-white dark:hover:bg-gray-800 transition-colors"
+              className="absolute right-0 top-1/2 -translate-y-1/2 text-gray-900 dark:text-white p-2 transition-colors"
               aria-label="Next testimonial"
             >
-              <span className="material-symbols-outlined">chevron_right</span>
+              <span className="material-symbols-outlined text-4xl">chevron_right</span>
             </button>
+
+            {/* Dots Indicator */}
+            <div className="flex justify-center gap-2 mt-6">
+              {testimonials.map((_, index) => (
+                <button
+                  key={index}
+                  onClick={() => setCurrentSlide(index)}
+                  className={`w-2 h-2 rounded-full transition-all ${
+                    currentSlide === index ? 'bg-primary w-8' : 'bg-white/50'
+                  }`}
+                  aria-label={`Go to testimonial ${index + 1}`}
+                />
+              ))}
+            </div>
           </div>
 
           {/* Desktop Grid */}
