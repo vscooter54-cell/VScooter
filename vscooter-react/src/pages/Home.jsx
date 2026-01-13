@@ -19,6 +19,12 @@ export default function Home() {
   const touchStartX2 = useRef(0);
   const advantage1Ref = useRef(null);
   const advantage2Ref = useRef(null);
+  const [contactForm, setContactForm] = useState({
+    name: '',
+    email: '',
+    phone: '',
+    message: ''
+  });
 
   useEffect(() => {
     fetchFeaturedProducts();
@@ -193,6 +199,28 @@ export default function Home() {
 
   const prevSlide = () => {
     setCurrentSlide((prev) => (prev - 1 + testimonials.length) % testimonials.length);
+  };
+
+  const handleContactFormChange = (e) => {
+    const { name, value } = e.target;
+    setContactForm(prev => ({
+      ...prev,
+      [name]: value
+    }));
+  };
+
+  const handleContactFormSubmit = (e) => {
+    e.preventDefault();
+    // TODO: Implement actual form submission logic
+    alert(currentLang === 'en'
+      ? 'Thank you for contacting us! We will get back to you soon.'
+      : 'Vielen Dank für Ihre Nachricht! Wir werden uns bald bei Ihnen melden.');
+    setContactForm({
+      name: '',
+      email: '',
+      phone: '',
+      message: ''
+    });
   };
 
   return (
@@ -998,6 +1026,142 @@ export default function Home() {
                 <p className="mt-4 text-white drop-shadow">{testimonial.text}</p>
               </div>
             ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Contact Form Section */}
+      <section className="py-16 md:py-24 bg-white dark:bg-gray-950">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="max-w-3xl mx-auto">
+            {/* Section Header */}
+            <div className="text-center mb-12">
+              <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4">
+                {currentLang === 'en' ? 'Get in Touch' : 'Kontaktieren Sie uns'}
+              </h2>
+              <p className="text-lg text-gray-600 dark:text-gray-400">
+                {currentLang === 'en'
+                  ? 'Have questions? We\'d love to hear from you. Send us a message and we\'ll respond as soon as possible.'
+                  : 'Haben Sie Fragen? Wir würden uns freuen, von Ihnen zu hören. Senden Sie uns eine Nachricht und wir werden so schnell wie möglich antworten.'}
+              </p>
+            </div>
+
+            {/* Contact Form */}
+            <form onSubmit={handleContactFormSubmit} className="space-y-6">
+              {/* Name Field */}
+              <div>
+                <label htmlFor="name" className="block text-sm font-semibold text-gray-900 dark:text-white mb-2">
+                  {currentLang === 'en' ? 'Name' : 'Name'} <span className="text-red-500">*</span>
+                </label>
+                <input
+                  type="text"
+                  id="name"
+                  name="name"
+                  value={contactForm.name}
+                  onChange={handleContactFormChange}
+                  required
+                  className="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-900 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
+                  placeholder={currentLang === 'en' ? 'Your name' : 'Ihr Name'}
+                />
+              </div>
+
+              {/* Email Field */}
+              <div>
+                <label htmlFor="email" className="block text-sm font-semibold text-gray-900 dark:text-white mb-2">
+                  {currentLang === 'en' ? 'Email' : 'E-Mail'} <span className="text-red-500">*</span>
+                </label>
+                <input
+                  type="email"
+                  id="email"
+                  name="email"
+                  value={contactForm.email}
+                  onChange={handleContactFormChange}
+                  required
+                  className="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-900 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
+                  placeholder={currentLang === 'en' ? 'your.email@example.com' : 'ihre.email@beispiel.de'}
+                />
+              </div>
+
+              {/* Phone Field */}
+              <div>
+                <label htmlFor="phone" className="block text-sm font-semibold text-gray-900 dark:text-white mb-2">
+                  {currentLang === 'en' ? 'Phone' : 'Telefon'}
+                </label>
+                <input
+                  type="tel"
+                  id="phone"
+                  name="phone"
+                  value={contactForm.phone}
+                  onChange={handleContactFormChange}
+                  className="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-900 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
+                  placeholder={currentLang === 'en' ? '+49 123 456 7890' : '+49 123 456 7890'}
+                />
+              </div>
+
+              {/* Message Field */}
+              <div>
+                <label htmlFor="message" className="block text-sm font-semibold text-gray-900 dark:text-white mb-2">
+                  {currentLang === 'en' ? 'Message' : 'Nachricht'} <span className="text-red-500">*</span>
+                </label>
+                <textarea
+                  id="message"
+                  name="message"
+                  value={contactForm.message}
+                  onChange={handleContactFormChange}
+                  required
+                  rows="6"
+                  className="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-900 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all resize-none"
+                  placeholder={currentLang === 'en' ? 'Tell us about your inquiry...' : 'Erzählen Sie uns von Ihrer Anfrage...'}
+                ></textarea>
+              </div>
+
+              {/* Submit Button */}
+              <div className="text-center">
+                <button
+                  type="submit"
+                  className="inline-flex items-center gap-2 bg-gradient-to-r from-primary to-accent text-white px-8 py-4 rounded-lg font-semibold text-lg hover:shadow-xl hover:scale-105 transition-all duration-300"
+                >
+                  <span className="material-symbols-outlined">send</span>
+                  {currentLang === 'en' ? 'Send Message' : 'Nachricht senden'}
+                </button>
+              </div>
+            </form>
+
+            {/* Contact Info */}
+            <div className="mt-12 grid md:grid-cols-3 gap-6">
+              {/* Email */}
+              <div className="text-center p-6 bg-gray-50 dark:bg-gray-900 rounded-xl">
+                <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <span className="material-symbols-outlined text-primary text-2xl">email</span>
+                </div>
+                <h3 className="font-semibold text-gray-900 dark:text-white mb-2">
+                  {currentLang === 'en' ? 'Email' : 'E-Mail'}
+                </h3>
+                <p className="text-sm text-gray-600 dark:text-gray-400">info@vscooter.com</p>
+              </div>
+
+              {/* Phone */}
+              <div className="text-center p-6 bg-gray-50 dark:bg-gray-900 rounded-xl">
+                <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <span className="material-symbols-outlined text-primary text-2xl">call</span>
+                </div>
+                <h3 className="font-semibold text-gray-900 dark:text-white mb-2">
+                  {currentLang === 'en' ? 'Phone' : 'Telefon'}
+                </h3>
+                <p className="text-sm text-gray-600 dark:text-gray-400">+49 123 456 7890</p>
+              </div>
+
+              {/* Location */}
+              <div className="text-center p-6 bg-gray-50 dark:bg-gray-900 rounded-xl">
+                <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <span className="material-symbols-outlined text-primary text-2xl">location_on</span>
+                </div>
+                <h3 className="font-semibold text-gray-900 dark:text-white mb-2">
+                  {currentLang === 'en' ? 'Location' : 'Standort'}
+                </h3>
+                <p className="text-sm text-gray-600 dark:text-gray-400">Berlin, Germany</p>
+              </div>
+            </div>
           </div>
         </div>
       </section>
