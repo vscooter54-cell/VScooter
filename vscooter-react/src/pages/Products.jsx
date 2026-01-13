@@ -368,37 +368,12 @@ export default function Products() {
           {/* Scooters Grid */}
           <div className="grid gap-12 lg:grid-cols-3 mb-16">
             {products.map((product) => {
-              const images = product.images || [];
-              // Duplicate images for smooth infinite loop
-              const duplicatedImages = [...images, ...images, ...images];
-
               return (
               <Link
                 to={`/products/${product._id}`}
                 key={product._id}
-                className="bg-white dark:bg-gray-900/50 rounded-xl overflow-hidden shadow-xl hover:shadow-2xl transition-all duration-300 flex flex-col cursor-pointer hover:scale-105"
+                className="bg-white dark:bg-gray-900/50 rounded-xl overflow-hidden transition-all duration-300 flex flex-col cursor-pointer hover:scale-105"
               >
-                {/* Dual-Layer Parallax Window System */}
-                <div className="h-64 w-full window-system bg-gradient-to-br from-primary/10 to-primary/30">
-                  {/* Outer Layer: 5 Moving Window Frames */}
-                  <div className="window-frames">
-                    {[0, 1, 2, 3, 4].map((frameIndex) => (
-                      <div key={frameIndex} className="window-pane">
-                        {/* Inner Layer: Slow-Moving Image Reel */}
-                        <div className="image-reel">
-                          {duplicatedImages.map((image, imgIndex) => (
-                            <div key={imgIndex} className="reel-item">
-                              <img
-                                alt={`${product.name[currentLang]} - View ${imgIndex + 1}`}
-                                src={`/${image.url}`}
-                              />
-                            </div>
-                          ))}
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
                 <div className="p-8 flex-grow">
                   <div className="flex justify-between items-center mb-6">
                     <h3 className="text-2xl font-bold text-gray-900 dark:text-white">
@@ -413,6 +388,16 @@ export default function Products() {
                       <span className="text-2xl font-bold text-primary">€{product.pricing.eur}</span>
                     </div>
                   </div>
+
+                  {/* Product Image */}
+                  <div className="mb-6 flex justify-center">
+                    <img
+                      src={`/${product.primaryImage?.url || product.images?.[0]?.url}`}
+                      alt={product.name[currentLang]}
+                      className="w-full h-64 object-contain"
+                    />
+                  </div>
+
                   <p className="text-gray-600 dark:text-gray-400 mb-6 line-clamp-3">
                     {product.description[currentLang]}
                   </p>

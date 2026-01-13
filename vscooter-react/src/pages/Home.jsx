@@ -850,7 +850,7 @@ export default function Home() {
                 {[
                   { name: 'Long Battery Life', nameDE: 'Lange Akkulaufzeit', image: 'vscooter4.jpg' },
                   { name: 'High Performance', nameDE: 'Hohe Leistung' },
-                  { name: 'Eco-Friendly', nameDE: 'Umweltfreundlich' }
+                  { name: 'Eco-Friendly', nameDE: 'Umweltfreundlich', image: 'MA_0038.webp' }
                 ].map((item, index) => (
                   <div key={index} className="w-full flex-shrink-0 flex justify-center px-4">
                     <div className="w-[90vw] h-[50vh] bg-gradient-to-br from-accent/10 to-accent/30 rounded-2xl shadow-xl overflow-hidden relative flex items-center justify-center">
@@ -913,10 +913,10 @@ export default function Home() {
 
       {/* Testimonials */}
       <section className="relative py-16 md:py-24 overflow-hidden">
-        {/* Banner1 Background */}
+        {/* MA_0210 Background */}
         <div className="absolute inset-0 w-full h-full">
           <img
-            src="/banner1.webp"
+            src="/MA_0210.jpg"
             alt="Customer testimonials background"
             className="w-full h-full object-cover object-center"
           />
