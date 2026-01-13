@@ -980,20 +980,6 @@ export default function Home() {
             >
               <span className="material-symbols-outlined">chevron_right</span>
             </button>
-
-            {/* Dots Indicator */}
-            <div className="flex justify-center gap-2 mt-6">
-              {testimonials.map((_, index) => (
-                <button
-                  key={index}
-                  onClick={() => setCurrentSlide(index)}
-                  className={`w-2 h-2 rounded-full transition-all ${
-                    currentSlide === index ? 'bg-primary w-8' : 'bg-white/50'
-                  }`}
-                  aria-label={`Go to testimonial ${index + 1}`}
-                />
-              ))}
-            </div>
           </div>
 
           {/* Desktop Grid */}
