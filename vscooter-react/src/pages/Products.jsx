@@ -100,6 +100,18 @@ export default function Products() {
     }));
   };
 
+  // Helper function to get product image based on product name
+  const getProductImage = (product) => {
+    const productName = product.name?.en?.toLowerCase() || '';
+    if (productName.includes('amiga')) {
+      return '/amiga_black.png';
+    }
+    if (productName.includes('falcon')) {
+      return '/falcon11.png';
+    }
+    return `/${product.primaryImage?.url || product.images?.[0]?.url}`;
+  };
+
   if (loading) {
     return (
       <main className="flex-grow flex items-center justify-center min-h-screen">
@@ -392,7 +404,7 @@ export default function Products() {
                   {/* Product Image */}
                   <div className="mb-6 flex justify-center">
                     <img
-                      src={`/${product.primaryImage?.url || product.images?.[0]?.url}`}
+                      src={getProductImage(product)}
                       alt={product.name[currentLang]}
                       className="w-full h-64 object-contain"
                     />

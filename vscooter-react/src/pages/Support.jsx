@@ -24,11 +24,11 @@ export default function Support() {
       {/* Banner Section - 50vh height from top */}
       <section className="relative h-[50vh] flex items-center justify-center overflow-hidden -mt-20 md:-mt-0">
         {/* Background Image */}
-        <div className="absolute inset-0 w-full h-full">
+        <div className="absolute inset-0 w-full h-full flex items-center justify-center bg-black">
           <img
-            src="/banner2.webp"
+            src="/v_sevice_centre.png"
             alt="VScooter Support Banner"
-            className="w-full h-full object-cover object-center"
+            className="w-full h-full object-contain object-center"
           />
           {/* Dark overlay for better text readability */}
           <div className="absolute inset-0 bg-black/40"></div>

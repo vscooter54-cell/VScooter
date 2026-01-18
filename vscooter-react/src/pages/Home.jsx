@@ -12,7 +12,7 @@ export default function Home() {
   const [loading, setLoading] = useState(true);
   const [currentSlide, setCurrentSlide] = useState(0);
   const [advantageSlide1, setAdvantageSlide1] = useState(0);
-  const [advantageSlide2, setAdvantageSlide2] = useState(0);
+  const [advantageSlide2, setAdvantageSlide2] = useState(2);
   const [visibleItems, setVisibleItems] = useState(new Set());
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const touchStartX1 = useRef(0);
@@ -38,10 +38,10 @@ export default function Home() {
     return () => clearInterval(interval);
   }, []);
 
-  // Auto-slide for Advantage Slideshow 2 (every 5 seconds)
+  // Auto-slide for Advantage Slideshow 2 (every 5 seconds) - moves left to right
   useEffect(() => {
     const interval = setInterval(() => {
-      setAdvantageSlide2((prev) => (prev === 2 ? 0 : prev + 1));
+      setAdvantageSlide2((prev) => (prev === 0 ? 2 : prev - 1));
     }, 5000);
     return () => clearInterval(interval);
   }, []);
@@ -66,7 +66,7 @@ export default function Home() {
     }
   };
 
-  // Touch handlers for Advantage Slideshow 2
+  // Touch handlers for Advantage Slideshow 2 (reversed direction - left to right)
   const handleTouchStart2 = (e) => {
     touchStartX2.current = e.touches[0].clientX;
   };
@@ -77,11 +77,11 @@ export default function Home() {
 
     if (Math.abs(diff) > 50) { // Minimum swipe distance
       if (diff > 0) {
-        // Swipe left - next slide
-        setAdvantageSlide2((prev) => (prev === 2 ? 0 : prev + 1));
-      } else {
-        // Swipe right - previous slide
+        // Swipe left - previous slide (reversed)
         setAdvantageSlide2((prev) => (prev === 0 ? 2 : prev - 1));
+      } else {
+        // Swipe right - next slide (reversed)
+        setAdvantageSlide2((prev) => (prev === 2 ? 0 : prev + 1));
       }
     }
   };
@@ -161,6 +161,18 @@ export default function Home() {
       console.error('Error adding to cart:', err);
       alert(currentLang === 'en' ? 'Failed to add to cart' : 'Fehler beim Hinzufügen zum Warenkorb');
     }
+  };
+
+  // Helper function to get product image based on product name
+  const getProductImage = (product) => {
+    const productName = product.name?.en?.toLowerCase() || '';
+    if (productName.includes('amiga')) {
+      return '/amiga_black.png';
+    }
+    if (productName.includes('falcon')) {
+      return '/falcon11.png';
+    }
+    return `/${product.primaryImage?.url || product.images?.[0]?.url}`;
   };
 
   const testimonials = [
@@ -564,175 +576,6 @@ export default function Home() {
         </div>
       </div>
 
-      {/* VScooter Electric Family */}
-      <section className="py-16 md:py-24 bg-white dark:from-gray-950 dark:to-gray-900">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-3xl font-bold text-center text-gray-900 dark:text-white mb-12">
-            {currentLang === 'en' ? 'VScooter Electric Family' : 'VScooter Elektro-Familie'}
-          </h2>
-          {loading ? (
-            <div className="mt-12 text-center">
-              <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary mx-auto"></div>
-              <p className="mt-4 text-gray-600 dark:text-gray-400">
-                {currentLang === 'en' ? 'Loading products...' : 'Produkte werden geladen...'}
-              </p>
-            </div>
-          ) : (
-            <>
-              {/* Mobile View - Vertical List */}
-              <div className="md:hidden space-y-6">
-                {products.map((product) => (
-                  <div key={product._id} className="w-full">
-                    {/* Price Starting At */}
-                    <p className="text-center text-lg font-semibold text-gray-700 dark:text-gray-300 mb-4">
-                      {currentLang === 'en' ? 'Price Starting at' : 'Preis ab'}{' '}
-                      <span className="text-2xl font-bold text-primary">€{product.pricing.eur}</span>
-                    </p>
-
-                    {/* Product Card */}
-                    <div className="bg-white dark:bg-gray-900/50 rounded-2xl overflow-hidden">
-                      {/* Image with Name Overlay */}
-                      <div className="relative h-96 bg-gradient-to-br from-primary/10 to-primary/30">
-                        <img
-                          alt={product.name[currentLang]}
-                          className="w-full h-full object-contain object-center"
-                          src={`/${product.primaryImage?.url || product.images[0]?.url}`}
-                        />
-                        {/* Name at Top */}
-                        <div className="absolute top-6 left-0 right-0 text-center">
-                          <h3 className="text-3xl font-bold text-gray-900 dark:text-white drop-shadow-lg">
-                            {product.name[currentLang]}
-                          </h3>
-                          {product.isPremium && (
-                            <span className="inline-block mt-2 bg-primary text-white text-xs px-3 py-1 rounded-full font-bold">
-                              PREMIUM
-                            </span>
-                          )}
-                        </div>
-                      </div>
-
-                      {/* Action Buttons at Bottom */}
-                      <div className="p-6 flex gap-3">
-                        <button
-                          onClick={() => navigate('/test-drive')}
-                          className="flex-1 bg-white border-2 border-primary text-primary py-3 px-4 rounded-lg font-semibold hover:bg-primary hover:text-white transition-all duration-300"
-                        >
-                          {currentLang === 'en' ? 'Test Ride' : 'Probefahrt'}
-                        </button>
-                        <button
-                          onClick={() => handleProductClick(product._id)}
-                          className="flex-1 bg-gradient-to-r from-primary to-accent text-white py-3 px-4 rounded-lg font-semibold hover:shadow-lg transition-all duration-300"
-                        >
-                          {currentLang === 'en' ? `Explore ${product.name.en}` : `${product.name.de} erkunden`}
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-
-              {/* Desktop View - Slideshow */}
-              <div className="hidden md:block relative">
-                {/* Slideshow Container */}
-                <div className="overflow-hidden">
-                  <div
-                    className="flex transition-transform duration-500 ease-out"
-                    style={{ transform: `translateX(-${currentSlide * 100}%)` }}
-                  >
-                    {products.map((product) => (
-                      <div key={product._id} className="w-full flex-shrink-0 px-4">
-                        <div className="max-w-md mx-auto">
-                          {/* Price Starting At */}
-                          <p className="text-center text-lg font-semibold text-gray-700 dark:text-gray-300 mb-4">
-                            {currentLang === 'en' ? 'Price Starting at' : 'Preis ab'}{' '}
-                            <span className="text-2xl font-bold text-primary">€{product.pricing.eur}</span>
-                          </p>
-
-                          {/* Product Card */}
-                          <div className="bg-white dark:bg-gray-900/50 rounded-2xl overflow-hidden">
-                            {/* Image with Name Overlay */}
-                            <div className="relative h-96 bg-gradient-to-br from-primary/10 to-primary/30">
-                              <img
-                                alt={product.name[currentLang]}
-                                className="w-full h-full object-contain object-center"
-                                src={`/${product.primaryImage?.url || product.images[0]?.url}`}
-                              />
-                              {/* Name at Top */}
-                              <div className="absolute top-6 left-0 right-0 text-center">
-                                <h3 className="text-3xl font-bold text-gray-900 dark:text-white drop-shadow-lg">
-                                  {product.name[currentLang]}
-                                </h3>
-                                {product.isPremium && (
-                                  <span className="inline-block mt-2 bg-primary text-white text-xs px-3 py-1 rounded-full font-bold">
-                                    PREMIUM
-                                  </span>
-                                )}
-                              </div>
-                            </div>
-
-                            {/* Action Buttons at Bottom */}
-                            <div className="p-6 flex gap-3">
-                              <button
-                                onClick={() => navigate('/test-drive')}
-                                className="flex-1 bg-white border-2 border-primary text-primary py-3 px-4 rounded-lg font-semibold hover:bg-primary hover:text-white transition-all duration-300"
-                              >
-                                {currentLang === 'en' ? 'Test Ride' : 'Probefahrt'}
-                              </button>
-                              <button
-                                onClick={() => handleProductClick(product._id)}
-                                className="flex-1 bg-gradient-to-r from-primary to-accent text-white py-3 px-4 rounded-lg font-semibold hover:shadow-lg transition-all duration-300"
-                              >
-                                {currentLang === 'en' ? `Explore ${product.name.en}` : `${product.name.de} erkunden`}
-                              </button>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-
-                {/* Navigation Arrows - Desktop Only */}
-                {products.length > 1 && (
-                  <>
-                    <button
-                      onClick={() => setCurrentSlide((prev) => (prev === 0 ? products.length - 1 : prev - 1))}
-                      className="absolute left-2 top-1/2 -translate-y-1/2 bg-white/90 dark:bg-gray-800/90 p-3 rounded-full shadow-lg hover:scale-110 transition-all"
-                      aria-label="Previous"
-                    >
-                      <span className="material-symbols-outlined text-gray-900 dark:text-white">chevron_left</span>
-                    </button>
-                    <button
-                      onClick={() => setCurrentSlide((prev) => (prev === products.length - 1 ? 0 : prev + 1))}
-                      className="absolute right-2 top-1/2 -translate-y-1/2 bg-white/90 dark:bg-gray-800/90 p-3 rounded-full shadow-lg hover:scale-110 transition-all"
-                      aria-label="Next"
-                    >
-                      <span className="material-symbols-outlined text-gray-900 dark:text-white">chevron_right</span>
-                    </button>
-                  </>
-                )}
-
-                {/* Dots Indicator - Desktop Only */}
-                {products.length > 1 && (
-                  <div className="flex justify-center gap-2 mt-6">
-                    {products.map((_, index) => (
-                      <button
-                        key={index}
-                        onClick={() => setCurrentSlide(index)}
-                        className={`w-3 h-3 rounded-full transition-all ${
-                          currentSlide === index ? 'bg-primary w-8' : 'bg-gray-300'
-                        }`}
-                        aria-label={`Go to slide ${index + 1}`}
-                      />
-                    ))}
-                  </div>
-                )}
-              </div>
-            </>
-          )}
-        </div>
-      </section>
-
       {/* Advantages of owning a V */}
       <section className="py-16 md:py-24 bg-gray-50 dark:from-gray-950 dark:via-gray-900 dark:to-gray-950">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
@@ -911,6 +754,191 @@ export default function Home() {
         </div>
       </section>
 
+      {/* VScooter Electric Family */}
+      <section className="py-16 md:py-24 bg-white dark:from-gray-950 dark:to-gray-900">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <h2 className="text-3xl font-bold text-center text-gray-900 dark:text-white mb-12">
+            {currentLang === 'en' ? 'VScooter Electric Family' : 'VScooter Elektro-Familie'}
+          </h2>
+          {loading ? (
+            <div className="mt-12 text-center">
+              <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary mx-auto"></div>
+              <p className="mt-4 text-gray-600 dark:text-gray-400">
+                {currentLang === 'en' ? 'Loading products...' : 'Produkte werden geladen...'}
+              </p>
+            </div>
+          ) : (
+            <>
+              {/* Mobile View - Vertical List */}
+              <div className="md:hidden space-y-6">
+                {products.map((product) => (
+                  <div key={product._id} className="w-full">
+                    {/* Price Starting At */}
+                    <p className="text-center text-lg font-semibold text-gray-700 dark:text-gray-300 mb-4">
+                      {currentLang === 'en' ? 'Price Starting at' : 'Preis ab'}{' '}
+                      <span className="text-2xl font-bold text-primary">€{product.pricing.eur}</span>
+                    </p>
+
+                    {/* Product Card */}
+                    <div className="bg-white dark:bg-gray-900/50 rounded-2xl overflow-hidden">
+                      {/* Image with Name Overlay */}
+                      <div className="relative h-96 bg-gradient-to-br from-primary/10 to-primary/30">
+                        <img
+                          alt={product.name[currentLang]}
+                          className="w-full h-full object-contain object-center"
+                          src={getProductImage(product)}
+                        />
+                        {/* Name at Top */}
+                        <div className="absolute top-6 left-0 right-0 text-center">
+                          <h3 className="text-3xl font-bold text-gray-900 dark:text-white drop-shadow-lg">
+                            {product.name[currentLang]}
+                          </h3>
+                          {product.isPremium && (
+                            <span className="inline-block mt-2 bg-primary text-white text-xs px-3 py-1 rounded-full font-bold">
+                              PREMIUM
+                            </span>
+                          )}
+                        </div>
+                      </div>
+
+                      {/* Action Buttons at Bottom */}
+                      <div className="p-6 flex gap-3">
+                        <button
+                          onClick={() => navigate('/test-drive')}
+                          className="flex-1 bg-white border-2 border-primary text-primary py-3 px-4 rounded-lg font-semibold hover:bg-primary hover:text-white transition-all duration-300"
+                        >
+                          {currentLang === 'en' ? 'Test Ride' : 'Probefahrt'}
+                        </button>
+                        <button
+                          onClick={() => handleProductClick(product._id)}
+                          className="flex-1 bg-gradient-to-r from-primary to-accent text-white py-3 px-4 rounded-lg font-semibold hover:shadow-lg transition-all duration-300"
+                        >
+                          {currentLang === 'en' ? `Explore ${product.name.en}` : `${product.name.de} erkunden`}
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              {/* Desktop View - Slideshow */}
+              <div className="hidden md:block relative">
+                {/* Slideshow Container */}
+                <div className="overflow-hidden">
+                  <div
+                    className="flex transition-transform duration-500 ease-out"
+                    style={{ transform: `translateX(-${currentSlide * 100}%)` }}
+                  >
+                    {products.map((product) => (
+                      <div key={product._id} className="w-full flex-shrink-0 px-4">
+                        <div className="max-w-md mx-auto">
+                          {/* Price Starting At */}
+                          <p className="text-center text-lg font-semibold text-gray-700 dark:text-gray-300 mb-4">
+                            {currentLang === 'en' ? 'Price Starting at' : 'Preis ab'}{' '}
+                            <span className="text-2xl font-bold text-primary">€{product.pricing.eur}</span>
+                          </p>
+
+                          {/* Product Card */}
+                          <div className="bg-white dark:bg-gray-900/50 rounded-2xl overflow-hidden">
+                            {/* Image with Name Overlay */}
+                            <div className="relative h-96 bg-gradient-to-br from-primary/10 to-primary/30">
+                              <img
+                                alt={product.name[currentLang]}
+                                className="w-full h-full object-contain object-center"
+                                src={getProductImage(product)}
+                              />
+                              {/* Name at Top */}
+                              <div className="absolute top-6 left-0 right-0 text-center">
+                                <h3 className="text-3xl font-bold text-gray-900 dark:text-white drop-shadow-lg">
+                                  {product.name[currentLang]}
+                                </h3>
+                                {product.isPremium && (
+                                  <span className="inline-block mt-2 bg-primary text-white text-xs px-3 py-1 rounded-full font-bold">
+                                    PREMIUM
+                                  </span>
+                                )}
+                              </div>
+                            </div>
+
+                            {/* Action Buttons at Bottom */}
+                            <div className="p-6 flex gap-3">
+                              <button
+                                onClick={() => navigate('/test-drive')}
+                                className="flex-1 bg-white border-2 border-primary text-primary py-3 px-4 rounded-lg font-semibold hover:bg-primary hover:text-white transition-all duration-300"
+                              >
+                                {currentLang === 'en' ? 'Test Ride' : 'Probefahrt'}
+                              </button>
+                              <button
+                                onClick={() => handleProductClick(product._id)}
+                                className="flex-1 bg-gradient-to-r from-primary to-accent text-white py-3 px-4 rounded-lg font-semibold hover:shadow-lg transition-all duration-300"
+                              >
+                                {currentLang === 'en' ? `Explore ${product.name.en}` : `${product.name.de} erkunden`}
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Navigation Arrows - Desktop Only */}
+                {products.length > 1 && (
+                  <>
+                    <button
+                      onClick={() => setCurrentSlide((prev) => (prev === 0 ? products.length - 1 : prev - 1))}
+                      className="absolute left-2 top-1/2 -translate-y-1/2 bg-white/90 dark:bg-gray-800/90 p-3 rounded-full shadow-lg hover:scale-110 transition-all"
+                      aria-label="Previous"
+                    >
+                      <span className="material-symbols-outlined text-gray-900 dark:text-white">chevron_left</span>
+                    </button>
+                    <button
+                      onClick={() => setCurrentSlide((prev) => (prev === products.length - 1 ? 0 : prev + 1))}
+                      className="absolute right-2 top-1/2 -translate-y-1/2 bg-white/90 dark:bg-gray-800/90 p-3 rounded-full shadow-lg hover:scale-110 transition-all"
+                      aria-label="Next"
+                    >
+                      <span className="material-symbols-outlined text-gray-900 dark:text-white">chevron_right</span>
+                    </button>
+                  </>
+                )}
+
+                {/* Dots Indicator - Desktop Only */}
+                {products.length > 1 && (
+                  <div className="flex justify-center gap-2 mt-6">
+                    {products.map((_, index) => (
+                      <button
+                        key={index}
+                        onClick={() => setCurrentSlide(index)}
+                        className={`w-3 h-3 rounded-full transition-all ${
+                          currentSlide === index ? 'bg-primary w-8' : 'bg-gray-300'
+                        }`}
+                        aria-label={`Go to slide ${index + 1}`}
+                      />
+                    ))}
+                  </div>
+                )}
+              </div>
+            </>
+          )}
+        </div>
+      </section>
+
+      {/* We Deliver at your place */}
+      <section className="py-16 md:py-24 bg-gray-50 dark:bg-gray-900">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <h2 className="text-3xl md:text-4xl font-bold text-center text-gray-900 dark:text-white mb-12">
+            {currentLang === 'en' ? 'We Deliver at your place' : 'Wir liefern zu Ihnen'}
+          </h2>
+          <div className="flex justify-center">
+            <img
+              src="/v_sevice_centre.png"
+              alt={currentLang === 'en' ? 'VScooter Delivery Service' : 'VScooter Lieferservice'}
+              className="w-full max-w-5xl h-auto object-contain rounded-2xl shadow-xl"
+            />
+          </div>
+        </div>
+      </section>
+
       {/* Testimonials */}
       <section className="relative py-16 md:py-24 overflow-hidden">
         {/* MA_0210 Background */}
@@ -1036,14 +1064,9 @@ export default function Home() {
           <div className="max-w-3xl mx-auto">
             {/* Section Header */}
             <div className="text-center mb-12">
-              <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4">
-                {currentLang === 'en' ? 'Get in Touch' : 'Kontaktieren Sie uns'}
+              <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white">
+                {currentLang === 'en' ? 'Need Help?' : 'Brauchen Sie Hilfe?'}
               </h2>
-              <p className="text-lg text-gray-600 dark:text-gray-400">
-                {currentLang === 'en'
-                  ? 'Have questions? We\'d love to hear from you. Send us a message and we\'ll respond as soon as possible.'
-                  : 'Haben Sie Fragen? Wir würden uns freuen, von Ihnen zu hören. Senden Sie uns eine Nachricht und wir werden so schnell wie möglich antworten.'}
-              </p>
             </div>
 
             {/* Contact Form */}
