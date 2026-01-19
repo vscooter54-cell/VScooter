@@ -8,11 +8,8 @@ const router = express.Router();
 router.post('/image', protect, authorize('admin'), uploadImage);
 router.post('/images', protect, authorize('admin'), uploadImages);
 
-// Delete uses wildcard to capture publicId with slashes (e.g., vscooter/products/product-123)
-router.delete('/image/*', protect, authorize('admin'), (req, res) => {
-  // Get the publicId from the URL path after /image/
-  req.params.publicId = req.params[0];
-  deleteImage(req, res);
-});
+// Delete uses named wildcard to capture publicId with slashes (e.g., vscooter/products/product-123)
+// Express 5 requires named parameters for wildcards
+router.delete('/image/:publicId(*)', protect, authorize('admin'), deleteImage);
 
 module.exports = router;
