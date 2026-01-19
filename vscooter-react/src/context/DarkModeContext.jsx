@@ -3,7 +3,8 @@ import { createContext, useContext, useState, useEffect } from 'react';
 const DarkModeContext = createContext();
 
 export function DarkModeProvider({ children }) {
-  const [isDark, setIsDark] = useState(true);
+  // Always use light mode - no system theme detection
+  const [isDark, setIsDark] = useState(false);
 
   useEffect(() => {
     if (isDark) {
