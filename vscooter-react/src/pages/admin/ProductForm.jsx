@@ -148,6 +148,7 @@ export default function ProductForm() {
         if (response.data.success) {
           const newImage = {
             url: response.data.data.url,
+            publicId: response.data.data.publicId, // Store Cloudinary publicId for deletion
             alt: file.name.replace(/\.[^/.]+$/, ''), // Remove extension for alt text
             isPrimary: images.length === 0, // First image is primary by default
           };
@@ -169,14 +170,13 @@ export default function ProductForm() {
   const handleRemoveImage = async (index) => {
     const imageToRemove = images[index];
 
-    // If it's a newly uploaded image (starts with /uploads), try to delete from server
-    if (imageToRemove.url.startsWith('/uploads')) {
-      const filename = imageToRemove.url.split('/').pop();
+    // If image has a publicId (Cloudinary), try to delete from cloud
+    if (imageToRemove.publicId) {
       try {
-        await uploadAPI.deleteImage(filename);
+        await uploadAPI.deleteImage(imageToRemove.publicId);
       } catch (err) {
-        console.error('Error deleting image from server:', err);
-        // Continue with removing from state even if server delete fails
+        console.error('Error deleting image from cloud:', err);
+        // Continue with removing from state even if cloud delete fails
       }
     }
 

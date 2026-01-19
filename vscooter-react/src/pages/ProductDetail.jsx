@@ -28,6 +28,11 @@ export default function ProductDetail() {
   const getImageUrl = (imageUrl) => {
     if (!imageUrl) return '/placeholder.png';
 
+    // If it's already a full URL (Cloudinary), return as-is
+    if (imageUrl.startsWith('http://') || imageUrl.startsWith('https://')) {
+      return imageUrl;
+    }
+
     // If image is from uploads folder, prepend backend URL
     if (imageUrl.startsWith('/uploads')) {
       return `${BACKEND_URL}${imageUrl}`;
@@ -723,7 +728,7 @@ export default function ProductDetail() {
             <span className="material-symbols-outlined text-2xl">close</span>
           </button>
           <img
-            src={`/${zoomedImage}`}
+            src={zoomedImage}
             alt="Zoomed product"
             className="max-w-full max-h-full object-contain"
             onClick={(e) => e.stopPropagation()}

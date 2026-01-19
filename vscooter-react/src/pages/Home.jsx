@@ -177,6 +177,11 @@ export default function Home() {
     const imageUrl = product.primaryImage?.url || product.images?.[0]?.url;
     if (!imageUrl) return '/placeholder.png';
 
+    // If it's already a full URL (Cloudinary), return as-is
+    if (imageUrl.startsWith('http://') || imageUrl.startsWith('https://')) {
+      return imageUrl;
+    }
+
     // If image is from uploads folder, prepend backend URL
     if (imageUrl.startsWith('/uploads')) {
       return `${BACKEND_URL}${imageUrl}`;

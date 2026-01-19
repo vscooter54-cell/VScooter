@@ -103,7 +103,8 @@ export const uploadAPI = {
       },
     });
   },
-  deleteImage: (filename) => api.delete(`/upload/image/${filename}`),
+  // Delete image by publicId (Cloudinary public ID)
+  deleteImage: (publicId) => api.delete(`/upload/image/${publicId}`),
 };
 
 // Cart API

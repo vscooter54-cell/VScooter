@@ -1,24 +1,15 @@
 const multer = require('multer');
-const path = require('path');
-const fs = require('fs');
+const cloudinary = require('cloudinary').v2;
 
-// Configure storage
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    const uploadPath = path.join(__dirname, '../uploads/products');
-    // Create directory if it doesn't exist
-    if (!fs.existsSync(uploadPath)) {
-      fs.mkdirSync(uploadPath, { recursive: true });
-    }
-    cb(null, uploadPath);
-  },
-  filename: function (req, file, cb) {
-    // Generate unique filename with timestamp
-    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
-    const ext = path.extname(file.originalname);
-    cb(null, `product-${uniqueSuffix}${ext}`);
-  }
+// Configure Cloudinary
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
 });
+
+// Configure multer to use memory storage (for Cloudinary upload)
+const storage = multer.memoryStorage();
 
 // File filter - only allow images
 const fileFilter = (req, file, cb) => {
@@ -46,9 +37,33 @@ const uploadSingleImage = upload.single('image');
 // Upload multiple images
 const uploadMultipleImages = upload.array('images', 10); // Max 10 images
 
+// Helper function to upload buffer to Cloudinary
+const uploadToCloudinary = (buffer, options = {}) => {
+  return new Promise((resolve, reject) => {
+    const uploadOptions = {
+      folder: 'vscooter/products',
+      resource_type: 'image',
+      ...options
+    };
+
+    const uploadStream = cloudinary.uploader.upload_stream(
+      uploadOptions,
+      (error, result) => {
+        if (error) {
+          reject(error);
+        } else {
+          resolve(result);
+        }
+      }
+    );
+
+    uploadStream.end(buffer);
+  });
+};
+
 // Controller for single image upload
 const uploadImage = (req, res) => {
-  uploadSingleImage(req, res, function (err) {
+  uploadSingleImage(req, res, async function (err) {
     if (err instanceof multer.MulterError) {
       if (err.code === 'LIMIT_FILE_SIZE') {
         return res.status(400).json({
@@ -74,25 +89,37 @@ const uploadImage = (req, res) => {
       });
     }
 
-    // Return the file path that can be accessed via URL
-    const imageUrl = `/uploads/products/${req.file.filename}`;
+    try {
+      // Upload to Cloudinary
+      const result = await uploadToCloudinary(req.file.buffer, {
+        public_id: `product-${Date.now()}`,
+      });
 
-    res.status(200).json({
-      success: true,
-      message: 'Image uploaded successfully',
-      data: {
-        url: imageUrl,
-        filename: req.file.filename,
-        originalName: req.file.originalname,
-        size: req.file.size
-      }
-    });
+      res.status(200).json({
+        success: true,
+        message: 'Image uploaded successfully',
+        data: {
+          url: result.secure_url,
+          publicId: result.public_id,
+          width: result.width,
+          height: result.height,
+          format: result.format,
+          size: result.bytes
+        }
+      });
+    } catch (uploadError) {
+      console.error('Cloudinary upload error:', uploadError);
+      res.status(500).json({
+        success: false,
+        message: 'Failed to upload image to cloud storage'
+      });
+    }
   });
 };
 
 // Controller for multiple image upload
 const uploadImages = (req, res) => {
-  uploadMultipleImages(req, res, function (err) {
+  uploadMultipleImages(req, res, async function (err) {
     if (err instanceof multer.MulterError) {
       if (err.code === 'LIMIT_FILE_SIZE') {
         return res.status(400).json({
@@ -124,57 +151,73 @@ const uploadImages = (req, res) => {
       });
     }
 
-    // Return the file paths
-    const uploadedImages = req.files.map(file => ({
-      url: `/uploads/products/${file.filename}`,
-      filename: file.filename,
-      originalName: file.originalname,
-      size: file.size
-    }));
+    try {
+      // Upload all files to Cloudinary
+      const uploadPromises = req.files.map((file, index) =>
+        uploadToCloudinary(file.buffer, {
+          public_id: `product-${Date.now()}-${index}`,
+        })
+      );
 
-    res.status(200).json({
-      success: true,
-      message: `${req.files.length} image(s) uploaded successfully`,
-      data: uploadedImages
-    });
+      const results = await Promise.all(uploadPromises);
+
+      const uploadedImages = results.map(result => ({
+        url: result.secure_url,
+        publicId: result.public_id,
+        width: result.width,
+        height: result.height,
+        format: result.format,
+        size: result.bytes
+      }));
+
+      res.status(200).json({
+        success: true,
+        message: `${req.files.length} image(s) uploaded successfully`,
+        data: uploadedImages
+      });
+    } catch (uploadError) {
+      console.error('Cloudinary upload error:', uploadError);
+      res.status(500).json({
+        success: false,
+        message: 'Failed to upload images to cloud storage'
+      });
+    }
   });
 };
 
-// Delete image
-const deleteImage = (req, res) => {
-  const { filename } = req.params;
+// Delete image from Cloudinary
+const deleteImage = async (req, res) => {
+  const { publicId } = req.params;
 
-  if (!filename) {
+  if (!publicId) {
     return res.status(400).json({
       success: false,
-      message: 'Filename is required'
+      message: 'Public ID is required'
     });
   }
 
-  const filePath = path.join(__dirname, '../uploads/products', filename);
+  try {
+    // Delete from Cloudinary
+    const result = await cloudinary.uploader.destroy(publicId);
 
-  // Check if file exists
-  if (!fs.existsSync(filePath)) {
-    return res.status(404).json({
-      success: false,
-      message: 'Image not found'
-    });
-  }
-
-  // Delete the file
-  fs.unlink(filePath, (err) => {
-    if (err) {
-      return res.status(500).json({
+    if (result.result === 'ok') {
+      res.status(200).json({
+        success: true,
+        message: 'Image deleted successfully'
+      });
+    } else {
+      res.status(404).json({
         success: false,
-        message: 'Failed to delete image'
+        message: 'Image not found or already deleted'
       });
     }
-
-    res.status(200).json({
-      success: true,
-      message: 'Image deleted successfully'
+  } catch (error) {
+    console.error('Cloudinary delete error:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Failed to delete image'
     });
-  });
+  }
 };
 
 module.exports = {
