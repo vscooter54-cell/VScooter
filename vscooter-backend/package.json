@@ -8,7 +8,13 @@
     "dev": "nodemon server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "keywords": ["ecommerce", "api", "vscooter", "express", "mongodb"],
+  "keywords": [
+    "ecommerce",
+    "api",
+    "vscooter",
+    "express",
+    "mongodb"
+  ],
   "author": "",
   "license": "ISC",
   "dependencies": {
@@ -23,6 +29,7 @@
     "helmet": "^7.1.0",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.19.2",
+    "multer": "^2.0.2",
     "nodemailer": "^7.0.10",
     "stripe": "^19.2.0"
   },

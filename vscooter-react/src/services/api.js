@@ -66,12 +66,41 @@ export const productAPI = {
   getAll: (params) => api.get('/products', { params }),
   getProducts: (params) => api.get('/products', { params }),
   getProduct: (id) => api.get(`/products/${id}`),
+  getById: (id) => api.get(`/products/${id}`),
   getProductBySlug: (slug) => api.get(`/products/slug/${slug}`),
   getFeaturedProducts: (limit = 4) => api.get('/products/featured', { params: { limit } }),
   getRelatedProducts: (id, limit = 4) => api.get(`/products/${id}/related`, { params: { limit } }),
   getCategories: () => api.get('/products/categories'),
   getTags: () => api.get('/products/tags'),
   checkStock: (items) => api.post('/products/check-stock', { items }),
+  create: (data) => api.post('/products', data),
+  update: (id, data) => api.put(`/products/${id}`, data),
+  delete: (id) => api.delete(`/products/${id}`),
+};
+
+// Upload API
+export const uploadAPI = {
+  uploadImage: (file) => {
+    const formData = new FormData();
+    formData.append('image', file);
+    return api.post('/upload/image', formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    });
+  },
+  uploadImages: (files) => {
+    const formData = new FormData();
+    files.forEach(file => {
+      formData.append('images', file);
+    });
+    return api.post('/upload/images', formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    });
+  },
+  deleteImage: (filename) => api.delete(`/upload/image/${filename}`),
 };
 
 // Cart API

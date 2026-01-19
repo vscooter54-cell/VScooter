@@ -1,7 +1,9 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { productAPI } from '../../services/api';
+import { productAPI, uploadAPI } from '../../services/api';
 import AdminLayout from '../../components/admin/AdminLayout';
+
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
 
 export default function ProductForm() {
   const navigate = useNavigate();
@@ -9,6 +11,9 @@ export default function ProductForm() {
   const isEdit = Boolean(id);
 
   const [loading, setLoading] = useState(false);
+  const [uploading, setUploading] = useState(false);
+  const [images, setImages] = useState([]);
+  const fileInputRef = useRef(null);
   const [formData, setFormData] = useState({
     name: { en: '', de: '' },
     description: { en: '', de: '' },
@@ -80,6 +85,11 @@ export default function ProductForm() {
         isActive: product.isActive,
         tags: product.tags || [],
       });
+
+      // Load existing images
+      if (product.images && product.images.length > 0) {
+        setImages(product.images);
+      }
     } catch (err) {
       console.error('Error fetching product:', err);
       alert('Failed to load product');
@@ -128,6 +138,74 @@ export default function ProductForm() {
     setFormData({ ...formData, features: newFeatures });
   };
 
+  // Image handling functions
+  const handleImageUpload = async (e) => {
+    const files = Array.from(e.target.files);
+    if (files.length === 0) return;
+
+    setUploading(true);
+    try {
+      for (const file of files) {
+        const response = await uploadAPI.uploadImage(file);
+        if (response.data.success) {
+          const newImage = {
+            url: response.data.data.url,
+            alt: file.name.replace(/\.[^/.]+$/, ''), // Remove extension for alt text
+            isPrimary: images.length === 0, // First image is primary by default
+          };
+          setImages(prev => [...prev, newImage]);
+        }
+      }
+    } catch (err) {
+      console.error('Error uploading image:', err);
+      alert(err.response?.data?.message || 'Failed to upload image');
+    } finally {
+      setUploading(false);
+      // Reset file input
+      if (fileInputRef.current) {
+        fileInputRef.current.value = '';
+      }
+    }
+  };
+
+  const handleRemoveImage = async (index) => {
+    const imageToRemove = images[index];
+
+    // If it's a newly uploaded image (starts with /uploads), try to delete from server
+    if (imageToRemove.url.startsWith('/uploads')) {
+      const filename = imageToRemove.url.split('/').pop();
+      try {
+        await uploadAPI.deleteImage(filename);
+      } catch (err) {
+        console.error('Error deleting image from server:', err);
+        // Continue with removing from state even if server delete fails
+      }
+    }
+
+    const newImages = images.filter((_, i) => i !== index);
+
+    // If we removed the primary image, make the first remaining image primary
+    if (imageToRemove.isPrimary && newImages.length > 0) {
+      newImages[0].isPrimary = true;
+    }
+
+    setImages(newImages);
+  };
+
+  const handleSetPrimaryImage = (index) => {
+    const newImages = images.map((img, i) => ({
+      ...img,
+      isPrimary: i === index,
+    }));
+    setImages(newImages);
+  };
+
+  const handleImageAltChange = (index, alt) => {
+    const newImages = [...images];
+    newImages[index].alt = alt;
+    setImages(newImages);
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -162,6 +240,9 @@ export default function ProductForm() {
       if (formData.category !== 'scooter') {
         delete submitData.specifications;
       }
+
+      // Include images
+      submitData.images = images;
 
       if (isEdit) {
         await productAPI.update(id, submitData);
@@ -530,6 +611,115 @@ export default function ProductForm() {
                 </button>
               </div>
             </div>
+          </div>
+
+          {/* Product Images */}
+          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-md p-6">
+            <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">Product Images</h2>
+            <p className="text-sm text-gray-500 dark:text-gray-400 mb-4">
+              Upload product images. The first image will be set as primary by default. Click the star icon to change the primary image.
+            </p>
+
+            {/* Upload Button */}
+            <div className="mb-6">
+              <input
+                type="file"
+                ref={fileInputRef}
+                onChange={handleImageUpload}
+                accept="image/jpeg,image/png,image/webp"
+                multiple
+                className="hidden"
+                id="image-upload"
+              />
+              <label
+                htmlFor="image-upload"
+                className={`inline-flex items-center gap-2 px-4 py-2 border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-lg cursor-pointer hover:border-primary hover:bg-primary/5 transition-colors ${
+                  uploading ? 'opacity-50 cursor-not-allowed' : ''
+                }`}
+              >
+                <span className="material-symbols-outlined text-gray-500">
+                  {uploading ? 'hourglass_empty' : 'cloud_upload'}
+                </span>
+                <span className="text-gray-700 dark:text-gray-300">
+                  {uploading ? 'Uploading...' : 'Upload Images'}
+                </span>
+              </label>
+              <p className="text-xs text-gray-500 dark:text-gray-400 mt-2">
+                Supported formats: JPEG, PNG, WebP. Max size: 5MB per image.
+              </p>
+            </div>
+
+            {/* Image Grid */}
+            {images.length > 0 && (
+              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                {images.map((image, index) => (
+                  <div
+                    key={index}
+                    className={`relative group border-2 rounded-lg overflow-hidden ${
+                      image.isPrimary ? 'border-primary' : 'border-gray-200 dark:border-gray-700'
+                    }`}
+                  >
+                    {/* Image */}
+                    <img
+                      src={image.url.startsWith('/uploads') ? `${API_BASE_URL}${image.url}` : image.url}
+                      alt={image.alt || `Product image ${index + 1}`}
+                      className="w-full h-32 object-cover"
+                    />
+
+                    {/* Primary Badge */}
+                    {image.isPrimary && (
+                      <div className="absolute top-2 left-2 bg-primary text-white text-xs px-2 py-1 rounded-full">
+                        Primary
+                      </div>
+                    )}
+
+                    {/* Overlay Actions */}
+                    <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2">
+                      {/* Set as Primary */}
+                      {!image.isPrimary && (
+                        <button
+                          type="button"
+                          onClick={() => handleSetPrimaryImage(index)}
+                          className="p-2 bg-white rounded-full hover:bg-primary hover:text-white transition-colors"
+                          title="Set as primary"
+                        >
+                          <span className="material-symbols-outlined text-sm">star</span>
+                        </button>
+                      )}
+
+                      {/* Delete */}
+                      <button
+                        type="button"
+                        onClick={() => handleRemoveImage(index)}
+                        className="p-2 bg-white rounded-full hover:bg-red-600 hover:text-white transition-colors"
+                        title="Remove image"
+                      >
+                        <span className="material-symbols-outlined text-sm">delete</span>
+                      </button>
+                    </div>
+
+                    {/* Alt Text Input */}
+                    <div className="p-2 bg-gray-50 dark:bg-gray-700">
+                      <input
+                        type="text"
+                        value={image.alt || ''}
+                        onChange={(e) => handleImageAltChange(index, e.target.value)}
+                        placeholder="Alt text"
+                        className="w-full text-xs px-2 py-1 border border-gray-300 dark:border-gray-600 rounded bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
+                      />
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+
+            {/* No Images Message */}
+            {images.length === 0 && (
+              <div className="text-center py-8 border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-lg">
+                <span className="material-symbols-outlined text-4xl text-gray-400">image</span>
+                <p className="text-gray-500 dark:text-gray-400 mt-2">No images uploaded yet</p>
+              </div>
+            )}
           </div>
 
           {/* Inventory */}

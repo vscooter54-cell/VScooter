@@ -4,6 +4,7 @@ const cookieParser = require('cookie-parser');
 const mongoSanitize = require('express-mongo-sanitize');
 const helmet = require('helmet');
 const rateLimit = require('express-rate-limit');
+const path = require('path');
 require('dotenv').config();
 
 // Database connection
@@ -23,6 +24,7 @@ const couponRoutes = require('./routes/couponRoutes');
 const wishlistRoutes = require('./routes/wishlistRoutes');
 const supportRoutes = require('./routes/supportRoutes');
 const adminRoutes = require('./routes/adminRoutes');
+const uploadRoutes = require('./routes/uploadRoutes');
 
 // Initialize app
 const app = express();
@@ -91,6 +93,9 @@ app.use(cookieParser());
 // Custom sanitization middleware (provides NoSQL injection protection)
 app.use(sanitizeInput);
 
+// Serve static files from uploads folder
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+
 // Health check route
 app.get('/health', (req, res) => {
   res.status(200).json({
@@ -110,6 +115,7 @@ app.use('/api/coupons', couponRoutes);
 app.use('/api/wishlist', wishlistRoutes);
 app.use('/api/support', supportRoutes);
 app.use('/api/admin', adminRoutes);
+app.use('/api/upload', uploadRoutes);
 
 // Root route
 app.get('/', (req, res) => {
