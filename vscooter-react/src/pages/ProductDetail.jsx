@@ -24,6 +24,19 @@ export default function ProductDetail() {
   const imageContainerRef = useRef(null);
   const contentRef = useRef(null);
 
+  // Helper function to get proper image URL
+  const getImageUrl = (imageUrl) => {
+    if (!imageUrl) return '/placeholder.png';
+
+    // If image is from uploads folder, prepend backend URL
+    if (imageUrl.startsWith('/uploads')) {
+      const API_BASE = import.meta.env.VITE_API_URL?.replace('/api', '') || 'http://localhost:5000';
+      return `${API_BASE}${imageUrl}`;
+    }
+
+    return `/${imageUrl}`;
+  };
+
   useEffect(() => {
     fetchProduct();
     fetchAllProducts();
@@ -177,13 +190,13 @@ export default function ProductDetail() {
               <div className="bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-800 dark:to-gray-900 rounded-2xl p-4 md:p-6 lg:p-8 mb-4 relative overflow-hidden group">
                 <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-accent/5"></div>
                 <img
-                  src={`/${product.images[selectedImage]?.url}`}
+                  src={getImageUrl(product.images[selectedImage]?.url)}
                   alt={product.images[selectedImage]?.alt || product.name[currentLang]}
                   className="relative w-full h-[300px] sm:h-[400px] lg:h-[500px] object-contain cursor-zoom-in transition-transform duration-300 group-hover:scale-105"
-                  onClick={() => setZoomedImage(product.images[selectedImage]?.url)}
+                  onClick={() => setZoomedImage(getImageUrl(product.images[selectedImage]?.url))}
                 />
                 <button
-                  onClick={() => setZoomedImage(product.images[selectedImage]?.url)}
+                  onClick={() => setZoomedImage(getImageUrl(product.images[selectedImage]?.url))}
                   className="absolute top-4 right-4 bg-white dark:bg-gray-800 p-3 rounded-full shadow-lg hover:shadow-xl transition-all opacity-0 group-hover:opacity-100"
                 >
                   <span className="material-symbols-outlined">zoom_in</span>
@@ -202,7 +215,7 @@ export default function ProductDetail() {
                       }`}
                     >
                       <img
-                        src={`/${image.url}`}
+                        src={getImageUrl(image.url)}
                         alt={image.alt}
                         className="w-full h-16 sm:h-20 object-contain"
                       />
@@ -538,7 +551,7 @@ export default function ProductDetail() {
                         onClick={() => p._id !== product._id && toggleCompare(p._id)}
                       >
                         <div className="flex items-center gap-3">
-                          <img src={`/${p.images[0]?.url}`} alt={p.name[currentLang]} className="w-12 h-12 sm:w-16 sm:h-16 object-contain" />
+                          <img src={getImageUrl(p.images[0]?.url)} alt={p.name[currentLang]} className="w-12 h-12 sm:w-16 sm:h-16 object-contain" />
                           <div className="flex-1 min-w-0">
                             <h4 className="font-semibold text-gray-900 dark:text-white text-sm sm:text-base truncate">{p.name[currentLang]}</h4>
                             <p className="text-primary font-bold text-sm sm:text-base">€{p.pricing.eur}</p>

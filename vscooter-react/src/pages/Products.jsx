@@ -109,7 +109,18 @@ export default function Products() {
     if (productName.includes('falcon')) {
       return '/falcon11.png';
     }
-    return `/${product.primaryImage?.url || product.images?.[0]?.url}`;
+
+    // Get image URL from product
+    const imageUrl = product.primaryImage?.url || product.images?.[0]?.url;
+    if (!imageUrl) return '/placeholder.png';
+
+    // If image is from uploads folder, prepend backend URL
+    if (imageUrl.startsWith('/uploads')) {
+      const API_BASE = import.meta.env.VITE_API_URL?.replace('/api', '') || 'http://localhost:5000';
+      return `${API_BASE}${imageUrl}`;
+    }
+
+    return `/${imageUrl}`;
   };
 
   if (loading) {
