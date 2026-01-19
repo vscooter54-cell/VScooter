@@ -172,6 +172,9 @@ export default function Home() {
     if (productName.includes('falcon')) {
       return '/falcon11.png';
     }
+    if (productName.includes('mars')) {
+      return '/mars.png';
+    }
 
     // Get image URL from product
     const imageUrl = product.primaryImage?.url || product.images?.[0]?.url;
@@ -707,7 +710,7 @@ export default function Home() {
               >
                 {[
                   { name: 'Long Battery Life', nameDE: 'Lange Akkulaufzeit', image: 'vscooter4.jpg' },
-                  { name: 'High Performance', nameDE: 'Hohe Leistung', image: 'e1d6d90f-c90f-4e1f-ac90-9fc2de75ee79-md.jpeg' },
+                  { name: 'High Performance', nameDE: 'Hohe Leistung', image: 'performance1.png' },
                   { name: 'Eco-Friendly', nameDE: 'Umweltfreundlich', image: 'MA_0038.webp' }
                 ].map((item, index) => (
                   <div key={index} className="w-full flex-shrink-0 flex justify-center px-4">

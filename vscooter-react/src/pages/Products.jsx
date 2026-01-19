@@ -109,6 +109,9 @@ export default function Products() {
     if (productName.includes('falcon')) {
       return '/falcon11.png';
     }
+    if (productName.includes('mars')) {
+      return '/mars.png';
+    }
 
     // Get image URL from product
     const imageUrl = product.primaryImage?.url || product.images?.[0]?.url;
