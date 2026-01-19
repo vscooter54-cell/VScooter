@@ -93,8 +93,12 @@ app.use(cookieParser());
 // Custom sanitization middleware (provides NoSQL injection protection)
 app.use(sanitizeInput);
 
-// Serve static files from uploads folder
-app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+// Serve static files from uploads folder with CORS
+app.use('/uploads', (req, res, next) => {
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Methods', 'GET');
+  next();
+}, express.static(path.join(__dirname, 'uploads')));
 
 // Health check route
 app.get('/health', (req, res) => {

@@ -2,6 +2,9 @@ import axios from 'axios';
 
 const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
 
+// Base URL without /api for serving static files (uploads)
+export const BACKEND_URL = API_BASE_URL.replace('/api', '');
+
 // Create axios instance
 const api = axios.create({
   baseURL: API_BASE_URL,

@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useLanguage } from '../context/LanguageContext';
 import ProductModal from '../components/ProductModal';
-import { productAPI } from '../services/api';
+import { productAPI, BACKEND_URL } from '../services/api';
 import { useCart } from '../contexts/CartContext';
 
 export default function Products() {
@@ -116,8 +116,7 @@ export default function Products() {
 
     // If image is from uploads folder, prepend backend URL
     if (imageUrl.startsWith('/uploads')) {
-      const API_BASE = import.meta.env.VITE_API_URL?.replace('/api', '') || 'http://localhost:5000';
-      return `${API_BASE}${imageUrl}`;
+      return `${BACKEND_URL}${imageUrl}`;
     }
 
     return `/${imageUrl}`;

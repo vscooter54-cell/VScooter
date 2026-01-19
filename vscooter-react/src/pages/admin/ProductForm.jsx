@@ -1,9 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { productAPI, uploadAPI } from '../../services/api';
+import { productAPI, uploadAPI, BACKEND_URL } from '../../services/api';
 import AdminLayout from '../../components/admin/AdminLayout';
-
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
 
 export default function ProductForm() {
   const navigate = useNavigate();
@@ -661,7 +659,7 @@ export default function ProductForm() {
                   >
                     {/* Image */}
                     <img
-                      src={image.url.startsWith('/uploads') ? `${API_BASE_URL}${image.url}` : image.url}
+                      src={image.url.startsWith('/uploads') ? `${BACKEND_URL}${image.url}` : image.url}
                       alt={image.alt || `Product image ${index + 1}`}
                       className="w-full h-32 object-cover"
                     />

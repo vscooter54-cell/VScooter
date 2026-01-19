@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
-import { productAPI } from '../services/api';
+import { productAPI, BACKEND_URL } from '../services/api';
 import { useCart } from '../contexts/CartContext';
 import { useLanguage } from '../context/LanguageContext';
 import ProductReviews from '../components/ProductReviews';
@@ -30,8 +30,7 @@ export default function ProductDetail() {
 
     // If image is from uploads folder, prepend backend URL
     if (imageUrl.startsWith('/uploads')) {
-      const API_BASE = import.meta.env.VITE_API_URL?.replace('/api', '') || 'http://localhost:5000';
-      return `${API_BASE}${imageUrl}`;
+      return `${BACKEND_URL}${imageUrl}`;
     }
 
     return `/${imageUrl}`;
